@@ -1,0 +1,8 @@
+﻿<Window x:Class="IntergalacticPhotoshop_GUI.TestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="TestWindow" Height="485" Width="592" xmlns:my="clr-namespace:IPUI;assembly=IPUI" MouseMove="Window_MouseMove">
+    <Grid>
+        <my:PopupView Height="200" HorizontalAlignment="Left" Margin="180,112,0,0" Name="popupView1" VerticalAlignment="Top" Width="200" />
+    </Grid>
+</Window>
