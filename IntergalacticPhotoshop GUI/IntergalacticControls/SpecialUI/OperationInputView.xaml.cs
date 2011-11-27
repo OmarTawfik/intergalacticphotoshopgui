@@ -44,9 +44,15 @@
         private List<Label> labelList;
 
         /// <summary>
-        /// Dictionary of all UI image input
+        /// Buttons if the image input
         /// </summary>
-        private Dictionary<Button, Image> imageInputDictionary;
+        private List<ComboBox> imageInputComboBoxes;
+
+        /// <summary>
+        /// Buttons if the image input
+        /// </summary>
+        private List<Image> imageInputImages;
+
 
         /// <summary>
         /// Initializes a new instance of the OperationInputView class
@@ -83,7 +89,8 @@
 
             this.inputSourceList = new List<object>();
             this.labelList = new List<Label>();
-            this.imageInputDictionary = new Dictionary<Button, Image>();
+            this.imageInputComboBoxes = new List<ComboBox>();
+            this.imageInputImages = new List<Image>();
 
             int shiftY = 30;
             for (int i = 0; i < this.inputInfoList.Count; i++)
@@ -308,16 +315,28 @@
             label.FontSize = 11;
             label.Foreground = Brushes.Gray;
 
-            Button browseButton = new Button();
-            browseButton.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            browseButton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            browseButton.Margin = new Thickness(130, startY + 37, 0, 0);
-            browseButton.Width = 110;
-            browseButton.Height = 23;
-            browseButton.Content = "Browse an image";
-            browseButton.Click += new RoutedEventHandler(this.BrowseButton_Click);
-
             Image img = new Image();
+
+            ComboBox tabsComboBox = new ComboBox();
+            tabsComboBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            tabsComboBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            tabsComboBox.Margin = new Thickness(130, startY + 37, 0, 0);
+            tabsComboBox.Width = 110;
+            tabsComboBox.Height = 23;
+            List<string> tabNames = Manager.Instance.GetTabNames();
+            for (int i = 0; i < tabNames.Count; i++)
+            {
+                tabsComboBox.Items.Add(tabNames[i]);
+            }
+
+            tabsComboBox.Items.Add("Image from file");
+            tabsComboBox.SelectionChanged += new SelectionChangedEventHandler(TabsComboBox_SelectionChanged);
+
+            this.imageInputComboBoxes.Add(tabsComboBox);
+            this.imageInputImages.Add(img);
+
+            tabsComboBox.SelectedIndex = 0;
+
             img.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             img.Margin = new Thickness(-121, startY + 14, 0, 0);
@@ -329,27 +348,50 @@
             this.mainGrid.Children.Add(rect);
             this.mainGrid.Children.Add(label);
             this.mainGrid.Children.Add(img);
-            this.mainGrid.Children.Add(browseButton);
+            this.mainGrid.Children.Add(tabsComboBox);
 
             this.inputSourceList.Add(img);
-            this.imageInputDictionary.Add(browseButton, img);
 
             startY += 110;
         }
 
         /// <summary>
-        /// Click function for image input browse buttons
+        /// SizeChanged function to switch images
         /// </summary>
-        /// <param name="sender">Sender object</param>
+        /// <param name="sender">The sender</param>
         /// <param name="e">Event arguments</param>
-        private void BrowseButton_Click(object sender, RoutedEventArgs e)
+        private void TabsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.ShowDialog();
-
-            if (dialog.FileName != string.Empty)
+            ComboBox combo = (ComboBox)sender;
+            if (combo.SelectedIndex == combo.Items.Count - 1)
             {
-                this.imageInputDictionary[(Button)sender].Source = new BitmapImage(new Uri(dialog.FileName));
+                System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
+                dialog.ShowDialog();
+
+                if (dialog.FileName != string.Empty)
+                {
+                    int index = 0;
+                    while (this.imageInputComboBoxes[index] != combo)
+                    {
+                        index++;
+                    }
+
+                    this.imageInputImages[index].Source = new BitmapImage(new Uri(dialog.FileName));
+                }
+                else
+                {
+                    combo.SelectedIndex = 0;
+                }
+            }
+            else
+            {
+                int index = 0;
+                while (this.imageInputComboBoxes[index] != combo)
+                {
+                    index++;
+                }
+
+                this.imageInputImages[index].Source = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Image).GetImageSource();
             }
         }
 

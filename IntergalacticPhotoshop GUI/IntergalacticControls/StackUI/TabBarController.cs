@@ -52,7 +52,7 @@
             if (this.tabs.Count == 1)
             {
                 this.tabs[0].IsSelected = true;
-            } 
+            }
         }
 
         /// <summary>
@@ -92,7 +92,7 @@
             for (int i = 0; i < this.tabs.Count; i++)
             {
                 this.tabs[i].IsSelected = false;
-                if (this.tabs[i].Name == name)
+                if (this.tabs[i].Tab.Name == name)
                 {
                     this.tabs[i].IsSelected = true;
                 }

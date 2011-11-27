@@ -170,5 +170,14 @@
 
             return names;
         }
+
+        /// <summary>
+        /// Gets the tab object by its name
+        /// </summary>
+        /// <param name="name">The name</param>
+        public Tab GetTab(string name)
+        {
+            return this.tabs[name];
+        }
     }
 }
