@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="IntergalacticControls.SubmenuContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="220" Width="220">
+    <Grid>
+        <Label Content="Title of category" HorizontalAlignment="Stretch" Name="lblTitle" VerticalAlignment="Top" FontSize="18" Height="35" />
+        <StackPanel Background="#0000" HorizontalAlignment="Stretch" Margin="0,35,0,0" Name="menusPanel" VerticalAlignment="Stretch" />
+    </Grid>
+</UserControl>
