@@ -52,15 +52,15 @@
             double[] horizontalMask = new double[maskSize];
             double[] verticalMask = new double[maskSize];
 
-            for (int x = 0; x < maskSize; x++)
+            for (int x = 0, a = -n; x < maskSize; x++, a++)
             {
-                double power = -(x * x) / (this.sigma * this.sigma);
+                double power = -(a * a) / (2 * this.sigma * this.sigma);
                 horizontalMask[x] = bracket * Math.Pow(Math.E, power);
             }
 
-            for (int y = 0; y < maskSize; y++)
+            for (int y = 0, b = 0; y < maskSize; y++, b++)
             {
-                double power = -(y * y) / (this.sigma * this.sigma);
+                double power = -(b * b) / (2 *this.sigma * this.sigma);
                 verticalMask[y] = bracket * Math.Pow(Math.E, power);
             }
 
