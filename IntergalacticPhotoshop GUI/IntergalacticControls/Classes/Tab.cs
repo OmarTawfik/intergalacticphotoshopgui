@@ -34,7 +34,7 @@
         /// <summary>
         /// Thumbnails of the previous operations.
         /// </summary>
-        private List<ImageBase> thumbnails = new List<ImageBase>();
+        private Stack<ImageBase> thumbnails = new Stack<ImageBase>();
 
         /// <summary>
         /// Checks if the image is activated and loaded.
@@ -57,6 +57,7 @@
             this.image = image;
             this.name = name;
             this.currentVersionNumber = this.maxVersionNumber = 0;
+            this.thumbnails.Push(this.image.GetThumbnail());
             this.isActivated = true;
             this.canBeDeleted = canBeDeleted;
 
@@ -107,7 +108,7 @@
         /// <summary>
         /// Gets the thumbnail aray.
         /// </summary>
-        public List<ImageBase> Thumbnails
+        public Stack<ImageBase> Thumbnails
         {
             get { return this.thumbnails; }
         }
@@ -118,11 +119,15 @@
         /// <param name="operation">Operation to be executed.</param>
         public void DoOperation(BaseOperation operation)
         {
-            this.thumbnails.RemoveRange(this.currentVersionNumber, this.maxVersionNumber - this.currentVersionNumber);
+            for (int i = this.maxVersionNumber - this.currentVersionNumber; i > 0; i--)
+            {
+                this.thumbnails.Pop();
+            }
+
             this.currentVersionNumber++;
             this.maxVersionNumber = this.currentVersionNumber;
-            this.thumbnails.Add(this.image.GetThumbnail());
             this.image = operation.Execute(this.image);
+            this.thumbnails.Push(this.image.GetThumbnail());
             this.image.SaveImage(this.GetFullPath());
         }
 
@@ -134,6 +139,7 @@
             if (this.currentVersionNumber > 0)
             {
                 this.currentVersionNumber--;
+                this.thumbnails.Pop();
                 this.Activate();
             }
         }

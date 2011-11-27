@@ -36,12 +36,16 @@
             this.SubView = new Image();
             this.SubView.Width = 250;
             this.SubView.Height = 150;
+            ((Image)this.SubView).Stretch = Stretch.Uniform;
+            this.UpdateSubview(tab);
             this.lblTitle.Content = tab.Name;
 
             if (tab.CanBeDeleted == false)
             {
                 this.CloseBtn.Visibility = Visibility.Hidden;
             }
+
+            Manager.Instance.OnOperationFinshed += new Manager.ManagerEvent(this.UpdateThumbnail);
         }
 
         /// <summary>
@@ -74,6 +78,30 @@
                     this.toggleRect.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
+        }
+
+        /// <summary>
+        /// Updates the thumbnail after operations
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        private void UpdateThumbnail(Manager mng)
+        {
+            if (mng.CurrentTab.Name == this.tab.Name)
+            {
+                this.UpdateSubview(this.tab);
+            }
+        }
+
+        /// <summary>
+        /// Updates the image subview from the thumbnail of the given tab
+        /// </summary>
+        /// <param name="tab">The tab</param>
+        private void UpdateSubview(Tab tab)
+        {
+            WriteableBitmap source = (WriteableBitmap)((WPFBitmap)tab.Thumbnails.Peek()).GetImageSource();
+            this.SubView.Width = source.PixelWidth;
+            this.SubView.Height = source.PixelHeight;
+            ((Image)this.SubView).Source = source;
         }
 
         /// <summary>

@@ -196,15 +196,14 @@
         public override ImageBase GetThumbnail()
         {
             int thumbnailWidth = 200;
-            int thumbnailHeight = 150;
+            int thumbnailHeight = (int)(thumbnailWidth * ((float)this.buffer.PixelHeight / (float)this.buffer.PixelWidth));
             RenderTargetBitmap target = new RenderTargetBitmap(thumbnailWidth, thumbnailHeight, 96, 96, PixelFormats.Pbgra32);
 
-            Image img = new Image();
-            img.Source = this.buffer;
-            img.Width = thumbnailWidth;
-            img.Height = thumbnailHeight;
-
-            target.Render(img);
+            DrawingVisual v = new DrawingVisual();
+            DrawingContext c = v.RenderOpen();
+            c.DrawImage(this.buffer, new Rect(0, 0, thumbnailWidth, thumbnailHeight));
+            c.Close();
+            target.Render(v);
 
             return new WPFBitmap(target);
         }

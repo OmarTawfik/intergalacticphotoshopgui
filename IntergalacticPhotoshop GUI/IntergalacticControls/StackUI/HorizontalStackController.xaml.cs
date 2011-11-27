@@ -22,10 +22,9 @@
         /// <summary>
         /// Initializes a new instance of the HorizontalStackController class
         /// </summary>
-        public HorizontalStackController()
+        public HorizontalStackController() : base()
         {
             InitializeComponent();
-
             this.MainStackPanel = this.stackPanel;
         }
     }

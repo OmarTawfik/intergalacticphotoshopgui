@@ -47,12 +47,12 @@
             TabButton newTab = new TabButton(tab);
             newTab.MouseDown += new MouseButtonEventHandler(this.NewTab_MouseDown);
             this.tabs.Add(newTab);
-            this.MainStackPanel.Children.Add(newTab);
+            this.AddButton(newTab);
 
             if (this.tabs.Count == 1)
             {
                 this.tabs[0].IsSelected = true;
-            }
+            } 
         }
 
         /// <summary>
@@ -67,31 +67,35 @@
             {
                 if (this.tabs[i].Tab.Name == tab.Name)
                 {
-                    this.MainStackPanel.Children.Remove(this.tabs[i]);
+                    this.RemoveButton(this.tabs[i]);
                     this.tabs.RemoveAt(i);
                     return;
                 }
             }
 
-            this.DeselectAllTabs();
             if (i == 0)
             {
-                this.tabs[0].IsSelected = true;
+                this.SelectTab(tabs[0].Name);
             }
             else
             {
-                this.tabs[i - 1].IsSelected = true;
+                this.SelectTab(tabs[i - 1].Name);
             }
         }
 
         /// <summary>
-        /// Deselects all tabs
+        /// DSelects a tab
         /// </summary>
-        private void DeselectAllTabs()
+        /// <param name="name">The tab name</param>
+        private void SelectTab(string name)
         {
             for (int i = 0; i < this.tabs.Count; i++)
             {
                 this.tabs[i].IsSelected = false;
+                if (this.tabs[i].Name == name)
+                {
+                    this.tabs[i].IsSelected = true;
+                }
             }
         }
 
@@ -102,15 +106,7 @@
         /// <param name="tab">THe tab</param>
         private void SwitchTab(Manager mng, Tab tab)
         {
-            this.DeselectAllTabs();
-            for (int i = 0; i < this.tabs.Count; i++)
-            {
-                if (this.tabs[i].Tab.Name == tab.Name)
-                {
-                    this.tabs[i].IsSelected = true;
-                    return;
-                }
-            }
+            this.SelectTab(tab.Name);
         }
 
         /// <summary>

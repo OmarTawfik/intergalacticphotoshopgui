@@ -66,6 +66,15 @@
         }
 
         /// <summary>
+        /// Removes a stack button to this controls
+        /// </summary>
+        /// <param name="button">The button</param>
+        public void RemoveButton(StackButtonBase button)
+        {
+            this.mainStackPanel.Children.Remove(button);
+        }
+
+        /// <summary>
         /// MouseEnter function to add animation
         /// </summary>
         /// <param name="e">event args</param>
