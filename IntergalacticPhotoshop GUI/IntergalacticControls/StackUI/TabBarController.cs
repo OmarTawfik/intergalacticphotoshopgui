@@ -75,11 +75,11 @@
 
             if (i == 0)
             {
-                this.SelectTab(tabs[0].Name);
+                this.SelectTab(this.tabs[0].Name);
             }
             else
             {
-                this.SelectTab(tabs[i - 1].Name);
+                this.SelectTab(this.tabs[i - 1].Name);
             }
         }
 

@@ -192,8 +192,6 @@
         {
             this.AddLabel(info.Title, startY);
 
-            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
-
             DropShadowEffect shadow = new DropShadowEffect();
             shadow.BlurRadius = 15;
             shadow.Direction = 270;
@@ -211,7 +209,6 @@
             rect.RadiusY = 10;
             rect.Effect = shadow;
             rect.Stroke = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128));
-            rect.Fill = brush;
 
             this.mainGrid.Children.Add(rect);
 
@@ -259,7 +256,7 @@
             brushBind.Bindings.Add(blueBind);
             BindingOperations.SetBinding(rect, Rectangle.FillProperty, brushBind);
 
-            this.inputSourceList.Add(brush);
+            this.inputSourceList.Add(rect);
 
             startY += 15;
         }
@@ -439,7 +436,7 @@
                     result = ((Slider)this.inputSourceList[index]).Value;
                     break;
                 case IntergalacticControls.InputType.Color:
-                    Color color = ((SolidColorBrush)this.inputSourceList[index]).Color;
+                    Color color = ((SolidColorBrush)((Rectangle)this.inputSourceList[index]).Fill).Color;
                     result = new Pixel(color.R, color.G, color.B);
                     break;
                 case IntergalacticControls.InputType.Mask:
