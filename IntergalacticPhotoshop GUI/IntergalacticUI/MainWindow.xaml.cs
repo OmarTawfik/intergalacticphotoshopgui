@@ -3,8 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Documents;
-    using System.Windows.Forms;
     using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
@@ -15,8 +15,8 @@
     using IntergalacticCore.Operations.Filters.EdgeDetection;
     using IntergalacticCore.Operations.Filters.Sharpening;
     using IntergalacticCore.Operations.Filters.Smoothing;
-    using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.HistogramOperations;
+    using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -117,7 +117,7 @@
         /// </summary>
         private void SaveFile()
         {
-            SaveFileDialog dialog = new SaveFileDialog();
+            System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.Filter = "Bitmap file|*.bmp|Portable Network Graphics|*png|JPEG image|*.jpg|PPM P3 image|*.ppm|";
             dialog.FilterIndex = 0;
 
@@ -133,7 +133,7 @@
         /// </summary>
         private void OpenFile()
         {
-            OpenFileDialog dialog = new OpenFileDialog();
+            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

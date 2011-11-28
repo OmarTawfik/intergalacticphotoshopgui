@@ -53,7 +53,6 @@
         /// </summary>
         private List<Image> imageInputImages;
 
-
         /// <summary>
         /// Initializes a new instance of the OperationInputView class
         /// </summary>
@@ -330,7 +329,7 @@
             }
 
             tabsComboBox.Items.Add("Image from file");
-            tabsComboBox.SelectionChanged += new SelectionChangedEventHandler(TabsComboBox_SelectionChanged);
+            tabsComboBox.SelectionChanged += new SelectionChangedEventHandler(this.TabsComboBox_SelectionChanged);
 
             this.imageInputComboBoxes.Add(tabsComboBox);
             this.imageInputImages.Add(img);

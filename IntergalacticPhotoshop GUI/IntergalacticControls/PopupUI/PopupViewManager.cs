@@ -19,6 +19,27 @@
     using IntergalacticCore.Data;
 
     /// <summary>
+    /// Enumerates between different notification transitions
+    /// </summary>
+    public enum NotificationAnimationType
+    {
+        /// <summary>
+        /// Fade animation
+        /// </summary>
+        Fade,
+
+        /// <summary>
+        /// Slide Animation
+        /// </summary>
+        Slide,
+
+        /// <summary>
+        /// Zoom animation
+        /// </summary>
+        Zoom
+    }
+
+    /// <summary>
     /// Provides the required logic for using the Popup view control
     /// </summary>
     public class UIManager
@@ -26,7 +47,7 @@
         /// <summary>
         /// Current popup view manager
         /// </summary>
-        private static UIManager currentPopupViewManager;
+        private static UIManager currentUIManager;
 
         /// <summary>
         /// Main panel to use
@@ -54,28 +75,38 @@
         private OperationInputView operationInputView;
 
         /// <summary>
+        /// Dictionary of the currently shown notification views and its animation types
+        /// </summary>
+        private Dictionary<FrameworkElement, NotificationAnimationType> notificationViews;
+
+        /// <summary>
         /// Used in animations
         /// </summary>
         private ScaleTransform operationInputViewTransform;
 
         /// <summary>
-        /// Initializes a new instance of the PopupViewManager class
+        /// Initializes a new instance of the UIManager class
         /// </summary>
         /// <param name="mainPanel">Main panel to use</param>
         public UIManager(Panel mainPanel)
         {
+            this.notificationViews = new Dictionary<FrameworkElement, NotificationAnimationType>();
+
             this.lockedPopupViews = new List<PopupView>();
             this.operationInputView = new OperationInputView();
             this.operationInputViewTransform = new ScaleTransform();
             this.mainPanel = mainPanel;
             this.currentPopupView = this.CreatePopupView();
-            currentPopupViewManager = this;
+            currentUIManager = this;
 
             this.backRectangle = new Rectangle();
             this.backRectangle.HorizontalAlignment = HorizontalAlignment.Center;
             this.backRectangle.VerticalAlignment = VerticalAlignment.Center;
             this.backRectangle.Width = 3000;
             this.backRectangle.Height = 2000;
+            this.backRectangle.Opacity = 0;
+            this.backRectangle.Visibility = Visibility.Hidden;
+            this.mainPanel.Children.Add(this.backRectangle);
 
             RadialGradientBrush gradient = new RadialGradientBrush();
             gradient.Center = new Point(0.5, 0.5);
@@ -88,12 +119,18 @@
         }
 
         /// <summary>
+        /// Close notification delegate
+        /// </summary>
+        /// <param name="view">Notification view</param>
+        public delegate void CloseNotificationDelegate(FrameworkElement view);
+
+        /// <summary>
         /// Gets or sets the current popup manager
         /// </summary>
         public static UIManager CurrentPopupManager
         {
-            get { return currentPopupViewManager; }
-            set { currentPopupViewManager = value; }
+            get { return currentUIManager; }
+            set { currentUIManager = value; }
         }
 
         /// <summary>
@@ -140,27 +177,9 @@
         public void ViewOperationInputView(BaseOperation operation)
         {
             this.operationInputView.SetInputTarget(operation);
-
-            DoubleAnimation fadeIn = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
-            fadeIn.AccelerationRatio = 0.3;
-            fadeIn.DecelerationRatio = 0.3;
-
-            ThicknessAnimation slideAnimation = new ThicknessAnimation(new Thickness(0, 1000, 0, 0), new Thickness(0, 0, 0, 0), TimeSpan.FromSeconds(0.5));
-            slideAnimation.DecelerationRatio = 0.6;
-
-            DoubleAnimation scaleAnimation = new DoubleAnimation(1.7, 1, TimeSpan.FromSeconds(0.5));
-            scaleAnimation.DecelerationRatio = 0.3;
-
-            ////this.operationInputView.Opacity = 0;
-            ////this.operationInputView.BeginAnimation(UIElement.OpacityProperty, fadeIn);
-            this.operationInputView.BeginAnimation(Control.MarginProperty, slideAnimation);
-            ////this.opInputViewTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
-            ////this.opInputViewTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
-            ////
-            this.backRectangle.BeginAnimation(Rectangle.OpacityProperty, fadeIn);
-
-            this.mainPanel.Children.Add(this.backRectangle);
+            UIHelpers.SlideInFronBottomAnimation(this.operationInputView, 0.5);
             this.mainPanel.Children.Add(this.operationInputView);
+            this.ShowBackCover();
         }
 
         /// <summary>
@@ -168,38 +187,81 @@
         /// </summary>
         public void CloseOperationInputView()
         {
-            DoubleAnimation fadeOut = new DoubleAnimation(0, TimeSpan.FromSeconds(0.5));
-            fadeOut.AccelerationRatio = 0.3;
-            fadeOut.DecelerationRatio = 0.3;
+            UIHelpers.SlideOutToBottomAnimation(this.operationInputView, 0.5);
+            UIHelpers.RemoveElementFromContainerAfterDelay(this.operationInputView, this.mainPanel, 0.5);
+            this.HideBackCover();
+        }
 
-            ThicknessAnimation slideAnimation = new ThicknessAnimation(new Thickness(0, 0, 0, 0), new Thickness(0, 1000, 0, 0), TimeSpan.FromSeconds(0.5));
-            slideAnimation.AccelerationRatio = 0.6;
+        /// <summary>
+        /// Displays a notification view
+        /// </summary>
+        /// <param name="view">The notification view</param>
+        /// <param name="animation">Animation type</param>
+        /// <param name="timeout">Hiding delay</param>
+        public void ViewNotification(FrameworkElement view, NotificationAnimationType animation, double? timeout)
+        {
+            this.notificationViews.Add(view, animation);
+            this.ShowBackCover();
+            this.mainPanel.Children.Add(view);
+            switch (animation)
+            {
+                case NotificationAnimationType.Fade:
+                    UIHelpers.FadeInAnimation(view, 0, 0.5);
+                    break;
+                case NotificationAnimationType.Slide:
+                    UIHelpers.SlideInFronBottomAnimation(view, 0.5);
+                    break;
+                case NotificationAnimationType.Zoom:
+                    UIHelpers.ZoomInAnimation(view, 0.5);
+                    break;
+                default:
+                    break;
+            }
 
-            DoubleAnimation scaleAnimation = new DoubleAnimation(1, 0.8, TimeSpan.FromSeconds(0.5));
-            scaleAnimation.AccelerationRatio = 0.3;
-
-            ////this.operationInputView.BeginAnimation(UIElement.OpacityProperty, fadeOut);
-            this.operationInputView.BeginAnimation(Control.MarginProperty, slideAnimation);
-            ////this.opInputViewTransform.BeginAnimation(ScaleTransform.ScaleXProperty, scaleAnimation);
-            ////this.opInputViewTransform.BeginAnimation(ScaleTransform.ScaleYProperty, scaleAnimation);
-            ////
-            this.backRectangle.BeginAnimation(Rectangle.OpacityProperty, fadeOut);
-
-            Timer timer = new Timer(
-                obj =>
-                {
-                    if (this.mainPanel.Dispatcher.Thread == Thread.CurrentThread)
+            if (timeout != null)
+            {
+                Timer timer = new Timer(
+                    obj =>
                     {
-                        this.RemoveOperationInputView();
-                    }
-                    else
-                    {
-                        this.mainPanel.Dispatcher.BeginInvoke(new Action(this.RemoveOperationInputView));
-                    }
-                },
-            null,
-            500,
-            Timeout.Infinite);
+                        if (this.mainPanel.Dispatcher.Thread == Thread.CurrentThread)
+                        {
+                            this.CloseNoification(view);
+                        }
+                        else
+                        {
+                            this.mainPanel.Dispatcher.BeginInvoke(new CloseNotificationDelegate(CloseNoification), view);
+                        }
+                    },
+                null,
+                (int)(timeout * 1000),
+                Timeout.Infinite);
+            }
+        }
+
+        /// <summary>
+        /// Closes the given notification view
+        /// </summary>
+        /// <param name="view">The notification view</param>
+        internal void CloseNoification(FrameworkElement view)
+        {
+            switch (this.notificationViews[view])
+            {
+                case NotificationAnimationType.Fade:
+                    UIHelpers.FadeOutAnimation(view, null, 0.5);
+                    break;
+                case NotificationAnimationType.Slide:
+                    UIHelpers.SlideOutToBottomAnimation(view, 0.5);
+                    break;
+                case NotificationAnimationType.Zoom:
+                    UIHelpers.ZoomOutAnimation(view, 0.5);
+                    break;
+                default:
+                    break;
+            }
+
+            UIHelpers.RemoveElementFromContainerAfterDelay(view, this.mainPanel, 0.5);
+            this.notificationViews.Remove(view);
+            this.HideBackCover();
         }
 
         /// <summary>
@@ -236,15 +298,6 @@
                 view.HidePopup();
                 this.lockedPopupViews.Remove(view);
             }
-        }
-
-        /// <summary>
-        /// Removes the operation input panel and the dim rectangle from the main panel
-        /// </summary>
-        private void RemoveOperationInputView()
-        {
-            this.mainPanel.Children.Remove(this.operationInputView);
-            this.mainPanel.Children.Remove(this.backRectangle);
         }
 
         /// <summary>
@@ -298,6 +351,27 @@
             view.MouseLeave += new MouseEventHandler(this.HidePopups);
 
             return view;
+        }
+
+        /// <summary>
+        /// Shows the back rectangle cover
+        /// </summary>
+        private void ShowBackCover()
+        {
+            this.backRectangle.Visibility = Visibility.Visible;
+            UIHelpers.FadeInAnimation(this.backRectangle, null, 0.5);
+        }
+
+        /// <summary>
+        /// Hides the back rectangle cover
+        /// </summary>
+        private void HideBackCover()
+        {
+            if (this.notificationViews.Count == 0)
+            {
+                UIHelpers.FadeOutAnimation(this.backRectangle, null, 0.5);
+                UIHelpers.HideElementAfterDelay(this.backRectangle, 0.5);
+            }
         }
     }
 }

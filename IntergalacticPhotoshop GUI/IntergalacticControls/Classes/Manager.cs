@@ -31,7 +31,10 @@
         private Manager()
         {
             this.tabs = new Dictionary<string, Tab>();
-            this.OnManagerInitialized(this);
+            if (this.OnManagerInitialized != null)
+            {
+                this.OnManagerInitialized(this);
+            }
         }
 
         /// <summary>
@@ -101,7 +104,10 @@
             this.tabs.Add(name, newTab);
             this.SwitchImage(name);
 
-            this.OnNewTabAdded(this, newTab);
+            if (this.OnNewTabAdded != null)
+            {
+                this.OnNewTabAdded(this, newTab);
+            }
         }
 
         /// <summary>
@@ -113,7 +119,10 @@
             Tab tab = this.tabs[name];
             tab.DeActivate();
             this.tabs.Remove(name);
-            this.OnTabClosed(this, tab);
+            if (this.OnTabClosed != null)
+            {
+                this.OnTabClosed(this, tab);
+            }
         }
 
         /// <summary>
@@ -127,7 +136,10 @@
                 this.currentTab.DeActivate();
                 this.currentTab = this.tabs[name];
                 this.currentTab.Activate();
-                this.OnTabChanged(this, this.CurrentTab);
+                if (this.OnTabChanged != null)
+                {
+                    this.OnTabChanged(this, this.CurrentTab);
+                }
             }
             else
             {
@@ -142,7 +154,10 @@
         public void DoOperation(BaseOperation operation)
         {
             this.currentTab.DoOperation(operation);
-            this.OnOperationFinshed(this);
+            if (this.OnOperationFinshed != null)
+            {
+                this.OnOperationFinshed(this);
+            }
         }
 
         /// <summary>

@@ -160,7 +160,7 @@
                 this.contentContainer.Children.Add(this.submenuContainer);
             }
 
-            Point centerOfSource = source.TranslatePoint(new Point(source.ActualHeight / 2, source.ActualHeight / 2), UIHelpers.GetParentWindow(this.currentSource));
+            Point centerOfSource = source.TranslatePoint(new Point(source.ActualWidth / 2, source.ActualHeight / 2), UIHelpers.GetParentWindow(this.currentSource));
             this.SetPopupPosition(centerOfSource, new Size(source.ActualWidth, source.ActualHeight), this.currentSource.IsVertical);
         }
 
