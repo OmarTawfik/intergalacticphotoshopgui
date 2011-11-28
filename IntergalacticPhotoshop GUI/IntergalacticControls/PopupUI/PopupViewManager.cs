@@ -21,12 +21,12 @@
     /// <summary>
     /// Provides the required logic for using the Popup view control
     /// </summary>
-    public class PopupViewManager
+    public class UIManager
     {
         /// <summary>
         /// Current popup view manager
         /// </summary>
-        private static PopupViewManager currentPopupViewManager;
+        private static UIManager currentPopupViewManager;
 
         /// <summary>
         /// Main panel to use
@@ -62,7 +62,7 @@
         /// Initializes a new instance of the PopupViewManager class
         /// </summary>
         /// <param name="mainPanel">Main panel to use</param>
-        public PopupViewManager(Panel mainPanel)
+        public UIManager(Panel mainPanel)
         {
             this.lockedPopupViews = new List<PopupView>();
             this.operationInputView = new OperationInputView();
@@ -90,7 +90,7 @@
         /// <summary>
         /// Gets or sets the current popup manager
         /// </summary>
-        public static PopupViewManager CurrentPopupManager
+        public static UIManager CurrentPopupManager
         {
             get { return currentPopupViewManager; }
             set { currentPopupViewManager = value; }
@@ -112,12 +112,7 @@
 
             if (source.SubView == null && source.Category == null)
             {
-                throw new InvalidOperationException("Either the Subview or the Category of the PanelButton must be set.");
-            }
-
-            if (source.SubView != null && source.Category != null)
-            {
-                throw new InvalidOperationException("Either the Subview or the Category of the PanelButton must be set, not both.");
+                throw new InvalidOperationException("At least one of the Subview or the Category of the PanelButton must be set.");
             }
 
             if (source.IsLockable && source.Category != null)

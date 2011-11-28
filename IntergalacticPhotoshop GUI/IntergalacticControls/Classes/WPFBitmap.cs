@@ -159,13 +159,37 @@
         /// Saves the image (uncompressed) to a file path.
         /// </summary>
         /// <param name="filePath">Location of the image.</param>
-        public override void SaveImage(string filePath)
+        /// <param name="type">Image file type</param>
+        public override void SaveImage(string filePath, ImageFileType type)
         {
-            FileStream file = new FileStream(filePath, FileMode.OpenOrCreate);
-            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(this.buffer));
-            encoder.Save(file);
-            file.Close();
+            if (type != ImageFileType.P3)
+            {
+                FileStream file = new FileStream(filePath, FileMode.OpenOrCreate);
+                BitmapEncoder encoder = null;
+
+                switch (type)
+                {
+                    case ImageFileType.BMP:
+                        encoder = new BmpBitmapEncoder();
+                        break;
+                    case ImageFileType.PNG:
+                        encoder = new PngBitmapEncoder();
+                        break;
+                    case ImageFileType.JPG:
+                        JpegBitmapEncoder jpegEncoder = new JpegBitmapEncoder();
+                        jpegEncoder.QualityLevel = 100;
+                        encoder = jpegEncoder;
+                        break;
+                }
+
+                encoder.Frames.Add(BitmapFrame.Create(this.buffer));
+                encoder.Save(file);
+                file.Close();
+            }
+            else
+            {
+                Exporter.SaveP3(filePath, this);
+            }
         }
 
         /// <summary>
@@ -174,6 +198,13 @@
         /// <param name="filePath">Location of the image.</param>
         public override void LoadImage(string filePath)
         {
+            string[] splitFilename = System.IO.Path.GetFileName(filePath).Split('.');
+            if (splitFilename[splitFilename.Length - 1] == "ppm")
+            {
+                Importer.LoadPPM(filePath, this);
+                return;
+            }
+
             FileStream file = new FileStream(Environment.CurrentDirectory + "\\" + filePath, FileMode.Open);
             byte[] fileByte = new byte[file.Length];
             file.Read(fileByte, 0, (int)file.Length);

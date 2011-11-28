@@ -1,6 +1,32 @@
 ﻿namespace IntergalacticCore.Data
 {
     /// <summary>
+    /// Enumerates between image file types
+    /// </summary>
+    public enum ImageFileType : int
+    {
+        /// <summary>
+        /// Uncompressed bitmap
+        /// </summary>
+        BMP = 0,
+
+        /// <summary>
+        /// Portable Network Graphic image
+        /// </summary>
+        PNG = 1,
+
+        /// <summary>
+        /// JPEG Image (maximum quality)
+        /// </summary>
+        JPG = 2,
+
+        /// <summary>
+        /// Portable Pixel Map (P3 spec)
+        /// </summary>
+        P3 = 3
+    }
+
+    /// <summary>
     /// Provides a base for all image based operations.
     /// </summary>
     public abstract class ImageBase
@@ -66,7 +92,8 @@
         /// Saves the image (uncompressed) to a file path.
         /// </summary>
         /// <param name="filePath">Location of the image.</param>
-        public abstract void SaveImage(string filePath);
+        /// <param name="type">Image file type</param>
+        public abstract void SaveImage(string filePath, ImageFileType type);
         
         /// <summary>
         /// Loads the image (uncompressed) from a file path.

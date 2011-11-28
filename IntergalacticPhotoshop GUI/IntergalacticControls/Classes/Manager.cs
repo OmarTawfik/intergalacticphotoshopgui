@@ -31,6 +31,7 @@
         private Manager()
         {
             this.tabs = new Dictionary<string, Tab>();
+            this.OnManagerInitialized(this);
         }
 
         /// <summary>
@@ -45,6 +46,11 @@
         /// <param name="mng">The manager</param>
         /// <param name="tab">The tab</param>
         public delegate void TabEvent(Manager mng, Tab tab);
+
+        /// <summary>
+        /// Gets triggered when the manager initializes itself.
+        /// </summary>
+        public event ManagerEvent OnManagerInitialized;
 
         /// <summary>
         /// Gets triggered when a new tab is added.

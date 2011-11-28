@@ -108,7 +108,7 @@
         {
             if (this.currentPopupContent != null)
             {
-                this.mainGrid.Children.Remove(this.currentPopupContent);
+                this.contentContainer.Children.Clear();
             }
 
             if (source.IsLockable)
@@ -121,9 +121,18 @@
             }
 
             this.currentSource = source;
+
+            if (source.SubView != null)
+            {
+                this.currentPopupContent = source.SubView;
+            }
+
             if (source.Category != null)
             {
-                this.currentPopupContent = this.submenuContainer;
+                if (source.SubView == null)
+                {
+                    this.currentPopupContent = this.submenuContainer;
+                }
 
                 OperationCategory tmp = source.Category as OperationCategory;
                 if (tmp != null)
@@ -135,21 +144,21 @@
                     this.submenuContainer.SetCategory((ActionCategory)source.Category);
                 }
             }
-            else
-            {
-                this.currentPopupContent = source.SubView;
-            }
 
             this.currentSource = source;
             this.Width = this.currentPopupContent.Width + 30;
-            this.Height = this.currentPopupContent.Height + 30;
+            this.Height = this.currentPopupContent.Height + 30 + ((source.Category != null && source.SubView != null) ? this.submenuContainer.Height : 0);
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
-            this.currentPopupContent.Margin = new Thickness(15, 15, 15, 15);
+            this.currentPopupContent.Margin = new Thickness(0, 0, 0, 0);
             this.currentPopupContent.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             this.currentPopupContent.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-            this.mainGrid.Children.Add(this.currentPopupContent);
+            this.contentContainer.Children.Add(this.currentPopupContent);
+            if (source.SubView != null && source.Category != null)
+            {
+                this.contentContainer.Children.Add(this.submenuContainer);
+            }
 
             Point centerOfSource = source.TranslatePoint(new Point(source.ActualHeight / 2, source.ActualHeight / 2), UIHelpers.GetParentWindow(this.currentSource));
             this.SetPopupPosition(centerOfSource, new Size(source.ActualWidth, source.ActualHeight), this.currentSource.IsVertical);
@@ -202,7 +211,7 @@
             this.Visibility = System.Windows.Visibility.Hidden;
             if (this.currentPopupContent != null)
             {
-                this.mainGrid.Children.Remove(this.currentPopupContent);
+                this.contentContainer.Children.Clear();
             }
         }
 
@@ -375,13 +384,13 @@
         /// <param name="e">Event arguments</param>
         private void BtnLocker_Click(object sender, RoutedEventArgs e)
         {
-            if (PopupViewManager.CurrentPopupManager.GetLockStatus(this))
+            if (UIManager.CurrentPopupManager.GetLockStatus(this))
             {
-                PopupViewManager.CurrentPopupManager.UnlockPopup(this);
+                UIManager.CurrentPopupManager.UnlockPopup(this);
             }
             else
             {
-                PopupViewManager.CurrentPopupManager.LockPopup(this);
+                UIManager.CurrentPopupManager.LockPopup(this);
             }
         }
     }

@@ -102,7 +102,7 @@
         private void PanelButton_MouseEnter(object sender, MouseEventArgs e)
         {
             StackButtonBase source = sender as StackButtonBase;
-            PopupViewManager.CurrentPopupManager.ViewPopup(source);
+            UIManager.CurrentPopupManager.ViewPopup(source);
         }
     }
 }

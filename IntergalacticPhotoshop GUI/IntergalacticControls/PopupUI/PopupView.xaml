@@ -19,6 +19,8 @@
         <Polygon Name="downArrowPointer" VerticalAlignment="Bottom" Margin="30,0,0,0" Points="0,0 14,-10 -14,-10 0,0" Fill="{StaticResource fillColor}" Stroke="{StaticResource strokeColor}" />
         <Rectangle Name="centerRect" Fill="{StaticResource fillColor}" Stroke="{StaticResource strokeColor}" RadiusX="10" RadiusY="10" Margin="9,9,9,9" />
         <Button Name="btnLocker" Height="12" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="12" Click="BtnLocker_Click" />
+        <StackPanel Name="contentContainer" Orientation="Vertical" Margin="15,15,15,15">
+        </StackPanel>
     </Grid>
     <UserControl.Effect>
         <DropShadowEffect BlurRadius="6" Opacity="0.5" Direction="270" ShadowDepth="2" />

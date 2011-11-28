@@ -128,7 +128,7 @@
             this.maxVersionNumber = this.currentVersionNumber;
             this.image = operation.Execute(this.image);
             this.thumbnails.Push(this.image.GetThumbnail());
-            this.image.SaveImage(this.GetFullPath());
+            this.image.SaveImage(this.GetFullPath(), ImageFileType.BMP);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@
                 return;
             }
 
-            this.image.SaveImage(this.GetFullPath());
+            this.image.SaveImage(this.GetFullPath(), ImageFileType.BMP);
             this.image = null;
             this.isActivated = false;
         }

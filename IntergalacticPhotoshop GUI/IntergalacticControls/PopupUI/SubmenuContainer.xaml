@@ -6,7 +6,6 @@
              mc:Ignorable="d" 
              Height="220" Width="220">
     <Grid>
-        <Label Content="Title of category" HorizontalAlignment="Stretch" Name="lblTitle" VerticalAlignment="Top" FontSize="18" Height="35" />
-        <StackPanel Background="#0000" HorizontalAlignment="Stretch" Margin="0,35,0,0" Name="menusPanel" VerticalAlignment="Stretch" />
+        <StackPanel Background="#0000" HorizontalAlignment="Stretch" Margin="0,0,0,0" Name="menusPanel" VerticalAlignment="Stretch" />
     </Grid>
 </UserControl>

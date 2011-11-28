@@ -16,6 +16,7 @@
     using IntergalacticCore.Operations.Filters.Sharpening;
     using IntergalacticCore.Operations.Filters.Smoothing;
     using IntergalacticCore.Operations.JoinedOperations;
+    using IntergalacticCore.Operations.HistogramOperations;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -32,7 +33,7 @@
         public MainWindow()
         {
             InitializeComponent();
-            new PopupViewManager(mainGrid);
+            new UIManager(mainGrid);
 
             Manager.Instance.OnNewTabAdded += this.UpdateImage;
             Manager.Instance.OnTabChanged += this.UpdateImage;
@@ -41,9 +42,8 @@
             this.AddActionCategory(
                 "File",
                 "File.png",
-                new ActionPair(this.OpenFile, "Open Image"),
-                new ActionPair(this.SaveFile, "Save Image"),
-                new ActionPair(this.SaveFileP3, "Save Image as P3"));
+                new ActionPair(this.OpenFile, "Open.."),
+                new ActionPair(this.SaveFile, "Save.."));
 
             this.AddOperationCategory(
                 "Resize",
@@ -77,7 +77,6 @@
                 "Joined Operations",
                 "Joined.png",
                 new AddOperation(),
-                new HistogramMatchingOperation(),
                 new SubtractOperation());
 
             this.AddOperationCategory(
@@ -114,26 +113,18 @@
         }
 
         /// <summary>
-        /// Saves the current image into a user specified path as text PPM.
-        /// </summary>
-        private void SaveFileP3()
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                Exporter.SaveP3(dialog.FileName, Manager.Instance.CurrentTab.Image);
-            }
-        }
-
-        /// <summary>
         /// Saves the current image into a user specified path.
         /// </summary>
         private void SaveFile()
         {
             SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Bitmap file|*.bmp|Portable Network Graphics|*png|JPEG image|*.jpg|PPM P3 image|*.ppm|";
+            dialog.FilterIndex = 0;
+
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Manager.Instance.CurrentTab.Image.SaveImage(dialog.FileName);
+                ImageFileType saveType = (ImageFileType)dialog.FilterIndex;
+                Manager.Instance.CurrentTab.Image.SaveImage(dialog.FileName, saveType);
             }
         }
 
@@ -229,6 +220,11 @@
             PanelButton button = new PanelButton();
             button.Icon = new BitmapImage(new Uri("pack://application:,,,/Pictures/Histogram.png"));
             button.SubView = view;
+
+            OperationCategory menu = new OperationCategory("Histogram Operations", null);
+            menu.AddOperation(new HistogramMatchingOperation());
+            menu.AddOperation(new HistogramEqualizationOperation());
+            button.Category = menu;
             button.IsLockable = true;
 
             rightStackController.AddButton(button);
@@ -260,9 +256,9 @@
             anim3.AutoReverse = true;
             anim3.RepeatBehavior = RepeatBehavior.Forever;
 
-            effect.BeginAnimation(NormalMapEffect.ValueXProperty, anim1);
-            effect.BeginAnimation(NormalMapEffect.ValueYProperty, anim2);
-            effect.BeginAnimation(NormalMapEffect.ValueZProperty, anim3);
+            ////effect.BeginAnimation(NormalMapEffect.ValueXProperty, anim1);
+            ////effect.BeginAnimation(NormalMapEffect.ValueYProperty, anim2);
+            ////effect.BeginAnimation(NormalMapEffect.ValueZProperty, anim3);
         }
 
         /// <summary>
