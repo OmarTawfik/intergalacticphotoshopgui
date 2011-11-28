@@ -508,7 +508,7 @@
 
             this.operation.SetInput(inputList);
             Manager.Instance.DoOperation(this.operation);
-            UIManager.CurrentPopupManager.CloseOperationInputView();
+            UIManager.CurrentUIManager.CloseOperationInputView();
         }
 
         /// <summary>
@@ -518,7 +518,7 @@
         /// <param name="e">Event arguments</param>
         private void CancelOperation_Click(object sender, RoutedEventArgs e)
         {
-            UIManager.CurrentPopupManager.CloseOperationInputView();
+            UIManager.CurrentUIManager.CloseOperationInputView();
         }
 
         /// <summary>

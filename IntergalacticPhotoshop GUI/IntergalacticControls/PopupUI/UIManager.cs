@@ -15,6 +15,7 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
+    using IntergalacticControls.PopupUI.Notifications.Base;
     using IntergalacticCore;
     using IntergalacticCore.Data;
 
@@ -77,7 +78,7 @@
         /// <summary>
         /// Dictionary of the currently shown notification views and its animation types
         /// </summary>
-        private Dictionary<FrameworkElement, NotificationAnimationType> notificationViews;
+        private Dictionary<NotificationView, NotificationAnimationType> notificationViews;
 
         /// <summary>
         /// Used in animations
@@ -90,7 +91,7 @@
         /// <param name="mainPanel">Main panel to use</param>
         public UIManager(Panel mainPanel)
         {
-            this.notificationViews = new Dictionary<FrameworkElement, NotificationAnimationType>();
+            this.notificationViews = new Dictionary<NotificationView, NotificationAnimationType>();
 
             this.lockedPopupViews = new List<PopupView>();
             this.operationInputView = new OperationInputView();
@@ -122,12 +123,12 @@
         /// Close notification delegate
         /// </summary>
         /// <param name="view">Notification view</param>
-        public delegate void CloseNotificationDelegate(FrameworkElement view);
+        public delegate void CloseNotificationDelegate(NotificationView view);
 
         /// <summary>
         /// Gets or sets the current popup manager
         /// </summary>
-        public static UIManager CurrentPopupManager
+        public static UIManager CurrentUIManager
         {
             get { return currentUIManager; }
             set { currentUIManager = value; }
@@ -198,8 +199,13 @@
         /// <param name="view">The notification view</param>
         /// <param name="animation">Animation type</param>
         /// <param name="timeout">Hiding delay</param>
-        public void ViewNotification(FrameworkElement view, NotificationAnimationType animation, double? timeout)
+        internal void ViewNotification(NotificationView view, NotificationAnimationType animation, double? timeout)
         {
+            if (this.notificationViews.ContainsKey(view))
+            {
+                throw new InvalidOperationException("This notification instance is already shown.");
+            }
+
             this.notificationViews.Add(view, animation);
             this.ShowBackCover();
             this.mainPanel.Children.Add(view);
@@ -242,8 +248,13 @@
         /// Closes the given notification view
         /// </summary>
         /// <param name="view">The notification view</param>
-        internal void CloseNoification(FrameworkElement view)
+        internal void CloseNoification(NotificationView view)
         {
+            if (!this.notificationViews.ContainsKey(view))
+            {
+                throw new InvalidOperationException("This notification instance is not shown.");
+            }
+
             switch (this.notificationViews[view])
             {
                 case NotificationAnimationType.Fade:

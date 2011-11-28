@@ -384,13 +384,13 @@
         /// <param name="e">Event arguments</param>
         private void BtnLocker_Click(object sender, RoutedEventArgs e)
         {
-            if (UIManager.CurrentPopupManager.GetLockStatus(this))
+            if (UIManager.CurrentUIManager.GetLockStatus(this))
             {
-                UIManager.CurrentPopupManager.UnlockPopup(this);
+                UIManager.CurrentUIManager.UnlockPopup(this);
             }
             else
             {
-                UIManager.CurrentPopupManager.LockPopup(this);
+                UIManager.CurrentUIManager.LockPopup(this);
             }
         }
     }

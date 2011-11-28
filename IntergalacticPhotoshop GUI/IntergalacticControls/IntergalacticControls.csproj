@@ -102,6 +102,10 @@
     <Compile Include="Classes\Manager.cs" />
     <Compile Include="Classes\OperationInputInfo.cs" />
     <Compile Include="Classes\Tab.cs" />
+    <Compile Include="PopupUI\Notifications\Base\NotificationView.cs" />
+    <Compile Include="PopupUI\Notifications\LoadingNotificationView.xaml.cs">
+      <DependentUpon>LoadingNotificationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpecialUI\HistogramView.xaml.cs">
       <DependentUpon>HistogramView.xaml</DependentUpon>
     </Compile>
@@ -123,7 +127,7 @@
     <Compile Include="PopupUI\PopupView.xaml.cs">
       <DependentUpon>PopupView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PopupUI\PopupViewManager.cs" />
+    <Compile Include="PopupUI\UIManager.cs" />
     <Compile Include="PopupUI\SubmenuContainer.xaml.cs">
       <DependentUpon>SubmenuContainer.xaml</DependentUpon>
     </Compile>
@@ -160,6 +164,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PopupUI\Notifications\LoadingNotificationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SpecialUI\HistogramView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

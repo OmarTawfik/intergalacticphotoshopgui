@@ -135,7 +135,7 @@
         /// <param name="e">Event arguments</param>
         private void Submenu_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            UIManager.CurrentPopupManager.HideCurrentPopup();
+            UIManager.CurrentUIManager.HideCurrentPopup();
         }
     }
 }

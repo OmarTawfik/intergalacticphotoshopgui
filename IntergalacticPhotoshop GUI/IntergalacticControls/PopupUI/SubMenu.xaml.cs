@@ -116,7 +116,7 @@
             {
                 if (this.Operation.GetInput() != string.Empty)
                 {
-                    UIManager.CurrentPopupManager.ViewOperationInputView(this.Operation);
+                    UIManager.CurrentUIManager.ViewOperationInputView(this.Operation);
                 }
                 else
                 {

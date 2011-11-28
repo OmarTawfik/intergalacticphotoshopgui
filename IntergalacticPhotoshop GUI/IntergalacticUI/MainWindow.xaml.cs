@@ -10,6 +10,7 @@
     using System.Windows.Media.Imaging;
     using IntergalacticControls;
     using IntergalacticControls.Classes;
+    using IntergalacticControls.PopupUI.Notifications;
     using IntergalacticCore;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.Filters.EdgeDetection;
