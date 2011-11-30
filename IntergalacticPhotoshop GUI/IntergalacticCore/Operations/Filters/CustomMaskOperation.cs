@@ -40,14 +40,32 @@
         }
 
         /// <summary>
-        /// Gets called before the operation begins.
+        /// Does noise reduction using 2D mean filtering.
         /// </summary>
-        protected override void BeforeOperate()
+        protected override void Operate()
         {
-            this.Masks.Add(this.mask);
+            for (int i = 0; i < this.Image.Height; i++)
+            {
+                for (int j = 0; j < this.Image.Width; j++)
+                {
+                    double red = 0, green = 0, blue = 0;
+                    for (int y = i - (this.mask.Height / 2), a = 0; y <= i + (this.mask.Height / 2); y++, a++)
+                    {
+                        for (int x = j - (this.mask.Width / 2), b = 0; x <= j + (this.mask.Width / 2); x++, b++)
+                        {
+                            if (this.mask.Data[a, b] != 0)
+                            {
+                                Pixel p = this.GetLocation(x, y);
+                                red += this.mask.Data[a, b] * p.Red;
+                                green += this.mask.Data[a, b] * p.Green;
+                                blue += this.mask.Data[a, b] * p.Blue;
+                            }
+                        }
+                    }
 
-            this.ResultImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);
-            this.ResultImage.BeforeEdit();
+                    this.ResultImage.SetPixel(j, i, Pixel.CutOff((int)red, (int)green, (int)blue));
+                }
+            }
         }
     }
 }

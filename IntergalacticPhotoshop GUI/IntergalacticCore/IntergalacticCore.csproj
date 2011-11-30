@@ -93,6 +93,7 @@
     <Compile Include="Operations\Filters\ConvolutionBase.cs" />
     <Compile Include="Operations\Filters\CustomMaskOperation.cs" />
     <Compile Include="Operations\Filters\EdgeDetection\BackDiagonalEdgeDetectionOperation.cs" />
+    <Compile Include="Operations\Filters\EdgeDetection\BaseEdgeDetectionOperation.cs" />
     <Compile Include="Operations\Filters\EdgeDetection\FrontDiagonalEdgeDetectionOperation.cs" />
     <Compile Include="Operations\Filters\EdgeDetection\HorizontalEdgeDetectionOperation.cs" />
     <Compile Include="Operations\Filters\EdgeDetection\LaplacianEdgeDetectionOperation.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Operations\PixelOperations\ContrastOperation.cs" />
     <Compile Include="Operations\PixelOperations\GammaAdjustmentOperation.cs" />
     <Compile Include="Operations\PixelOperations\GrayOperation.cs" />
+    <Compile Include="Operations\PixelOperations\NormalizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\NotOperation.cs" />
     <Compile Include="Operations\PixelOperations\QuantizationOperation.cs" />
     <Compile Include="Operations\JoinedOperations\SubtractOperation.cs" />

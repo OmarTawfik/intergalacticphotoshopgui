@@ -7,7 +7,7 @@
     /// <summary>
     /// Detects edges using laplacian filter.
     /// </summary>
-    public class LaplacianEdgeDetectionOperation : ConvolutionBase
+    public class LaplacianEdgeDetectionOperation : BaseEdgeDetectionOperation
     {
         /// <summary>
         /// Returns the title of the operaion
@@ -40,21 +40,6 @@
                     this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets called after the operation ends.
-        /// </summary>
-        protected override void AfterOperate()
-        {
-            base.AfterOperate();
-
-            HistogramCalculator histogram = new HistogramCalculator();
-            histogram.Execute(this.Image);
-
-            ContrastOperation contrast = new ContrastOperation();
-            contrast.SetInput((int)histogram.GetGrayMin(), (int)histogram.GetGrayMax(), 0, 255);
-            this.Image = contrast.Execute(this.Image);
         }
     }
 }

@@ -62,12 +62,8 @@
         {
             this.otherImage.AfterEdit();
 
-            HistogramCalculator histogram = new HistogramCalculator();
-            histogram.Execute(this.Image);
-
-            ContrastOperation contrast = new ContrastOperation();
-            contrast.SetInput((int)histogram.GetGrayMin(), (int)histogram.GetGrayMax(), 0, 255);
-            this.Image = contrast.Execute(this.Image);
+            NormalizationOperation operation = new NormalizationOperation();
+            this.Image = operation.Execute(this.Image);
         }
 
         /// <summary>
