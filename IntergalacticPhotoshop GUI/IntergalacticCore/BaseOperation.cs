@@ -21,20 +21,20 @@
         private TimeSpan operatingTime;
 
         /// <summary>
+        /// Gets the time the operation executed in.
+        /// </summary>
+        public TimeSpan OperatingTime
+        {
+            get { return this.operatingTime; }
+        }
+
+        /// <summary>
         /// Gets or sets the image being executed.
         /// </summary>
         protected ImageBase Image
         {
             get { return this.image; }
             set { this.image = value; }
-        }
-
-        /// <summary>
-        /// Gets the time the operation executed in.
-        /// </summary>
-        protected TimeSpan OperatingTime
-        {
-            get { return this.operatingTime; }
         }
 
         /// <summary>

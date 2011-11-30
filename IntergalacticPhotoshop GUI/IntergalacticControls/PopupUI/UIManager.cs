@@ -178,7 +178,7 @@
         public void ViewOperationInputView(BaseOperation operation)
         {
             this.operationInputView.SetInputTarget(operation);
-            UIHelpers.SlideInFronBottomAnimation(this.operationInputView, 0.5);
+            UIHelpers.SlideInFronBottomAnimation(this.operationInputView, new Thickness(0, 0, 0, 0), 0.5);
             this.mainPanel.Children.Add(this.operationInputView);
             this.ShowBackCover();
         }
@@ -215,7 +215,7 @@
                     UIHelpers.FadeInAnimation(view, 0, 0.5);
                     break;
                 case NotificationAnimationType.Slide:
-                    UIHelpers.SlideInFronBottomAnimation(view, 0.5);
+                    UIHelpers.SlideInFronBottomAnimation(view, new Thickness(0, 0, 0, 0), 0.5);
                     break;
                 case NotificationAnimationType.Zoom:
                     UIHelpers.ZoomInAnimation(view, 0.5);

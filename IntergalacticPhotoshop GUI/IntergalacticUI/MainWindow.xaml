@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="535" Width="922" xmlns:my="clr-namespace:IntergalacticControls;assembly=IntergalacticControls" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="SingleBorderWindow">
     <Grid Name="mainGrid" Background="#346" >
-        <Image Name="backgroundRect" Stretch="None" Source="pack://application:,,,/Pictures/NormalMap.png" />
+        <Image Name="backgroundRect" Visibility="Hidden" Stretch="None" Source="pack://application:,,,/Pictures/NormalMap.png" />
         <Rectangle HorizontalAlignment="Left" Width="150">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">

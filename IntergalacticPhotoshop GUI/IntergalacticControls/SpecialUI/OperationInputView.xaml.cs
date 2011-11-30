@@ -51,7 +51,7 @@
         /// <summary>
         /// Buttons if the image input
         /// </summary>
-        private List<Image> imageInputImages;
+        private List<Rectangle> imageInputRects;
 
         /// <summary>
         /// Initializes a new instance of the OperationInputView class
@@ -89,7 +89,7 @@
             this.inputSourceList = new List<object>();
             this.labelList = new List<Label>();
             this.imageInputComboBoxes = new List<ComboBox>();
-            this.imageInputImages = new List<Image>();
+            this.imageInputRects = new List<Rectangle>();
 
             int shiftY = 30;
             for (int i = 0; i < this.inputInfoList.Count; i++)
@@ -173,12 +173,16 @@
                     numericSlider.Maximum = (float)info.To;
                     numericSlider.SmallChange = 0.05;
                     numericSlider.LargeChange = 1;
+                    numericSlider.TickFrequency = 0.001;
+                    numericSlider.IsSnapToTickEnabled = true;
                     break;
                 case IntergalacticControls.InputType.Double:
                     numericSlider.Minimum = (double)info.From;
                     numericSlider.Maximum = (double)info.To;
                     numericSlider.SmallChange = 0.05;
                     numericSlider.LargeChange = 1;
+                    numericSlider.TickFrequency = 0.001;
+                    numericSlider.IsSnapToTickEnabled = true;
                     break;
                 default:
                     break;
@@ -276,19 +280,14 @@
         {
             this.AddLabel(info.Title, startY);
 
+            ImageBrush rectFill = new ImageBrush();
+
             DropShadowEffect rectShadow = new DropShadowEffect();
             rectShadow.BlurRadius = 15;
             rectShadow.Direction = 270;
             rectShadow.Color = Colors.Black;
             rectShadow.ShadowDepth = 2;
-            rectShadow.Opacity = 0.2;
-
-            DropShadowEffect imgShadow = new DropShadowEffect();
-            imgShadow.BlurRadius = 5;
-            imgShadow.Direction = 270;
-            imgShadow.Color = Colors.Black;
-            imgShadow.ShadowDepth = 2;
-            imgShadow.Opacity = 0.5;
+            rectShadow.Opacity = 0.4;
 
             Rectangle rect = new Rectangle();
             rect.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -298,8 +297,8 @@
             rect.Height = 78;
             rect.RadiusX = 10;
             rect.RadiusY = 10;
-            rect.Fill = Brushes.LightGray;
             rect.Stroke = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128));
+            rect.Fill = rectFill;
             rect.Effect = rectShadow;
 
             Label label = new Label();
@@ -313,8 +312,6 @@
             label.Content = "Browse an image";
             label.FontSize = 11;
             label.Foreground = Brushes.Gray;
-
-            Image img = new Image();
 
             ComboBox tabsComboBox = new ComboBox();
             tabsComboBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -332,24 +329,15 @@
             tabsComboBox.SelectionChanged += new SelectionChangedEventHandler(this.TabsComboBox_SelectionChanged);
 
             this.imageInputComboBoxes.Add(tabsComboBox);
-            this.imageInputImages.Add(img);
+            this.imageInputRects.Add(rect);
 
             tabsComboBox.SelectedIndex = 0;
 
-            img.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            img.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            img.Margin = new Thickness(-121, startY + 14, 0, 0);
-            img.Width = 110;
-            img.Height = 70;
-            img.Stretch = Stretch.Uniform;
-            img.Effect = imgShadow;
-
             this.mainGrid.Children.Add(rect);
-            this.mainGrid.Children.Add(label);
-            this.mainGrid.Children.Add(img);
+            ////this.mainGrid.Children.Add(label);
             this.mainGrid.Children.Add(tabsComboBox);
 
-            this.inputSourceList.Add(img);
+            this.inputSourceList.Add(rectFill);
 
             startY += 110;
         }
@@ -375,7 +363,9 @@
                         index++;
                     }
 
-                    this.imageInputImages[index].Source = new BitmapImage(new Uri(dialog.FileName));
+                    ImageBrush brush = (ImageBrush)this.imageInputRects[index].Fill;
+                    brush.ImageSource = new BitmapImage(new Uri(dialog.FileName));
+                    brush.Stretch = Stretch.UniformToFill;
                 }
                 else
                 {
@@ -390,7 +380,9 @@
                     index++;
                 }
 
-                this.imageInputImages[index].Source = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Image).GetImageSource();
+                ImageBrush brush = (ImageBrush)this.imageInputRects[index].Fill;
+                brush.ImageSource = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Image).GetImageSource();
+                brush.Stretch = Stretch.UniformToFill;
             }
         }
 
@@ -483,7 +475,7 @@
                 case IntergalacticControls.InputType.Mask:
                     break;
                 case IntergalacticControls.InputType.Image:
-                    result = new WPFBitmap((BitmapSource)((Image)this.inputSourceList[index]).Source);
+                    result = new WPFBitmap((BitmapSource)((ImageBrush)this.inputSourceList[index]).ImageSource);
                     break;
                 default:
                     break;

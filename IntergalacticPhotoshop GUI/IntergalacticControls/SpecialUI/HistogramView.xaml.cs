@@ -43,14 +43,15 @@
             this.histogram = new HistogramCalculator();
 
             Manager.Instance.OnOperationFinshed += this.UpdateHistogram;
-            Manager.Instance.OnTabChanged += this.UpdateHistogram;
+            Manager.Instance.OnTabChanged += this.UpdateHistogramWhenTabChanges;
         }
 
         /// <summary>
         /// Updates histogram data and graph
         /// </summary>
         /// <param name="mng">The manager instance</param>
-        public void UpdateHistogram(Manager mng)
+        /// <param name="operation">The operation</param>
+        public void UpdateHistogram(Manager mng, BaseOperation operation)
         {
             this.histogram.Execute(mng.CurrentTab.Image);
             this.red = this.NormalizeArray(this.histogram.Red);
@@ -66,9 +67,9 @@
         /// </summary>
         /// <param name="mng">The manager instance</param>
         /// <param name="tab">The tab</param>
-        public void UpdateHistogram(Manager mng, Tab tab)
+        public void UpdateHistogramWhenTabChanges(Manager mng, Tab tab)
         {
-            this.UpdateHistogram(mng);
+            this.UpdateHistogram(mng, null);
         }
 
         /// <summary>

@@ -14,6 +14,7 @@
     using System.Windows.Navigation;
     using System.Windows.Shapes;
     using IntergalacticControls.Classes;
+    using IntergalacticCore;
 
     /// <summary>
     /// Interaction logic for TabButton.xaml
@@ -45,7 +46,7 @@
                 this.CloseBtn.Visibility = Visibility.Hidden;
             }
 
-            Manager.Instance.OnOperationFinshed += new Manager.ManagerEvent(this.UpdateThumbnail);
+            Manager.Instance.OnOperationFinshed += this.UpdateThumbnail;
         }
 
         /// <summary>
@@ -84,7 +85,8 @@
         /// Updates the thumbnail after operations
         /// </summary>
         /// <param name="mng">The manager</param>
-        private void UpdateThumbnail(Manager mng)
+        /// <param name="operation">The operation</param>
+        private void UpdateThumbnail(Manager mng, BaseOperation operation)
         {
             if (mng.CurrentTab.Name == this.tab.Name)
             {

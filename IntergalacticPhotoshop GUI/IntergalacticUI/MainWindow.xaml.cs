@@ -39,6 +39,7 @@
             Manager.Instance.OnNewTabAdded += this.UpdateImage;
             Manager.Instance.OnTabChanged += this.UpdateImage;
             Manager.Instance.OnOperationFinshed += this.UpdateImage;
+            Manager.Instance.OnOperationStarted += this.ShowLoadingNotification;
 
             this.AddActionCategory(
                 "File",
@@ -238,7 +239,7 @@
         {
             double timeMultiplier = 1;
             NormalMapEffect effect = new NormalMapEffect();
-            this.backgroundRect.Effect = effect;
+            ////this.backgroundRect.Effect = effect;
 
             DoubleAnimation anim1 = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(timeMultiplier * 4));
             anim1.AutoReverse = true;
@@ -276,9 +277,21 @@
         /// Updates the displayed image.
         /// </summary>
         /// <param name="mng">Global Manager.</param>
-        private void UpdateImage(Manager mng)
+        /// <param name="operation">The operation</param>
+        private void UpdateImage(Manager mng, BaseOperation operation)
         {
             this.imageView.Source = ((WPFBitmap)mng.CurrentTab.Image).GetImageSource();
+        }
+
+        /// <summary>
+        /// Linked to the OnOperationStarted event the the Manager to show the loading notification
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="operation">The operation</param>
+        private void ShowLoadingNotification(Manager mng, BaseOperation operation)
+        {
+            LoadingNotificationView view = new LoadingNotificationView();
+            view.ShowNotification();
         }
     }
 }

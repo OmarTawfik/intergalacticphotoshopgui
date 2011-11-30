@@ -4,10 +4,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             Height="98" Width="383">
+             Height="100" Width="400">
     <w:Grid>
-        <w:Label Content="Loading.." Height="44" HorizontalAlignment="Center" Margin="102,0,162,0" Name="label1" VerticalAlignment="Center" Width="119" FontSize="20" />
+        <w:Label Content="Loading.." Height="44" HorizontalContentAlignment="Left" HorizontalAlignment="Stretch" Margin="50,0,162,0" Name="lblTitle" VerticalAlignment="Center" FontSize="17" />
         <w:Ellipse Height="49" StrokeDashArray="6" StrokeDashCap="Round" StrokeThickness="3" HorizontalAlignment="Center" Margin="100,0,0,0" Name="loadingIndecator" Stroke="Black" VerticalAlignment="Center" Width="51">
         </w:Ellipse>
+        <w:Image Height="49" Visibility="Hidden" HorizontalAlignment="Center" Margin="100,0,0,0" Stretch="Uniform" Source="/IntergalacticControls;component/Pictures/Check.png" Name="imgCheck" VerticalAlignment="Center" Width="51">
+        </w:Image>
+
     </w:Grid>
 </NotificationView>

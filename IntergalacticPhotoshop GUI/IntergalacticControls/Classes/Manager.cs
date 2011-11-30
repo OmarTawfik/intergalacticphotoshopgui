@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Windows.Threading;
     using IntergalacticCore;
     using IntergalacticCore.Data;
 
@@ -21,6 +23,11 @@
         private Dictionary<string, Tab> tabs;
 
         /// <summary>
+        /// Main dispatcher
+        /// </summary>
+        internal Dispatcher managerDispatcher;
+
+        /// <summary>
         /// Current tab shown to GUI.
         /// </summary>
         private Tab currentTab;
@@ -31,6 +38,7 @@
         private Manager()
         {
             this.tabs = new Dictionary<string, Tab>();
+            this.managerDispatcher = Dispatcher.CurrentDispatcher;
             if (this.OnManagerInitialized != null)
             {
                 this.OnManagerInitialized(this);
@@ -49,6 +57,20 @@
         /// <param name="mng">The manager</param>
         /// <param name="tab">The tab</param>
         public delegate void TabEvent(Manager mng, Tab tab);
+
+        /// <summary>
+        /// Tab event delegate
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="tab">The tab</param>
+        public delegate void OperationEvent(Manager mng, BaseOperation operation);
+
+        /// <summary>
+        /// Tab event delegate
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="tab">The tab</param>
+        public delegate void OperationExecutionDelegate(BaseOperation operation);
 
         /// <summary>
         /// Gets triggered when the manager initializes itself.
@@ -71,9 +93,14 @@
         public event TabEvent OnTabChanged;
 
         /// <summary>
+        /// Gets triggered when an operation starts.
+        /// </summary>
+        public event OperationEvent OnOperationStarted;
+
+        /// <summary>
         /// Gets triggered when an operation finishes.
         /// </summary>
-        public event ManagerEvent OnOperationFinshed;
+        public event OperationEvent OnOperationFinshed;
 
         /// <summary>
         /// Gets the singleton instance.
@@ -103,7 +130,6 @@
             this.currentTab = newTab;
             this.tabs.Add(name, newTab);
             this.SwitchImage(name);
-
             if (this.OnNewTabAdded != null)
             {
                 this.OnNewTabAdded(this, newTab);
@@ -153,11 +179,13 @@
         /// <param name="operation">Operation to be executed.</param>
         public void DoOperation(BaseOperation operation)
         {
-            this.currentTab.DoOperation(operation);
-            if (this.OnOperationFinshed != null)
+            if (this.OnOperationStarted != null)
             {
-                this.OnOperationFinshed(this);
+                this.OnOperationStarted(this, operation);
             }
+
+            Thread thread = new Thread(new ParameterizedThreadStart(this.ExecuteOperation));
+            thread.Start(operation);
         }
 
         /// <summary>
@@ -199,6 +227,33 @@
         public Tab GetTab(string name)
         {
             return this.tabs[name];
+        }
+
+        /// <summary>
+        /// Execute operation on the current tab
+        /// </summary>
+        private void ExecuteOperation(object operation)
+        {
+            this.currentTab.DoOperation((BaseOperation)operation);
+            if (this.managerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.OperationFinished((BaseOperation)operation);
+            }
+            else
+            {
+                this.managerDispatcher.BeginInvoke(new OperationExecutionDelegate(this.OperationFinished), operation);
+            }
+        }
+
+        /// <summary>
+        /// Fires the OnOperationFinished event
+        /// </summary>
+        private void OperationFinished(BaseOperation operation)
+        {
+            if (this.OnOperationFinshed != null)
+            {
+                this.OnOperationFinshed(this, operation);
+            }
         }
     }
 }

@@ -15,7 +15,9 @@ namespace IntergalacticControls.PopupUI.Notifications
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
+    using IntergalacticControls.Classes;
     using IntergalacticControls.PopupUI.Notifications.Base;
+    using IntergalacticCore;
 
     /// <summary>
     /// Interaction logic for LoadingNotificationView.xaml
@@ -38,6 +40,26 @@ namespace IntergalacticControls.PopupUI.Notifications
             this.loadingIndecator.RenderTransform = transform;
 
             transform.BeginAnimation(RotateTransform.AngleProperty, animtion);
+
+            this.DisplayTimeout = null;
+            this.AnimationType = NotificationAnimationType.Fade;
+
+            Manager.Instance.OnOperationFinshed += this.HideNotification;
+        }
+
+        /// <summary>
+        /// Linked to the OnOperationFinished event in the manager to hide the notification
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="operation">The operation</param>
+        public void HideNotification(Manager mng, BaseOperation operation)
+        {
+            imgCheck.Visibility = System.Windows.Visibility.Visible;
+            loadingIndecator.Visibility = System.Windows.Visibility.Hidden;
+            lblTitle.Content = "Done in " + operation.OperatingTime.Seconds + "." + (operation.OperatingTime.Milliseconds / 100) + " Seconds.";
+
+            UIHelpers.CallFunctionAfterDelay(2, this.Dispatcher, new Action(this.CloseNotification));
+            Manager.Instance.OnOperationFinshed -= this.HideNotification;
         }
     }
 }

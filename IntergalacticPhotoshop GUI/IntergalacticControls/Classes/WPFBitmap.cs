@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Data;
@@ -15,6 +16,8 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
+    using System.Windows.Threading;
+    using IntergalacticControls.Classes;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -38,11 +41,23 @@
         private int bitStride;
 
         /// <summary>
+        /// Dimentions of the buffer
+        /// </summary>
+        private int width, height;
+
+        /// <summary>
+        /// Holds the thumbnail temporarily at creation time
+        /// </summary>
+        private WPFBitmap thumbnailReturnObject = null;
+
+        /// <summary>
         /// Initializes a new instance of the WPFBitmap class with a null buffer
         /// </summary>
         public WPFBitmap()
         {
             this.buffer = null;
+            this.width = 0;
+            this.height = 0;
         }
 
         /// <summary>
@@ -52,7 +67,14 @@
         /// <param name="height">Height of the new buffer</param>
         public WPFBitmap(int width, int height)
         {
-            this.buffer = new WriteableBitmap(width, height, 96.0, 96.0, PixelFormats.Bgr24, null);
+            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.CreateBufferWithSize(width, height);
+            }
+            else
+            {
+                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorWithSizeDelegate(this.CreateBufferWithSize), width, height).Wait();
+            }
         }
 
         /// <summary>
@@ -61,15 +83,48 @@
         /// <param name="bitmap">Source of the buffer</param>
         public WPFBitmap(BitmapSource bitmap)
         {
-            this.buffer = new WriteableBitmap(new FormatConvertedBitmap(bitmap, PixelFormats.Bgr24, null, 0));
+            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.CreateBufferFromSource(bitmap);
+            }
+            else
+            {
+                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorFromSourceDelegate(this.CreateBufferFromSource), bitmap).Wait();
+            }
         }
+
+        /// <summary>
+        /// Buffer creation delegate
+        /// </summary>
+        /// <param name="width">The width of buffer</param>
+        /// <param name="height">The height of buffer</param>
+        private delegate void BufferCreatorWithSizeDelegate(int width, int height);
+
+        /// <summary>
+        /// Buffer creation delegate
+        /// </summary>
+        /// <param name="stream">The source stream</param>
+        private delegate void BufferCreatorFromStreamDelegate(Stream stream);
+
+        /// <summary>
+        /// Buffer creation delegate
+        /// </summary>
+        /// <param name="source">The bitmap source</param>
+        private delegate void BufferCreatorFromSourceDelegate(BitmapSource source);
+
+        /// <summary>
+        /// Save file delegate
+        /// </summary>
+        /// <param name="filePath">The file path</param>
+        /// <param name="type">The image file type</param>
+        private delegate void SaveFileDelegate(string filePath, ImageFileType type);
 
         /// <summary>
         /// Gets the height of the buffer
         /// </summary>
         public override int Height
         {
-            get { return this.buffer.PixelHeight; }
+            get { return this.height; }
         }
 
         /// <summary>
@@ -77,7 +132,7 @@
         /// </summary>
         public override int Width
         {
-            get { return this.buffer.PixelWidth; }
+            get { return this.width; }
         }
 
         /// <summary>
@@ -85,9 +140,16 @@
         /// </summary>
         public override void BeforeEdit()
         {
-            this.buffer.Lock();
-            this.bitBase = this.buffer.BackBuffer;
-            this.bitStride = this.buffer.BackBufferStride;
+            if (this.buffer.Dispatcher.Thread == Thread.CurrentThread)
+            {
+                this.buffer.Lock();
+                this.bitBase = this.buffer.BackBuffer;
+                this.bitStride = this.buffer.BackBufferStride;
+            }
+            else
+            {
+                this.buffer.Dispatcher.BeginInvoke(new Action(this.BeforeEdit)).Wait();
+            }
         }
 
         /// <summary>
@@ -95,8 +157,15 @@
         /// </summary>
         public override void AfterEdit()
         {
-            this.buffer.AddDirtyRect(new System.Windows.Int32Rect(0, 0, this.Width, this.Height));
-            this.buffer.Unlock();
+            if (this.buffer.Dispatcher.Thread == Thread.CurrentThread)
+            {
+                this.buffer.AddDirtyRect(new System.Windows.Int32Rect(0, 0, this.Width, this.Height));
+                this.buffer.Unlock();
+            }
+            else
+            {
+                this.buffer.Dispatcher.BeginInvoke(new Action(this.AfterEdit)).Wait();
+            }
         }
 
         /// <summary>
@@ -133,6 +202,8 @@
         public override void SetSize(int width, int height)
         {
             this.buffer = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr24, null);
+            this.width = this.buffer.PixelWidth;
+            this.height = this.buffer.PixelHeight;
         }
 
         /// <summary>
@@ -162,33 +233,40 @@
         /// <param name="type">Image file type</param>
         public override void SaveImage(string filePath, ImageFileType type)
         {
-            if (type != ImageFileType.P3)
+            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
             {
-                FileStream file = new FileStream(filePath, FileMode.OpenOrCreate);
-                BitmapEncoder encoder = null;
-
-                switch (type)
+                if (type != ImageFileType.P3)
                 {
-                    case ImageFileType.BMP:
-                        encoder = new BmpBitmapEncoder();
-                        break;
-                    case ImageFileType.PNG:
-                        encoder = new PngBitmapEncoder();
-                        break;
-                    case ImageFileType.JPG:
-                        JpegBitmapEncoder jpegEncoder = new JpegBitmapEncoder();
-                        jpegEncoder.QualityLevel = 100;
-                        encoder = jpegEncoder;
-                        break;
-                }
+                    FileStream file = new FileStream(filePath, FileMode.OpenOrCreate);
+                    BitmapEncoder encoder = null;
 
-                encoder.Frames.Add(BitmapFrame.Create(this.buffer));
-                encoder.Save(file);
-                file.Close();
+                    switch (type)
+                    {
+                        case ImageFileType.BMP:
+                            encoder = new BmpBitmapEncoder();
+                            break;
+                        case ImageFileType.PNG:
+                            encoder = new PngBitmapEncoder();
+                            break;
+                        case ImageFileType.JPG:
+                            JpegBitmapEncoder jpegEncoder = new JpegBitmapEncoder();
+                            jpegEncoder.QualityLevel = 100;
+                            encoder = jpegEncoder;
+                            break;
+                    }
+
+                    encoder.Frames.Add(BitmapFrame.Create(this.buffer));
+                    encoder.Save(file);
+                    file.Close();
+                }
+                else
+                {
+                    Exporter.SaveP3(filePath, this);
+                }
             }
             else
             {
-                Exporter.SaveP3(filePath, this);
+                Manager.Instance.managerDispatcher.BeginInvoke(new SaveFileDelegate(this.SaveImage), filePath, type).Wait();
             }
         }
 
@@ -212,12 +290,14 @@
 
             MemoryStream stream = new MemoryStream(fileByte);
 
-            BitmapImage img = new BitmapImage();
-            img.BeginInit();
-            img.StreamSource = stream;
-            img.EndInit();
-
-            this.buffer = new WriteableBitmap(new FormatConvertedBitmap(img, PixelFormats.Bgr24, null, 0));
+            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.CreateBufferFromStream(stream);
+            }
+            else
+            {
+                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorFromStreamDelegate(this.CreateBufferFromStream), stream).Wait();
+            }
         }
 
         /// <summary>
@@ -225,6 +305,71 @@
         /// </summary>
         /// <returns>Thumbnail object</returns>
         public override ImageBase GetThumbnail()
+        {
+            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.CreateThumbnail();
+            }
+            else
+            {
+                Manager.Instance.managerDispatcher.BeginInvoke(new Action(this.CreateThumbnail)).Wait();
+            }
+
+            return this.thumbnailReturnObject;
+        }
+
+        /// <summary>
+        /// Returns the image source
+        /// </summary>
+        /// <returns>The image source</returns>
+        public ImageSource GetImageSource()
+        {
+            return this.buffer;
+        }
+
+        /// <summary>
+        /// Creates a buffer from width and height
+        /// </summary>
+        /// <param name="width">The width</param>
+        /// <param name="height">The height</param>
+        private void CreateBufferWithSize(int width, int height)
+        {
+            this.buffer = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr24, null);
+            this.width = this.buffer.PixelWidth;
+            this.height = this.buffer.PixelHeight;
+        }
+
+        /// <summary>
+        /// Creates a buffer from a stream
+        /// </summary>
+        /// <param name="stream">The stream</param>
+        private void CreateBufferFromStream(Stream stream)
+        {
+            BitmapImage img = new BitmapImage();
+            img.BeginInit();
+            img.StreamSource = stream;
+            img.EndInit();
+
+            this.buffer = new WriteableBitmap(new FormatConvertedBitmap(img, PixelFormats.Bgr24, null, 0));
+            this.width = this.buffer.PixelWidth;
+            this.height = this.buffer.PixelHeight;
+        }
+
+        /// <summary>
+        /// Creates a buffer from bitmap source
+        /// </summary>
+        /// <param name="source">The source</param>
+        private void CreateBufferFromSource(BitmapSource source)
+        {
+            this.buffer = new WriteableBitmap(new FormatConvertedBitmap(source, PixelFormats.Bgr24, null, 0));
+            this.width = this.buffer.PixelWidth;
+            this.height = this.buffer.PixelHeight;
+        }
+
+        /// <summary>
+        /// Creates thumbnail
+        /// </summary>
+        private void CreateThumbnail()
         {
             int thumbnailWidth = 200;
             int thumbnailHeight = (int)(thumbnailWidth * ((float)this.buffer.PixelHeight / (float)this.buffer.PixelWidth));
@@ -236,16 +381,7 @@
             c.Close();
             target.Render(v);
 
-            return new WPFBitmap(target);
-        }
-
-        /// <summary>
-        /// Returns the image source
-        /// </summary>
-        /// <returns>The image source</returns>
-        public ImageSource GetImageSource()
-        {
-            return this.buffer;
+            this.thumbnailReturnObject = new WPFBitmap(target);
         }
     }
 }
