@@ -1,5 +1,4 @@
-﻿
-namespace IntergalacticControls.PopupUI.Notifications.Base
+﻿namespace IntergalacticControls.PopupUI.Notifications.Base
 {
     using System;
     using System.Collections.Generic;

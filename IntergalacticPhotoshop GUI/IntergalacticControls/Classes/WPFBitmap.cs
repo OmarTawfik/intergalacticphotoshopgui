@@ -67,13 +67,13 @@
         /// <param name="height">Height of the new buffer</param>
         public WPFBitmap(int width, int height)
         {
-            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 this.CreateBufferWithSize(width, height);
             }
             else
             {
-                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorWithSizeDelegate(this.CreateBufferWithSize), width, height).Wait();
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new BufferCreatorWithSizeDelegate(this.CreateBufferWithSize), width, height).Wait();
             }
         }
 
@@ -83,13 +83,13 @@
         /// <param name="bitmap">Source of the buffer</param>
         public WPFBitmap(BitmapSource bitmap)
         {
-            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 this.CreateBufferFromSource(bitmap);
             }
             else
             {
-                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorFromSourceDelegate(this.CreateBufferFromSource), bitmap).Wait();
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new BufferCreatorFromSourceDelegate(this.CreateBufferFromSource), bitmap).Wait();
             }
         }
 
@@ -233,7 +233,7 @@
         /// <param name="type">Image file type</param>
         public override void SaveImage(string filePath, ImageFileType type)
         {
-            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 if (type != ImageFileType.P3)
                 {
@@ -266,7 +266,7 @@
             }
             else
             {
-                Manager.Instance.managerDispatcher.BeginInvoke(new SaveFileDelegate(this.SaveImage), filePath, type).Wait();
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new SaveFileDelegate(this.SaveImage), filePath, type).Wait();
             }
         }
 
@@ -290,13 +290,13 @@
 
             MemoryStream stream = new MemoryStream(fileByte);
 
-            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 this.CreateBufferFromStream(stream);
             }
             else
             {
-                Manager.Instance.managerDispatcher.BeginInvoke(new BufferCreatorFromStreamDelegate(this.CreateBufferFromStream), stream).Wait();
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new BufferCreatorFromStreamDelegate(this.CreateBufferFromStream), stream).Wait();
             }
         }
 
@@ -306,13 +306,13 @@
         /// <returns>Thumbnail object</returns>
         public override ImageBase GetThumbnail()
         {
-            if (Manager.Instance.managerDispatcher.Thread == Thread.CurrentThread)
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 this.CreateThumbnail();
             }
             else
             {
-                Manager.Instance.managerDispatcher.BeginInvoke(new Action(this.CreateThumbnail)).Wait();
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new Action(this.CreateThumbnail)).Wait();
             }
 
             return this.thumbnailReturnObject;

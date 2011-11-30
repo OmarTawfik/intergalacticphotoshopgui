@@ -16,16 +16,16 @@
         /// The singleton instance.
         /// </summary>
         private static Manager instance = new Manager();
+     
+        /// <summary>
+        /// Main dispatcher
+        /// </summary>
+        private Dispatcher myManagerDispatcher;
 
         /// <summary>
         /// Collection of active tabs in the project.
         /// </summary>
         private Dictionary<string, Tab> tabs;
-
-        /// <summary>
-        /// Main dispatcher
-        /// </summary>
-        internal Dispatcher managerDispatcher;
 
         /// <summary>
         /// Current tab shown to GUI.
@@ -38,7 +38,7 @@
         private Manager()
         {
             this.tabs = new Dictionary<string, Tab>();
-            this.managerDispatcher = Dispatcher.CurrentDispatcher;
+            this.myManagerDispatcher = Dispatcher.CurrentDispatcher;
             if (this.OnManagerInitialized != null)
             {
                 this.OnManagerInitialized(this);
@@ -62,14 +62,13 @@
         /// Tab event delegate
         /// </summary>
         /// <param name="mng">The manager</param>
-        /// <param name="tab">The tab</param>
+        /// <param name="operation">The operation</param>
         public delegate void OperationEvent(Manager mng, BaseOperation operation);
 
         /// <summary>
         /// Tab event delegate
         /// </summary>
-        /// <param name="mng">The manager</param>
-        /// <param name="tab">The tab</param>
+        /// <param name="operation">The operation</param>
         public delegate void OperationExecutionDelegate(BaseOperation operation);
 
         /// <summary>
@@ -116,6 +115,14 @@
         public Tab CurrentTab
         {
             get { return this.currentTab; }
+        }
+
+        /// <summary>
+        /// Gets the main dispatcher.
+        /// </summary>
+        internal Dispatcher ManagerDispatcher
+        {
+            get { return this.myManagerDispatcher; }
         }
 
         /// <summary>
@@ -224,30 +231,33 @@
         /// Gets the tab object by its name
         /// </summary>
         /// <param name="name">The name</param>
+        /// <returns>the requested tab</returns>
         public Tab GetTab(string name)
         {
             return this.tabs[name];
         }
 
         /// <summary>
-        /// Execute operation on the current tab
+        /// Execute operation on the current tab.
         /// </summary>
+        /// <param name="operation">Operation to be executed.</param>
         private void ExecuteOperation(object operation)
         {
             this.currentTab.DoOperation((BaseOperation)operation);
-            if (this.managerDispatcher.Thread == Thread.CurrentThread)
+            if (this.ManagerDispatcher.Thread == Thread.CurrentThread)
             {
                 this.OperationFinished((BaseOperation)operation);
             }
             else
             {
-                this.managerDispatcher.BeginInvoke(new OperationExecutionDelegate(this.OperationFinished), operation);
+                this.ManagerDispatcher.BeginInvoke(new OperationExecutionDelegate(this.OperationFinished), operation);
             }
         }
 
         /// <summary>
         /// Fires the OnOperationFinished event
         /// </summary>
+        /// <param name="operation">Executed operation.</param>
         private void OperationFinished(BaseOperation operation)
         {
             if (this.OnOperationFinshed != null)

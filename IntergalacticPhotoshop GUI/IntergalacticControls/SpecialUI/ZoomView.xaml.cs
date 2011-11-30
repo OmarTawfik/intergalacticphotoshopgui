@@ -1,5 +1,4 @@
-﻿
-namespace IntergalacticControls
+﻿namespace IntergalacticControls
 {
     using System;
     using System.Collections.Generic;
