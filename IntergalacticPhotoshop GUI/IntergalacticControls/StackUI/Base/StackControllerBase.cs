@@ -35,12 +35,12 @@
         /// </summary>
         public StackControllerBase()
         {
-            this.Opacity = 0.4;
+            this.Opacity = 0.6;
 
             this.fadeIn = new DoubleAnimation(1, TimeSpan.FromSeconds(0.3));
             this.fadeIn.AccelerationRatio = 0.3;
             this.fadeIn.DecelerationRatio = 0.3;
-            this.fadeOut = new DoubleAnimation(0.4, TimeSpan.FromSeconds(0.3));
+            this.fadeOut = new DoubleAnimation(0.6, TimeSpan.FromSeconds(0.3));
             this.fadeOut.AccelerationRatio = 0.3;
             this.fadeOut.DecelerationRatio = 0.3;
         }

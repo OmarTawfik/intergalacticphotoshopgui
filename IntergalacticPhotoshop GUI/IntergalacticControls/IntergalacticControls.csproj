@@ -109,6 +109,9 @@
     <Compile Include="SpecialUI\HistogramView.xaml.cs">
       <DependentUpon>HistogramView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SpecialUI\ZoomView.xaml.cs">
+      <DependentUpon>ZoomView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StackUI\HorizontalStackController.xaml.cs">
       <DependentUpon>HorizontalStackController.xaml</DependentUpon>
     </Compile>
@@ -171,6 +174,10 @@
     <Page Include="SpecialUI\HistogramView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SpecialUI\ZoomView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StackUI\HorizontalStackController.xaml">
       <SubType>Designer</SubType>

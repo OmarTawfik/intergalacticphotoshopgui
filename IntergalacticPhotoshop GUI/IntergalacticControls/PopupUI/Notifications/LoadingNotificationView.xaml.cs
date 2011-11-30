@@ -58,7 +58,7 @@ namespace IntergalacticControls.PopupUI.Notifications
             loadingIndecator.Visibility = System.Windows.Visibility.Hidden;
             lblTitle.Content = "Done in " + operation.OperatingTime.Seconds + "." + (operation.OperatingTime.Milliseconds / 100) + " Seconds.";
 
-            UIHelpers.CallFunctionAfterDelay(2, this.Dispatcher, new Action(this.CloseNotification));
+            UIHelpers.CallFunctionAfterDelay(3, this.Dispatcher, new Action(this.CloseNotification));
             Manager.Instance.OnOperationFinshed -= this.HideNotification;
         }
     }

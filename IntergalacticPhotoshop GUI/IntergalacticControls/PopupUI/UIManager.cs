@@ -153,7 +153,7 @@
                 throw new InvalidOperationException("At least one of the Subview or the Category of the PanelButton must be set.");
             }
 
-            if (source.IsLockable && source.Category != null)
+            if (source.IsLockable && source.Category != null && source.SubView == null)
             {
                 source.IsLockable = false;
             }

@@ -53,6 +53,10 @@
             {
                 this.tabs[0].IsSelected = true;
             }
+            else if (this.tabs.Count > 1)
+            {
+                this.SelectTab(tab.Name);
+            }
         }
 
         /// <summary>

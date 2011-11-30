@@ -110,6 +110,7 @@
                 new LaplacianEdgeDetectionOperation());
 
             this.InitHistogramView();
+            this.InitZoomView();
             this.InitBackground();
             Manager.Instance.AddTab(new WPFBitmap(new BitmapImage(new Uri("C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg"))), "Default", false);
         }
@@ -228,6 +229,18 @@
             menu.AddOperation(new HistogramEqualizationOperation());
             button.Category = menu;
             button.IsLockable = true;
+
+            rightStackController.AddButton(button);
+        }
+        
+        /// <summary>
+        /// Initializes the zoom view.
+        /// </summary>
+        private void InitZoomView()
+        {
+            PanelButton button = new PanelButton();
+            button.Icon = new BitmapImage(new Uri("pack://application:,,,/Pictures/Zoom.png"));
+            button.SubView = new ZoomView(imageView);
 
             rightStackController.AddButton(button);
         }
