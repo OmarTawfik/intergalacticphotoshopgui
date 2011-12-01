@@ -1,4 +1,6 @@
-﻿namespace IntergalacticUI
+﻿using IntergalacticCore.Operations.Matlab;
+using IntergalacticCore.Operations;
+namespace IntergalacticUI
 {
     using System;
     using System.Collections.Generic;
@@ -227,6 +229,7 @@
             OperationCategory menu = new OperationCategory("Histogram Operations", null);
             menu.AddOperation(new HistogramMatchingOperation());
             menu.AddOperation(new HistogramEqualizationOperation());
+            menu.AddOperation(new MatlabHistogramEqualizationOperation());
             button.Category = menu;
             button.IsLockable = true;
 

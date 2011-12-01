@@ -68,6 +68,10 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IPmw, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Binaries\IPmw.dll</HintPath>
+    </Reference>
     <Reference Include="MWArray, Version=2.11.0.0, Culture=neutral, PublicKeyToken=e1d84a0da19db86f, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\MWArray.dll</HintPath>
@@ -113,6 +117,8 @@
     <Compile Include="Operations\JoinedOperations\AddOperation.cs" />
     <Compile Include="Operations\HistogramOperations\HistogramCalculator.cs" />
     <Compile Include="Operations\JoinedOperations\HistogramMatchingOperation.cs" />
+    <Compile Include="Operations\Matlab\MatlabHistogramEqualizationOperation.cs" />
+    <Compile Include="Operations\Matlab\MatlabOperation.cs" />
     <Compile Include="Operations\PixelOperations\BinarizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\BrightnessOperation.cs" />
     <Compile Include="Operations\PixelOperations\ColorExtractionOperation.cs" />
