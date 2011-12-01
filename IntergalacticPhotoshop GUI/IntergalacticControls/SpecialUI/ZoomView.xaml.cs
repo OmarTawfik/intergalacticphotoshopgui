@@ -13,6 +13,9 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
+    using IntergalacticCore;
+    using IntergalacticControls;
+    using IntergalacticControls.Classes;
 
     /// <summary>
     /// Interaction logic for ZoomView.xaml
@@ -47,24 +50,38 @@
 
             BindingOperations.SetBinding(this.scaler, ScaleTransform.ScaleXProperty, scaleBind);
             BindingOperations.SetBinding(this.scaler, ScaleTransform.ScaleYProperty, scaleBind);
+
+            Manager.Instance.OnNewTabAdded += this.ImageUpdated;
+            Manager.Instance.OnTabChanged += this.ImageUpdated;
+            Manager.Instance.OnOperationFinshed += this.ImageUpdated;
+            this.centerRect.MouseMove += this.CenterRect_MouseMove;
         }
 
-        /// <summary>
-        /// To move the image around
-        /// </summary>
-        /// <param name="e">Event args</param>
-        protected override void OnMouseMove(MouseEventArgs e)
+        void CenterRect_MouseMove(object sender, MouseEventArgs e)
         {
-            base.OnMouseMove(e);
             if (e.LeftButton == MouseButtonState.Released)
             {
                 return;
             }
 
             double centerX = e.GetPosition(this).X / this.ActualWidth;
-            double centerY = e.GetPosition(this).Y / this.ActualHeight;
+            double centerY = e.GetPosition(this).Y / (this.ActualHeight - this.zoomSlider.ActualHeight);
 
-            this.targetedImage.RenderTransformOrigin = new Point(centerX, centerY);
+            this.UpdateTransformCenter(e.GetPosition(this).X, e.GetPosition(this).Y, centerX, centerY);
+        }
+
+        private void ImageUpdated(Manager mng, object doesntMatter)
+        {
+            this.zoomSlider.Value = 1;
+            this.UpdateTransformCenter(this.ActualWidth / 2, (this.ActualHeight - this.zoomSlider.ActualHeight) / 2, 0.5, 0.5);
+            this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
+            this.Height = this.Width * (this.imageView.Source.Height / this.imageView.Source.Width) + 25;
+        }
+
+        private void UpdateTransformCenter(double x, double y, double xn, double yn)
+        {
+            this.targetedImage.RenderTransformOrigin = new Point(xn, yn);
+            this.centerRect.Margin = new Thickness(x - this.centerRect.Width / 2, y - this.centerRect.Height / 2, 0, 0);
         }
     }
 }
