@@ -149,12 +149,15 @@
         /// <param name="name">Name of the tab.</param>
         public void DeleteTab(string name)
         {
-            Tab tab = this.tabs[name];
-            tab.DeActivate();
-            this.tabs.Remove(name);
-            if (this.OnTabClosed != null)
+            if (this.tabs.ContainsKey(name))
             {
-                this.OnTabClosed(this, tab);
+                Tab tab = this.tabs[name];
+                tab.DeActivate();
+                this.tabs.Remove(name);
+                if (this.OnTabClosed != null)
+                {
+                    this.OnTabClosed(this, tab);
+                }
             }
         }
 

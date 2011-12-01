@@ -168,6 +168,12 @@
   <ItemGroup>
     <Resource Include="Pictures\Zoom.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\PassFilter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Pictures\Matlab.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

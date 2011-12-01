@@ -1,5 +1,7 @@
 ﻿namespace IntergalacticCore.Data
 {
+    using System;
+
     /// <summary>
     /// Enumerates between image file types
     /// </summary>

@@ -10,7 +10,7 @@
         /// <summary>
         /// Gets called before the operation begins.
         /// </summary>
-        protected virtual void BeforeOperate()
+        protected override void BeforeOperate()
         {
             HistogramCalculator histogram = new HistogramCalculator();
             histogram.Execute(this.Image);

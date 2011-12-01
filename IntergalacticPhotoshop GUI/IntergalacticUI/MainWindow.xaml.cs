@@ -1,13 +1,9 @@
-﻿using IntergalacticCore.Operations.Matlab;
-using IntergalacticCore.Operations;
-namespace IntergalacticUI
+﻿namespace IntergalacticUI
 {
     using System;
     using System.Collections.Generic;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Documents;
-    using System.Windows.Media;
     using System.Windows.Media.Animation;
     using System.Windows.Media.Imaging;
     using IntergalacticControls;
@@ -20,6 +16,8 @@ namespace IntergalacticUI
     using IntergalacticCore.Operations.Filters.Smoothing;
     using IntergalacticCore.Operations.HistogramOperations;
     using IntergalacticCore.Operations.JoinedOperations;
+    using IntergalacticCore.Operations.Matlab;
+    using IntergalacticCore.Operations.Matlab.PassFilters;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -41,6 +39,7 @@ namespace IntergalacticUI
             Manager.Instance.OnNewTabAdded += this.UpdateImage;
             Manager.Instance.OnTabChanged += this.UpdateImage;
             Manager.Instance.OnOperationFinshed += this.UpdateImage;
+            Manager.Instance.OnOperationFinshed += this.AddFrequencyDomainOperationTabs;
             Manager.Instance.OnOperationStarted += this.ShowLoadingNotification;
 
             this.AddActionCategory(
@@ -110,6 +109,15 @@ namespace IntergalacticUI
                 new VerticalEdgeDetectionOperation(),
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
+
+            this.AddOperationCategory(
+                "Matlab Operations",
+                "Matlab.png",
+                new FrequencyDomainOperation());
+
+            this.AddOperationCategory(
+                "Pass Filters",
+                "PassFilter.png");
 
             this.InitHistogramView();
             this.InitZoomView();
@@ -229,7 +237,6 @@ namespace IntergalacticUI
             OperationCategory menu = new OperationCategory("Histogram Operations", null);
             menu.AddOperation(new HistogramMatchingOperation());
             menu.AddOperation(new HistogramEqualizationOperation());
-            menu.AddOperation(new MatlabHistogramEqualizationOperation());
             button.Category = menu;
             button.IsLockable = true;
 
@@ -308,6 +315,25 @@ namespace IntergalacticUI
         {
             LoadingNotificationView view = new LoadingNotificationView();
             view.ShowNotification();
+        }
+
+        /// <summary>
+        /// Adds the components of frequency domain to tabs.
+        /// </summary>
+        /// <param name="mng">Main Manager.</param>
+        /// <param name="operate">Frequency Domain Operation.</param>
+        private void AddFrequencyDomainOperationTabs(Manager mng, BaseOperation operate)
+        {
+            FrequencyDomainOperation op = operate as FrequencyDomainOperation;
+            if (op == null)
+            {
+                return;
+            }
+
+            Manager.Instance.AddTab(op.FrequencyDomainImage, "Frequency");
+            Manager.Instance.AddTab(op.RedImage, "RED");
+            Manager.Instance.AddTab(op.GreenImage, "GREEN");
+            Manager.Instance.AddTab(op.BlueImage, "BLUE");
         }
     }
 }

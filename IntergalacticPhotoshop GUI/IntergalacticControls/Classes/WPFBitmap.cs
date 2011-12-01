@@ -120,6 +120,13 @@
         private delegate void SaveFileDelegate(string filePath, ImageFileType type);
 
         /// <summary>
+        /// Resize image delegate
+        /// </summary>
+        /// <param name="width">With of the image</param>
+        /// <param name="height">Height of the image</param>
+        private delegate void ResizeImageDelegate(int width, int height);
+
+        /// <summary>
         /// Gets the height of the buffer
         /// </summary>
         public override int Height
@@ -201,9 +208,16 @@
         /// <param name="height">Height of the new image.</param>
         public override void SetSize(int width, int height)
         {
-            this.buffer = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr24, null);
-            this.width = this.buffer.PixelWidth;
-            this.height = this.buffer.PixelHeight;
+            if (Manager.Instance.ManagerDispatcher.Thread == Thread.CurrentThread)
+            {
+                this.buffer = new WriteableBitmap(width, height, 96, 96, PixelFormats.Bgr24, null);
+                this.width = this.buffer.PixelWidth;
+                this.height = this.buffer.PixelHeight;
+            }
+            else
+            {
+                Manager.Instance.ManagerDispatcher.BeginInvoke(new ResizeImageDelegate(this.SetSize), width, height).Wait();
+            }
         }
 
         /// <summary>

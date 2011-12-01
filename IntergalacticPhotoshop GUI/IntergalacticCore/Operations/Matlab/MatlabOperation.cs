@@ -18,7 +18,7 @@
         /// <param name="red">Red component.</param>
         /// <param name="green">Green component.</param>
         /// <param name="blue">Blue component.</param>
-        protected void BytesToImage(ImageBase image, byte[,] red, byte[,] green, byte[,] blue)
+        protected void DoublesToImage(ImageBase image, double[,] red, double[,] green, double[,] blue)
         {
             image.SetSize(red.GetLength(1), red.GetLength(0));
             image.BeforeEdit();
@@ -27,7 +27,7 @@
             {
                 for (int j = 0; j < image.Width; j++)
                 {
-                    image.SetPixel(j, i, new Pixel(red[i, j], green[i, j], blue[i, j]));
+                    image.SetPixel(j, i, new Pixel((byte)red[i, j], (byte)green[i, j], (byte)blue[i, j]));
                 }
             }
 
@@ -41,11 +41,11 @@
         /// <param name="red">Red component.</param>
         /// <param name="green">Green component.</param>
         /// <param name="blue">Blue component.</param>
-        protected void ImageToBytes(ImageBase image, out byte[,] red, out byte[,] green, out byte[,] blue)
+        protected void ImageToDoubles(ImageBase image, out double[,] red, out double[,] green, out double[,] blue)
         {
-            byte[,] mred = new byte[image.Height, image.Width];
-            byte[,] mgreen = new byte[image.Height, image.Width];
-            byte[,] mblue = new byte[image.Height, image.Width];
+            double[,] mred = new double[image.Height, image.Width];
+            double[,] mgreen = new double[image.Height, image.Width];
+            double[,] mblue = new double[image.Height, image.Width];
 
             image.BeforeEdit();
 
@@ -65,6 +65,37 @@
             blue = mblue;
 
             image.AfterEdit();
+        }
+
+        /// <summary>
+        /// Normalizes an array in the range of 0 and 255.
+        /// </summary>
+        /// <param name="ar">Input array.</param>
+        /// <returns>Normalized array.</returns>
+        protected double[,] Normalize(double[,] ar)
+        {
+            double min = double.MaxValue, max = double.MinValue;
+
+            for (int i = 0; i < ar.GetLength(0); i++)
+            {
+                for (int j = 0; j < ar.GetLength(1); j++)
+                {
+                    min = Math.Min(min, ar[i, j]);
+                    max = Math.Max(max, ar[i, j]);
+                }
+            }
+
+            double ratio = (max - min) / 255.0;
+
+            for (int i = 0; i < ar.GetLength(0); i++)
+            {
+                for (int j = 0; j < ar.GetLength(1); j++)
+                {
+                    ar[i, j] = (ar[i, j] - min) / ratio;
+                }
+            }
+
+            return ar;
         }
     }
 }
