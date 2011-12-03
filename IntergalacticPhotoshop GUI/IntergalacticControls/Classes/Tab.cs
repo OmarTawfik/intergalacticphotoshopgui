@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading;
+    using IntergalacticControls.PopupUI.Notifications;
     using IntergalacticCore;
     using IntergalacticCore.Data;
 
@@ -11,6 +13,11 @@
     /// </summary>
     public class Tab
     {
+        /// <summary>
+        /// Shows whether the operation didn't have exceptions
+        /// </summary>
+        private bool didOperationComplete = false;
+
         /// <summary>
         /// The current image.
         /// </summary>
@@ -114,21 +121,38 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether the last operation didn't has exception
+        /// </summary>
+        public bool DidOperationComplete
+        {
+            get { return this.didOperationComplete; }
+        }
+
+        /// <summary>
         /// Executes an operation on the image.
         /// </summary>
         /// <param name="operation">Operation to be executed.</param>
         public void DoOperation(BaseOperation operation)
         {
-            for (int i = this.maxVersionNumber - this.currentVersionNumber; i > 0; i--)
-            {
-                this.thumbnails.Pop();
-            }
+            this.didOperationComplete = false;
 
-            this.currentVersionNumber++;
-            this.maxVersionNumber = this.currentVersionNumber;
-            this.image = operation.Execute(this.image);
-            this.thumbnails.Push(this.image.GetThumbnail());
-            this.image.SaveImage(this.GetFullPath(), ImageFileType.BMP);
+            try
+            {
+                this.image = operation.Execute(this.image);
+                this.didOperationComplete = true;
+                for (int i = this.maxVersionNumber - this.currentVersionNumber; i > 0; i--)
+                {
+                    this.thumbnails.Pop();
+                }
+
+                this.currentVersionNumber++;
+                this.maxVersionNumber = this.currentVersionNumber;
+                this.thumbnails.Push(this.image.GetThumbnail());
+                this.image.SaveImage(this.GetFullPath(), ImageFileType.BMP);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         /// <summary>

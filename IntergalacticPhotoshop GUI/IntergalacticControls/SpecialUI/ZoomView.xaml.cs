@@ -13,9 +13,9 @@
     using System.Windows.Media.Imaging;
     using System.Windows.Navigation;
     using System.Windows.Shapes;
-    using IntergalacticCore;
     using IntergalacticControls;
     using IntergalacticControls.Classes;
+    using IntergalacticCore;
 
     /// <summary>
     /// Interaction logic for ZoomView.xaml
@@ -57,31 +57,89 @@
             this.centerRect.MouseMove += this.CenterRect_MouseMove;
         }
 
-        void CenterRect_MouseMove(object sender, MouseEventArgs e)
+        /// <summary>
+        /// MouseMove move event to update the zoomRect and the zoom center
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void CenterRect_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Released)
             {
                 return;
             }
 
-            double centerX = e.GetPosition(this).X / this.ActualWidth;
-            double centerY = e.GetPosition(this).Y / (this.ActualHeight - this.zoomSlider.ActualHeight);
+            double centerX = e.GetPosition(this).X / this.Width;
+            double centerY = e.GetPosition(this).Y / (this.Height - this.zoomSlider.Height);
 
             this.UpdateTransformCenter(e.GetPosition(this).X, e.GetPosition(this).Y, centerX, centerY);
         }
 
+        /// <summary>
+        /// Updates the zomm center when a new tab is added, changed or operation finished.
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="doesntMatter">Doesn't matter parameter</param>
         private void ImageUpdated(Manager mng, object doesntMatter)
         {
             this.zoomSlider.Value = 1;
-            this.UpdateTransformCenter(this.ActualWidth / 2, (this.ActualHeight - this.zoomSlider.ActualHeight) / 2, 0.5, 0.5);
+            this.UpdateTransformCenter(this.Width / 2, (this.Height - this.zoomSlider.Height) / 2, 0.5, 0.5);
             this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
-            this.Height = this.Width * (this.imageView.Source.Height / this.imageView.Source.Width) + 25;
+            this.Height = (this.Width * (this.imageView.Source.Height / this.imageView.Source.Width)) + 25;
         }
 
+        /// <summary>
+        /// Updates the zooming center and the zoomRect position
+        /// </summary>
+        /// <param name="x">New X of the zoomRect</param>
+        /// <param name="y">New Y of the zoomRect</param>
+        /// <param name="xn">New X of the zooming center</param>
+        /// <param name="yn">New Y of the zooming center</param>
         private void UpdateTransformCenter(double x, double y, double xn, double yn)
         {
+            if (xn < 0)
+            {
+                xn = 0;
+            }
+
+            if (yn < 0)
+            {
+                yn = 0;
+            }
+
+            if (xn > 1)
+            {
+                xn = 1;
+            }
+
+            if (yn > 1)
+            {
+                yn = 1;
+            }
+
             this.targetedImage.RenderTransformOrigin = new Point(xn, yn);
-            this.centerRect.Margin = new Thickness(x - this.centerRect.Width / 2, y - this.centerRect.Height / 2, 0, 0);
+
+            if (x < this.centerRect.Width / 2)
+            {
+                x = this.centerRect.Width / 2;
+            }
+
+            if (x > this.Width - (this.centerRect.Width / 2))
+            {
+                x = this.Width - (this.centerRect.Width / 2);
+            }
+
+            if (y < this.centerRect.Height / 2)
+            {
+                y = this.centerRect.Height / 2;
+            }
+
+            if (y > (this.Height - 25 - (this.centerRect.Width / 2)))
+            {
+                y = this.Height - 25 - (this.centerRect.Width / 2);
+            }
+
+            this.centerRect.Margin = new Thickness(x - (this.centerRect.Width / 2), y - (this.centerRect.Height / 2), 0, 0);
         }
     }
 }

@@ -89,7 +89,7 @@
         protected override void OnVisualParentChanged(DependencyObject oldParent)
         {
             base.OnVisualParentChanged(oldParent);
-            this.UpdateHistogramGraph();
+            UIHelpers.CallFunctionAfterDelay(1, this.Dispatcher, new Action(this.UpdateHistogramGraph));
         }
 
         /// <summary>

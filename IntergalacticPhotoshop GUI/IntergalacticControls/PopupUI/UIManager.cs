@@ -177,7 +177,9 @@
         /// <param name="operation">The operation</param>
         public void ViewOperationInputView(BaseOperation operation)
         {
+            this.operationInputView.IsShown = true;
             this.operationInputView.SetInputTarget(operation);
+            this.operationInputView.Visibility = Visibility.Visible;
             UIHelpers.SlideInFronBottomAnimation(this.operationInputView, new Thickness(0, 0, 0, 0), 0.5);
             this.mainPanel.Children.Add(this.operationInputView);
             this.ShowBackCover();
@@ -188,8 +190,10 @@
         /// </summary>
         public void CloseOperationInputView()
         {
+            this.operationInputView.IsShown = false;
             UIHelpers.SlideOutToBottomAnimation(this.operationInputView, 0.5);
             UIHelpers.RemoveElementFromContainerAfterDelay(this.operationInputView, this.mainPanel, 0.5);
+            UIHelpers.HideElementAfterDelay(this.operationInputView, 0.5);
             this.HideBackCover();
         }
 
@@ -207,7 +211,11 @@
             }
 
             this.notificationViews.Add(view, animation);
-            this.ShowBackCover();
+            if (view.BlocksUI)
+            {
+                this.ShowBackCover();
+            }
+
             this.mainPanel.Children.Add(view);
             switch (animation)
             {
@@ -378,7 +386,13 @@
         /// </summary>
         private void HideBackCover()
         {
-            if (this.notificationViews.Count == 0)
+            int count = this.operationInputView.IsShown ? 1 : 0;
+            for (int i = 0; i < this.notificationViews.Count; i++)
+            {
+                count += this.notificationViews.ElementAt(i).Key.BlocksUI ? 1 : 0;
+            }
+
+            if (count == 0)
             {
                 UIHelpers.FadeOutAnimation(this.backRectangle, null, 0.5);
                 UIHelpers.HideElementAfterDelay(this.backRectangle, 0.5);

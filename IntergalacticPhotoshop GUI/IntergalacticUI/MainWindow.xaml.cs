@@ -29,6 +29,11 @@
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// Loading notification view in use
+        /// </summary>
+        private LoadingNotificationView loadingNotificationView;
+
+        /// <summary>
         /// Initializes a new instance of the MainWindow class.
         /// </summary>
         public MainWindow()
@@ -41,6 +46,8 @@
             Manager.Instance.OnOperationFinshed += this.UpdateImage;
             Manager.Instance.OnOperationFinshed += this.AddFrequencyDomainOperationTabs;
             Manager.Instance.OnOperationStarted += this.ShowLoadingNotification;
+            Manager.Instance.OnOperationFinshed += this.HideLoadingNotification;
+            Manager.Instance.OnOperationFailed += this.HideLoadingNotification;
 
             this.AddActionCategory(
                 "File",
@@ -74,7 +81,8 @@
                 new GammaAdjustmentOperation(),
                 new QuantizationOperation(),
                 new BinarizationOperation(),
-                new ColorExtractionOperation());
+                new ColorExtractionOperation(),
+                new CustomMaskOperation());
 
             this.AddOperationCategory(
                 "Joined Operations",
@@ -313,8 +321,18 @@
         /// <param name="operation">The operation</param>
         private void ShowLoadingNotification(Manager mng, BaseOperation operation)
         {
-            LoadingNotificationView view = new LoadingNotificationView();
-            view.ShowNotification();
+            this.loadingNotificationView = new LoadingNotificationView();
+            this.loadingNotificationView.ShowNotification();
+        }
+
+        /// <summary>
+        /// Linked to the OnOperationFailed/Finished event the the Manager to hide the loading notification
+        /// </summary>
+        /// <param name="mng">The manager</param>
+        /// <param name="operation">The operation</param>
+        private void HideLoadingNotification(Manager mng, BaseOperation operation)
+        {
+            this.loadingNotificationView.HideNotification(mng, operation);
         }
 
         /// <summary>

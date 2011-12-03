@@ -47,6 +47,7 @@
             }
 
             Manager.Instance.OnOperationFinshed += this.UpdateThumbnail;
+            this.MouseLeave += this.HidePopupView;
         }
 
         /// <summary>
@@ -114,6 +115,16 @@
         private void CloseBtn_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Manager.Instance.DeleteTab(this.tab.Name);
+        }
+
+        /// <summary>
+        /// Closes the popup view when the mouse exits the tab button
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void HidePopupView(object sender, MouseEventArgs e)
+        {
+            UIManager.CurrentUIManager.HideCurrentPopup();
         }
     }
 }

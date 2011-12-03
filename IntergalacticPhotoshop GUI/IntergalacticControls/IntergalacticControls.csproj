@@ -106,8 +106,17 @@
     <Compile Include="PopupUI\Notifications\LoadingNotificationView.xaml.cs">
       <DependentUpon>LoadingNotificationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PopupUI\Notifications\MaskSizeNotification.xaml.cs">
+      <DependentUpon>MaskSizeNotification.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PopupUI\Notifications\SideNotification.xaml.cs">
+      <DependentUpon>SideNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SpecialUI\HistogramView.xaml.cs">
       <DependentUpon>HistogramView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialUI\MaskInputControl.xaml.cs">
+      <DependentUpon>MaskInputControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SpecialUI\ZoomView.xaml.cs">
       <DependentUpon>ZoomView.xaml</DependentUpon>
@@ -171,9 +180,21 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PopupUI\Notifications\MaskSizeNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PopupUI\Notifications\SideNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SpecialUI\HistogramView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SpecialUI\MaskInputControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SpecialUI\ZoomView.xaml">
       <SubType>Designer</SubType>

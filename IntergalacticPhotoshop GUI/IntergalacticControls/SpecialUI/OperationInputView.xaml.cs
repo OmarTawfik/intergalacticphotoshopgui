@@ -15,6 +15,8 @@
     using System.Windows.Navigation;
     using System.Windows.Shapes;
     using IntergalacticControls.Classes;
+    using IntergalacticControls.PopupUI.Notifications;
+    using IntergalacticControls.SpecialUI;
     using IntergalacticCore;
     using IntergalacticCore.Data;
 
@@ -23,6 +25,11 @@
     /// </summary>
     public partial class OperationInputView : UserControl
     {
+        /// <summary>
+        /// Shows whether the view is shown
+        /// </summary>
+        private bool isShown = false;
+
         /// <summary>
         /// The targeted operation
         /// </summary>
@@ -54,11 +61,34 @@
         private List<Rectangle> imageInputRects;
 
         /// <summary>
+        /// Default mask size for mask input
+        /// </summary>
+        private int defaultMaskSize = 3;
+
+        /// <summary>
         /// Initializes a new instance of the OperationInputView class
         /// </summary>
         public OperationInputView()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Gets or sets the default mask size for mask operations
+        /// </summary>
+        internal int DefaultMaskSize
+        {
+            get { return this.defaultMaskSize; }
+            set { this.defaultMaskSize = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this view is shown or not.
+        /// </summary>
+        internal bool IsShown
+        {
+            get { return this.isShown; }
+            set { this.isShown = value; }
         }
 
         /// <summary>
@@ -103,7 +133,8 @@
                         this.AddColorInputControls(this.inputInfoList[i], ref shiftY);
                         break;
                     case IntergalacticControls.InputType.Mask:
-                        throw new InvalidOperationException("Masks input are not supported");
+                        this.AddMaskInputControl(this.inputInfoList[i], ref shiftY);
+                        break;
                     case IntergalacticControls.InputType.Image:
                         this.AddImageInputControls(this.inputInfoList[i], ref shiftY);
                         break;
@@ -114,6 +145,14 @@
             }
 
             this.Height = shiftY + 80;
+        }
+
+        /// <summary>
+        /// Updates the UI with the current operation
+        /// </summary>
+        public void ReConstructUI()
+        {
+            this.SetInputTarget(this.operation);
         }
 
         /// <summary>
@@ -290,9 +329,9 @@
             rectShadow.Opacity = 0.4;
 
             Rectangle rect = new Rectangle();
+            rect.Margin = new Thickness(-125, startY + 10, 0, 0);
             rect.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
             rect.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            rect.Margin = new Thickness(-125, startY + 10, 0, 0);
             rect.Width = 118;
             rect.Height = 78;
             rect.RadiusX = 10;
@@ -300,18 +339,6 @@
             rect.Stroke = new SolidColorBrush(Color.FromArgb(128, 128, 128, 128));
             rect.Fill = rectFill;
             rect.Effect = rectShadow;
-
-            Label label = new Label();
-            label.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            label.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            label.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
-            label.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-            label.Margin = new Thickness(-125, startY + 10, 0, 0);
-            label.Width = 118;
-            label.Height = 78;
-            label.Content = "Browse an image";
-            label.FontSize = 11;
-            label.Foreground = Brushes.Gray;
 
             ComboBox tabsComboBox = new ComboBox();
             tabsComboBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -334,12 +361,41 @@
             tabsComboBox.SelectedIndex = 0;
 
             this.mainGrid.Children.Add(rect);
-            ////this.mainGrid.Children.Add(label);
             this.mainGrid.Children.Add(tabsComboBox);
 
             this.inputSourceList.Add(rectFill);
 
             startY += 110;
+        }
+
+        /// <summary>
+        /// Adds mask input control to the UI
+        /// </summary>
+        /// <param name="info">Input information</param>
+        /// <param name="startY">The Y position to start with</param>
+        private void AddMaskInputControl(OperationInputInfo info, ref int startY)
+        {
+            this.AddLabel(info.Title, startY);
+
+            MaskInputControl maskControl = new MaskInputControl(this.defaultMaskSize);
+            maskControl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            maskControl.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            maskControl.Margin = new Thickness(-(this.Width - maskControl.Width) + (this.Width * 0.6), startY + 5, 0, 0);
+
+            Button changeButton = new Button();
+            changeButton.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            changeButton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            changeButton.Width = 100;
+            changeButton.Height = 25;
+            changeButton.Margin = new Thickness(-(this.Width - maskControl.Width) + (this.Width * 0.6) + maskControl.Width + changeButton.Width + 20, startY + (maskControl.Height / 2), 0, 0);
+            changeButton.Content = "Change Size";
+            changeButton.Click += new RoutedEventHandler(this.ChangeMaskSizeButton_Click);
+
+            this.mainGrid.Children.Add(maskControl);
+            this.mainGrid.Children.Add(changeButton);
+            this.inputSourceList.Add(maskControl);
+            
+            startY += (int)(maskControl.Height + 20);
         }
 
         /// <summary>
@@ -384,6 +440,17 @@
                 brush.ImageSource = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Image).GetImageSource();
                 brush.Stretch = Stretch.UniformToFill;
             }
+        }
+
+        /// <summary>
+        /// SizeChanged function to switch images
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void ChangeMaskSizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            MaskSizeNotification view = new MaskSizeNotification(this);
+            view.ShowNotification();
         }
 
         /// <summary>
@@ -447,7 +514,7 @@
         /// </summary>
         /// <param name="index">The index of the input</param>
         /// <returns>Input object</returns>
-        private object GetInputFromUIElement(int index)
+        private object GetInputFromSourceList(int index)
         {
             object result = null;
 
@@ -473,6 +540,7 @@
                     result = new Pixel(color.R, color.G, color.B);
                     break;
                 case IntergalacticControls.InputType.Mask:
+                    result = ((MaskInputControl)this.inputSourceList[index]).GetMask();
                     break;
                 case IntergalacticControls.InputType.Image:
                     result = new WPFBitmap((BitmapSource)((ImageBrush)this.inputSourceList[index]).ImageSource);
@@ -493,14 +561,23 @@
         {
             object[] inputList = new object[this.inputInfoList.Count];
 
-            for (int i = 0; i < this.inputInfoList.Count; i++)
+            try
             {
-                inputList[i] = this.GetInputFromUIElement(i);
-            }
+                for (int i = 0; i < this.inputInfoList.Count; i++)
+                {
+                    inputList[i] = this.GetInputFromSourceList(i);
+                }
 
-            this.operation.SetInput(inputList);
-            Manager.Instance.DoOperation(this.operation);
-            UIManager.CurrentUIManager.CloseOperationInputView();
+                this.operation.SetInput(inputList);
+                Manager.Instance.DoOperation(this.operation);
+                UIManager.CurrentUIManager.CloseOperationInputView();
+            }
+            catch (Exception ex)
+            {
+                SideNotification notification = new SideNotification();
+                notification.SetTitle("Error: " + ex.Message);
+                notification.ShowNotification();
+            }
         }
 
         /// <summary>

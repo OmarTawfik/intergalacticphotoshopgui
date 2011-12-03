@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              Height="124" Width="168">
     <Grid>
-        <Slider HorizontalAlignment="Stretch" Name="zoomSlider" VerticalAlignment="Bottom" Minimum="0.1" Maximum="3" Value="1" TickFrequency="0.02" IsSnapToTickEnabled="True" Height="22" />
+        <Slider HorizontalAlignment="Stretch" Name="zoomSlider" VerticalAlignment="Bottom" Minimum="0.1" Maximum="3" Value="1" TickFrequency="0.1" IsSnapToTickEnabled="True" Height="22" Width="168" />
         <Image Name="imageView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,0,25" Stretch="Uniform"/>
-        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Width="20" Height="20" Name="centerRect" Stroke="Green" Fill="Blue" />
+        <Rectangle HorizontalAlignment="Left" VerticalAlignment="Top" Width="30" Height="27" Name="centerRect" Stroke="#444" Fill="#8888" Margin="69,40,0,0" />
     </Grid>
 </UserControl>

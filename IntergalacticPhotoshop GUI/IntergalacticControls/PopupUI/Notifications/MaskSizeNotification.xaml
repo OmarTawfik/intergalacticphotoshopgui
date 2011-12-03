@@ -1,0 +1,14 @@
+﻿<w:NotificationView x:Class="IntergalacticControls.PopupUI.Notifications.MaskSizeNotification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:w="clr-namespace:IntergalacticControls.PopupUI.Notifications.Base"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Height="100" Width="320">
+    <Grid>
+        <Button Content="Change Mask Size" Height="23" HorizontalAlignment="Left" Margin="181,65,0,0" Name="btnChangeMaskSize" VerticalAlignment="Top" Width="127" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="12,35,0,0" Name="sliderMaskSize" VerticalAlignment="Top" Width="296" TickPlacement="TopLeft" IsSnapToTickEnabled="True" TickFrequency="2" SmallChange="0" Minimum="3" Maximum="9" />
+        <Label Content="New mask size:" Height="28" HorizontalAlignment="Left" Margin="8,5,0,0" Name="lblTitle" VerticalAlignment="Top" Width="157" />
+        <Label Content="XXX" Height="28" HorizontalAlignment="Left" Margin="120,5,0,0" Name="lblValue" VerticalAlignment="Top" Width="50" />
+    </Grid>
+</w:NotificationView>

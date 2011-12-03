@@ -28,6 +28,11 @@
         private double? displayTimeout;
 
         /// <summary>
+        /// Indicates whether this notification blocks UI.
+        /// </summary>
+        private bool blocksUI;
+
+        /// <summary>
         /// Notification show/hide animation type
         /// </summary>
         private NotificationAnimationType animationType;
@@ -47,6 +52,8 @@
 
             this.animationType = NotificationAnimationType.Fade;
             this.displayTimeout = 3;
+
+            this.blocksUI = true;
         }
 
         /// <summary>
@@ -68,9 +75,18 @@
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this notification blocks UI
+        /// </summary>
+        public bool BlocksUI
+        {
+            get { return this.blocksUI; }
+            set { this.blocksUI = value; }
+        }
+
+        /// <summary>
         /// Shows the current notification
         /// </summary>
-        public void ShowNotification()
+        public virtual void ShowNotification()
         {
             UIManager.CurrentUIManager.ViewNotification(this, this.animationType, this.displayTimeout);
         }
@@ -78,7 +94,7 @@
         /// <summary>
         /// Closes this notification
         /// </summary>
-        protected void CloseNotification()
+        protected virtual void CloseNotification()
         {
             UIManager.CurrentUIManager.CloseNoification(this);
         }

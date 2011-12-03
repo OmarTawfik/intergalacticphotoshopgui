@@ -1,0 +1,19 @@
+﻿<w:NotificationView x:Class="IntergalacticControls.PopupUI.Notifications.SideNotification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:w="clr-namespace:IntergalacticControls.PopupUI.Notifications.Base"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             Height="60" Width="275">
+    <Grid>
+        <Ellipse Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,3,0,0" Stroke="Gray" Name="btnClose" MouseDown="CloseButton_MouseDown">
+            <Ellipse.Fill>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Color="#8F00" Offset="0" />
+                    <GradientStop Color="#8800" Offset="1" />
+                </LinearGradientBrush>
+            </Ellipse.Fill>
+        </Ellipse>
+        <TextBlock IsEnabled="False" TextWrapping="WrapWithOverflow" FontSize="14" Background="Transparent" Height="28" HorizontalAlignment="Stretch" Margin="10,10,10,10" Name="lblTitle" VerticalAlignment="Stretch" />
+    </Grid>
+</w:NotificationView>

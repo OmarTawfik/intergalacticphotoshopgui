@@ -102,6 +102,11 @@
         public event OperationEvent OnOperationFinshed;
 
         /// <summary>
+        /// Gets triggered when an operation fails.
+        /// </summary>
+        public event OperationEvent OnOperationFailed;
+
+        /// <summary>
         /// Gets the singleton instance.
         /// </summary>
         public static Manager Instance
@@ -263,9 +268,14 @@
         /// <param name="operation">Executed operation.</param>
         private void OperationFinished(BaseOperation operation)
         {
-            if (this.OnOperationFinshed != null)
+            if (this.OnOperationFinshed != null && this.CurrentTab.DidOperationComplete)
             {
                 this.OnOperationFinshed(this, operation);
+            }
+
+            if (this.OnOperationFailed != null && !this.CurrentTab.DidOperationComplete)
+            {
+                this.OnOperationFailed(this, operation);
             }
         }
     }

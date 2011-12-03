@@ -42,8 +42,6 @@
 
             this.DisplayTimeout = null;
             this.AnimationType = NotificationAnimationType.Fade;
-
-            Manager.Instance.OnOperationFinshed += this.HideNotification;
         }
 
         /// <summary>
@@ -53,12 +51,27 @@
         /// <param name="operation">The operation</param>
         public void HideNotification(Manager mng, BaseOperation operation)
         {
-            imgCheck.Visibility = System.Windows.Visibility.Visible;
             loadingIndecator.Visibility = System.Windows.Visibility.Hidden;
-            lblTitle.Content = "Done in " + operation.OperatingTime.Seconds + "." + (operation.OperatingTime.Milliseconds / 100) + " Seconds.";
+            if (mng.CurrentTab.DidOperationComplete)
+            {
+                imgCheck.Visibility = System.Windows.Visibility.Visible;
+                lblTitle.Content = "Done!";
+                SideNotification finishingNotification = new SideNotification();
+                finishingNotification.SetTitle("Done in " + operation.OperatingTime.Seconds + "." + (operation.OperatingTime.Milliseconds / 100) + " Seconds.");
+                finishingNotification.DisplayTimeout = 3;
+                finishingNotification.AnimationType = NotificationAnimationType.Fade;
+                finishingNotification.ShowNotification();
+            }
+            else
+            {
+                imgError.Visibility = System.Windows.Visibility.Visible;
+                lblTitle.Content = "Error!";
+                SideNotification notification = new SideNotification();
+                notification.SetTitle("Error while performing operation.");
+                notification.ShowNotification();
+            }
 
-            UIHelpers.CallFunctionAfterDelay(3, this.Dispatcher, new Action(this.CloseNotification));
-            Manager.Instance.OnOperationFinshed -= this.HideNotification;
+            this.CloseNotification();
         }
     }
 }
