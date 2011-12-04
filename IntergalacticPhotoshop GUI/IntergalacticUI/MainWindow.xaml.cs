@@ -17,7 +17,6 @@
     using IntergalacticCore.Operations.HistogramOperations;
     using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.Matlab;
-    using IntergalacticCore.Operations.Matlab.PassFilters;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;

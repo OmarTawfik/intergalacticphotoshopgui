@@ -9,51 +9,6 @@
     public abstract class PassFilterOperation : MatlabOperation
     {
         /// <summary>
-        /// Value of C.
-        /// </summary>
-        private double valueOfC;
-
-        /// <summary>
-        /// Value of N.
-        /// </summary>
-        private double valueofN;
-
-        /// <summary>
-        /// Gets the value of C.
-        /// </summary>
-        protected double C
-        {
-            get { return this.valueOfC; }
-        }
-
-        /// <summary>
-        /// Gets the value of N.
-        /// </summary>
-        protected double N
-        {
-            get { return this.valueofN; }
-        }
-
-        /// <summary>
-        /// Sets all input associated with this operation.
-        /// </summary>
-        /// <param name="input">Array of input to be used.</param>
-        public override void SetInput(params object[] input)
-        {
-            this.valueOfC = (double)input[0];
-            this.valueofN = (double)input[1];
-        }
-
-        /// <summary>
-        /// Gets all input types associated with this operation.
-        /// </summary>
-        /// <returns>Information about input types.</returns>
-        public override string GetInput()
-        {
-            return "Value of C,double,0,1|Value of N,double,1,25";
-        }
-
-        /// <summary>
         /// Gets called before the operation begins.
         /// </summary>
         protected override void BeforeOperate()

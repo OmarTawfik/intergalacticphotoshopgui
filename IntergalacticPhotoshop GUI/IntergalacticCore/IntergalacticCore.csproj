@@ -120,7 +120,6 @@
     <Compile Include="Operations\Matlab\FrequencyDomainOperation.cs" />
     <Compile Include="Operations\Matlab\MatlabOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilterOperation.cs" />
-    <Compile Include="Operations\Matlab\PassFilters\ZonalLowPassFilter.cs" />
     <Compile Include="Operations\PixelOperations\BinarizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\BrightnessOperation.cs" />
     <Compile Include="Operations\PixelOperations\ColorExtractionOperation.cs" />
@@ -144,6 +143,9 @@
   <ItemGroup>
     <Content Include="Binaries\IntergalacticMatlab.dll" />
     <Content Include="Binaries\MWArray.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Operations\Matlab\PassFilters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
