@@ -17,6 +17,7 @@
     using IntergalacticCore.Operations.HistogramOperations;
     using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.Matlab;
+    using IntergalacticCore.Operations.Matlab.PassFilters;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -124,7 +125,15 @@
 
             this.AddOperationCategory(
                 "Pass Filters",
-                "PassFilter.png");
+                "PassFilter.png",
+                new IdealLowPassFilter(),
+                new IdealHighPassFilter(),
+                new IdealBandPassFilter(),
+                new IdealBandRejectFilter(),
+                new GaussianLowPassFilter(),
+                new GaussianHighPassFilter(),
+                new ButterworthLowPassFilter(),
+                new ButterworthHighPassFilter());
 
             this.InitHistogramView();
             this.InitZoomView();
@@ -138,12 +147,12 @@
         private void SaveFile()
         {
             System.Windows.Forms.SaveFileDialog dialog = new System.Windows.Forms.SaveFileDialog();
-            dialog.Filter = "Bitmap file|*.bmp|Portable Network Graphics|*png|JPEG image|*.jpg|PPM P3 image|*.ppm|";
+            dialog.Filter = "Bitmap (*.bmp)|*.bmp|Portable Network Graphics (*.png)|*png|JPEG image (*.jpeg)|*.jpg|PPM P3 image (*.ppm)|*.ppm";
             dialog.FilterIndex = 0;
 
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ImageFileType saveType = (ImageFileType)dialog.FilterIndex;
+                ImageFileType saveType = (ImageFileType)dialog.FilterIndex - 1;
                 Manager.Instance.CurrentTab.Image.SaveImage(dialog.FileName, saveType);
             }
         }

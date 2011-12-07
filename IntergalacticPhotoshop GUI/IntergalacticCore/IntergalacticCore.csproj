@@ -120,6 +120,14 @@
     <Compile Include="Operations\Matlab\FrequencyDomainOperation.cs" />
     <Compile Include="Operations\Matlab\MatlabOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilterOperation.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\ButterworthHighPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\ButterworthLowPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\GaussianHighPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\GaussianLowPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealBandPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealBandRejectFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealHighPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealLowPassFilter.cs" />
     <Compile Include="Operations\PixelOperations\BinarizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\BrightnessOperation.cs" />
     <Compile Include="Operations\PixelOperations\ColorExtractionOperation.cs" />
@@ -144,9 +152,7 @@
     <Content Include="Binaries\IntergalacticMatlab.dll" />
     <Content Include="Binaries\MWArray.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Operations\Matlab\PassFilters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

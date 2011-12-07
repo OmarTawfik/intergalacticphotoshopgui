@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Matlab
 {
+    using System;
     using IntergalacticMatlab;
     using MathWorks.MATLAB.NET.Arrays;
 
@@ -35,7 +36,11 @@
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    double passValue = this.GetPassValue(j, i);
+                    double x = Math.Pow(j - (this.Image.Width / 2), 2);
+                    double y = Math.Pow(i - (this.Image.Height / 2), 2);
+
+                    double d = Math.Sqrt(x + y);
+                    double passValue = this.GetPassValue(d);
                     
                     imagRed[i, j] *= passValue;
                     realRed[i, j] *= passValue;
@@ -67,9 +72,8 @@
         /// <summary>
         /// Gets the pass value for this filter.
         /// </summary>
-        /// <param name="x">X position.</param>
-        /// <param name="y">Y position.</param>
+        /// <param name="d">D(x, y).</param>
         /// <returns>The pass value.</returns>
-        protected abstract double GetPassValue(int x, int y);
+        protected abstract double GetPassValue(double d);
     }
 }
