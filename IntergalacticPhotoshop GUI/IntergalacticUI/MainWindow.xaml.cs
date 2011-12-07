@@ -18,6 +18,7 @@
     using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.Matlab;
     using IntergalacticCore.Operations.Matlab.PassFilters;
+    using IntergalacticCore.Operations.Noise.Add;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -134,6 +135,12 @@
                 new GaussianHighPassFilter(),
                 new ButterworthLowPassFilter(),
                 new ButterworthHighPassFilter());
+
+            this.AddOperationCategory(
+                "Noise Operations",
+                "Noise.png",
+                new AddSaltPepperNoiseOperation(),
+                new AddUniformNoiseOperation());
 
             this.InitHistogramView();
             this.InitZoomView();

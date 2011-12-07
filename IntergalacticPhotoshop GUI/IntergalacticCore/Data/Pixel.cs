@@ -142,5 +142,44 @@
 
             return new Pixel((byte)red, (byte)green, (byte)blue);
         }
+
+        /// <summary>
+        /// Returns a new pixel with values clampped between 0 and 255.
+        /// </summary>
+        /// <param name="red">Red component of pixel.</param>
+        /// <param name="green">Green component of pixel.</param>
+        /// <param name="blue">Blue component of pixel.</param>
+        /// <returns>The new clampped pixel.</returns>
+        public static Pixel CutOff(double red, double green, double blue)
+        {
+            if (red < 0)
+            {
+                red = 0;
+            }
+            else if (red > 255)
+            {
+                red = 255;
+            }
+
+            if (green < 0)
+            {
+                green = 0;
+            }
+            else if (green > 255)
+            {
+                green = 255;
+            }
+
+            if (blue < 0)
+            {
+                blue = 0;
+            }
+            else if (blue > 255)
+            {
+                blue = 255;
+            }
+
+            return new Pixel((byte)red, (byte)green, (byte)blue);
+        }
     }
 }
