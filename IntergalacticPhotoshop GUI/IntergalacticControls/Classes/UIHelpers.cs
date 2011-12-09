@@ -20,7 +20,7 @@
     /// <summary>
     /// Used to pass parameters to a thread start, to remove elements from a panel.
     /// </summary>
-    private struct RemoveElementParameters
+    struct RemoveElementParameters
     {
         /// <summary>
         /// The element to remove
@@ -250,6 +250,7 @@
         {
             RemoveElementParameters parameters = new RemoveElementParameters(element, panel, delayInSeconds);
             Thread thread = new Thread(new ParameterizedThreadStart(new ParameterizedThreadStart(RemoveElementThreadStart)));
+            thread.Start(parameters);
         }
 
         /// <summary>
