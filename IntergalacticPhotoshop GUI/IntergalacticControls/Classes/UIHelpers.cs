@@ -18,6 +18,64 @@
     using System.Windows.Threading;
 
     /// <summary>
+    /// Used to pass parameters to a thread start, to remove elements from a panel.
+    /// </summary>
+    private struct RemoveElementParameters
+    {
+        /// <summary>
+        /// The element to remove
+        /// </summary>
+        private FrameworkElement element;
+
+        /// <summary>
+        /// The container of the element
+        /// </summary>
+        private Panel panel;
+
+        /// <summary>
+        /// Delay before element removal
+        /// </summary>
+        private double delayInSeconds;
+
+        /// <summary>
+        /// Initializes a new instance of the RemoveElementParameters struct
+        /// </summary>
+        /// <param name="element">The element to remove</param>
+        /// <param name="panel">The parent panel</param>
+        /// <param name="delayInSeconds">Time before removal</param>
+        public RemoveElementParameters(FrameworkElement element, Panel panel, double delayInSeconds)
+        {
+            this.element = element;
+            this.panel = panel;
+            this.delayInSeconds = delayInSeconds;
+        }
+
+        /// <summary>
+        /// Gets the element to remove
+        /// </summary>
+        public FrameworkElement Element
+        {
+            get { return this.element; }
+        }
+
+        /// <summary>
+        /// Gets the parent of the element
+        /// </summary>
+        public Panel Panel
+        {
+            get { return this.panel; }
+        }
+
+        /// <summary>
+        /// Gets the delay, in seconds
+        /// </summary>
+        public double DelayInSeconds
+        {
+            get { return this.delayInSeconds; }
+        }
+    }
+
+    /// <summary>
     /// Provides helper funcitons relative to the UI framwwork
     /// </summary>
     internal class UIHelpers
@@ -190,21 +248,8 @@
         /// <param name="delayInSeconds">Delay time in seconds</param>
         public static void RemoveElementFromContainerAfterDelay(FrameworkElement element, Panel panel, double delayInSeconds)
         {
-            Timer timer = new Timer(
-                obj =>
-                {
-                    if (panel.Dispatcher.Thread == Thread.CurrentThread)
-                    {
-                        RemoveElementHelper(element, panel);
-                    }
-                    else
-                    {
-                        panel.Dispatcher.BeginInvoke(new RemoveElementDelegate(RemoveElementHelper), element, panel).Wait();
-                    }
-                },
-            null,
-            (int)(delayInSeconds * 1000),
-            Timeout.Infinite);
+            RemoveElementParameters parameters = new RemoveElementParameters(element, panel, delayInSeconds);
+            Thread thread = new Thread(new ParameterizedThreadStart(new ParameterizedThreadStart(RemoveElementThreadStart)));
         }
 
         /// <summary>
@@ -329,6 +374,24 @@
             null,
             (int)(delayInSeconds * 1000),
             Timeout.Infinite);
+        }
+
+        /// <summary>
+        /// Thread start for control removal
+        /// </summary>
+        /// <param name="parameters">Removal parameters</param>
+        private static void RemoveElementThreadStart(object parameters)
+        {
+            RemoveElementParameters param = (RemoveElementParameters)parameters;
+            Thread.Sleep((int)(param.DelayInSeconds * 1000));
+            if (param.Panel.Dispatcher.Thread == Thread.CurrentThread)
+            {
+                RemoveElementHelper(param.Element, param.Panel);
+            }
+            else
+            {
+                param.Panel.Dispatcher.BeginInvoke(new RemoveElementDelegate(RemoveElementHelper), param.Element, param.Panel).Wait();
+            }
         }
 
         /// <summary>
