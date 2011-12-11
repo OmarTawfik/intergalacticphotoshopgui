@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Inverts all pixels contained in this image.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

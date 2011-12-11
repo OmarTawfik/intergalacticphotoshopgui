@@ -58,7 +58,7 @@
         }
 
         /// <summary>
-        /// Adds a colored border with a specific width to the image.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

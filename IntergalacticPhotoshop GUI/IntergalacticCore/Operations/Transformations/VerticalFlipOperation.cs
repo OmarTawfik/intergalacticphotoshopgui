@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Flips the image vertically.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

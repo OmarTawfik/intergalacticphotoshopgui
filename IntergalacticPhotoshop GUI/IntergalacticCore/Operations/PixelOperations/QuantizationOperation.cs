@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Reduces the number of bits per channel for the image to a given value
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

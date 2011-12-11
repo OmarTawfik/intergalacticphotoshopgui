@@ -42,7 +42,7 @@
         }
 
         /// <summary>
-        /// Adjusts the brightness of the image.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

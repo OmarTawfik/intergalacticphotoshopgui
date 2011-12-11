@@ -2,12 +2,11 @@
 {
     using System;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// Modifies each pixel by a gaussian noise.
     /// </summary>
-    public class AddGaussianNoiseOperation : BaseOperation
+    public class AddGaussianNoiseOperation : BaseNoiseAdditionOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -54,40 +53,26 @@
         }
 
         /// <summary>
-        /// Applies the actual operation on the image.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {
-            bool[,] check = new bool[this.Image.Height, this.Image.Width];
+            bool[,] table = this.GetRandomTable(this.percentage);
+            
             Random rand = new Random();
-
-            int count = (int)(this.percentage * this.Image.Width * this.Image.Height);
-            while (count > 0)
-            {
-                int x = rand.Next(this.Image.Width);
-                int y = rand.Next(this.Image.Height);
-
-                if (check[y, x] == false)
-                {
-                    check[y, x] = true;
-                    count--;
-                }
-            }
-
             double div = Math.Sqrt(2 * Math.PI * this.variance);
+
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    if (check[i, j] == true)
+                    if (table[i, j] == true)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
                         
                         double powerRed = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
                         double powerGreen = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
                         double powerBlue = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
-
-                        System.Windows.Forms.MessageBox.Show((Math.Pow(Math.E, -powerRed) / div).ToString());
 
                         p = Pixel.CutOff(
                             p.Red + (Math.Pow(Math.E, -powerRed) / div),
@@ -98,15 +83,6 @@
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets called after the operation ends.
-        /// </summary>
-        protected override void AfterOperate()
-        {
-            NormalizationOperation operation = new NormalizationOperation();
-            this.Image = operation.Execute(this.Image);
         }
     }
 }

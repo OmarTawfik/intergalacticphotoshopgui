@@ -141,7 +141,8 @@
                 "Noise.png",
                 new AddSaltPepperNoiseOperation(),
                 new AddUniformNoiseOperation(),
-                new AddGaussianNoiseOperation());
+                new AddGaussianNoiseOperation(),
+                new AddExponentialNoiseOperation());
 
             this.InitHistogramView();
             this.InitZoomView();

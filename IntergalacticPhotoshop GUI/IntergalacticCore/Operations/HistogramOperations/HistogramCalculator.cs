@@ -104,7 +104,7 @@
         }
 
         /// <summary>
-        /// Calculates all histogram values for an image.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

@@ -4,9 +4,9 @@
     using IntergalacticCore.Data;
 
     /// <summary>
-    /// Modifies each pixel by a uniform noise.
+    /// Modifies each pixel by an exponential noise.
     /// </summary>
-    public class AddUniformNoiseOperation : BaseNoiseAdditionOperation
+    public class AddExponentialNoiseOperation : BaseNoiseAdditionOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -14,14 +14,9 @@
         private double percentage;
 
         /// <summary>
-        /// Start of the uniform graph.
+        /// Mean of the normal graph.
         /// </summary>
-        private byte start;
-
-        /// <summary>
-        /// End of the uniform graph.
-        /// </summary>
-        private byte end;
+        private double mean;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -30,8 +25,7 @@
         public override void SetInput(params object[] input)
         {
             this.percentage = (double)input[0] / 100;
-            this.start = (byte)input[1];
-            this.end = (byte)input[2];
+            this.mean = (double)input[1];
         }
 
         /// <summary>
@@ -40,7 +34,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Start,byte_slider,0,255|End,byte_slider,0,255";
+            return "Ammount,double,0,100|Mean,double,0,100";
         }
 
         /// <summary>
@@ -49,7 +43,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Add Uniform Noise";
+            return "Add Exponential Noise";
         }
 
         /// <summary>
@@ -67,13 +61,32 @@
                     if (table[i, j] == true)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
+
                         p = Pixel.CutOff(
-                            p.Red + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Green + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Blue + this.start + (rand.NextDouble() * (this.end - this.start)));
+                            p.Red + this.GetValue(rand.NextDouble()),
+                            p.Green + this.GetValue(rand.NextDouble()),
+                            p.Blue + this.GetValue(rand.NextDouble()));
+
                         this.Image.SetPixel(j, i, p);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets a distribution value from a random number.
+        /// </summary>
+        /// <param name="randomVariable">random variable to start with.</param>
+        /// <returns>the exponential distribution member.</returns>
+        private double GetValue(double randomVariable)
+        {
+            if (randomVariable != 0)
+            {
+                return -this.mean * Math.Log(randomVariable, Math.Exp(1));
+            }
+            else
+            {
+                return 0;
             }
         }
     }

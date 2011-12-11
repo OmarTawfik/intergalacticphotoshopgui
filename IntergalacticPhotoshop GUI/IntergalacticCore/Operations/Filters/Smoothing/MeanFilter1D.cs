@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Does noise reduction using 1D mean filtering.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

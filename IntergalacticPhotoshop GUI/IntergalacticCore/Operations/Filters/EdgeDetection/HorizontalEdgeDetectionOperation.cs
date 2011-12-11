@@ -19,7 +19,7 @@
         }
 
         /// <summary>
-        /// Detects horizontal edges using laplacian filter.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

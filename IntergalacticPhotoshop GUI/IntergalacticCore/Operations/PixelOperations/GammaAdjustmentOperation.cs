@@ -41,7 +41,7 @@
         }
 
         /// <summary>
-        /// Adjusts the contrast of the image by given histogram values
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        /// Equalizes the histogram by the gray component.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

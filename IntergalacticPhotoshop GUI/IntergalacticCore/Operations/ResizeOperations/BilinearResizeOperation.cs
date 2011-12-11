@@ -56,7 +56,7 @@
         }
 
         /// <summary>
-        /// Performs a bilinear resize on the image contents.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

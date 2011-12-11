@@ -17,7 +17,7 @@
         }
 
         /// <summary>
-        /// Converts all pixels of the image to a binary value (white or black).
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

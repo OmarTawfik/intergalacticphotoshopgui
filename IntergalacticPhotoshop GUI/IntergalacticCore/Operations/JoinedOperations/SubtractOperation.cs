@@ -67,7 +67,7 @@
         }
 
         /// <summary>
-        /// Subtracts the contents of an image from another.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

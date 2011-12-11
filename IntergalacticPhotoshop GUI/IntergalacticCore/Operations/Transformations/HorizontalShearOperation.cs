@@ -40,7 +40,7 @@
         }
 
         /// <summary>
-        /// Shears the image horizontally by a factor.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {

@@ -67,7 +67,7 @@
         }
 
         /// <summary>
-        /// Adds the contents of two images together.
+        /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {
