@@ -5,9 +5,9 @@
     using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
-    /// Modifies each pixel by a uniform noise.
+    /// Modifies each pixel by a gaussian noise.
     /// </summary>
-    public class AddUniformNoiseOperation : BaseOperation
+    public class AddGaussianNoiseOperation : BaseOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -15,14 +15,14 @@
         private double percentage;
 
         /// <summary>
-        /// Start of the uniform graph.
+        /// Mean of the normal graph.
         /// </summary>
-        private byte start;
+        private double mean;
 
         /// <summary>
-        /// End of the uniform graph.
+        /// Variance of the normal graph.
         /// </summary>
-        private byte end;
+        private double variance;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -31,8 +31,8 @@
         public override void SetInput(params object[] input)
         {
             this.percentage = (double)input[0] / 100;
-            this.start = (byte)input[1];
-            this.end = (byte)input[2];
+            this.mean = (double)input[1];
+            this.variance = (double)input[2];
         }
 
         /// <summary>
@@ -41,7 +41,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Start,byte_slider,0,255|End,byte_slider,0,255";
+            return "Ammount,double,0,100|Mean,double,0,100|Variance,double,0,100";
         }
 
         /// <summary>
@@ -50,7 +50,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Add Uniform Noise";
+            return "Add Gaussian Noise";
         }
 
         /// <summary>
@@ -74,6 +74,7 @@
                 }
             }
 
+            double div = Math.Sqrt(2 * Math.PI * this.variance);
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
@@ -81,10 +82,18 @@
                     if (check[i, j] == true)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
+                        
+                        double powerRed = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
+                        double powerGreen = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
+                        double powerBlue = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
+
+                        System.Windows.Forms.MessageBox.Show((Math.Pow(Math.E, -powerRed) / div).ToString());
+
                         p = Pixel.CutOff(
-                            p.Red + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Green + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Blue + this.start + (rand.NextDouble() * (this.end - this.start)));
+                            p.Red + (Math.Pow(Math.E, -powerRed) / div),
+                            p.Green + (Math.Pow(Math.E, -powerGreen) / div),
+                            p.Blue + (Math.Pow(Math.E, -powerBlue) / div));
+
                         this.Image.SetPixel(j, i, p);
                     }
                 }

@@ -20,7 +20,7 @@
     /// <summary>
     /// Used to pass parameters to a thread start, to remove elements from a panel.
     /// </summary>
-    private struct DelayActionParameters
+    public struct DelayActionParameters
     {
         /// <summary>
         /// The element to remove

@@ -6,7 +6,7 @@
     /// <summary>
     /// The noise type for this pixel.
     /// </summary>
-    private enum NoiseType
+    public enum NoiseType
     {
         /// <summary>
         /// No noise. Original pixel is put.
