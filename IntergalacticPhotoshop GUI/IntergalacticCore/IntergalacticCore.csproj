@@ -130,6 +130,7 @@
     <Compile Include="Operations\Matlab\PassFilters\IdealLowPassFilter.cs" />
     <Compile Include="Operations\Noise\Add\AddExponentialNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddGaussianNoiseOperation.cs" />
+    <Compile Include="Operations\Noise\Add\AddRayleighNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddSaltPepperNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddUniformNoiseOperation.cs" />
     <Compile Include="Operations\Noise\BaseNoiseAdditionOperation.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Operations\PixelOperations\GrayOperation.cs" />
     <Compile Include="Operations\PixelOperations\NormalizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\NotOperation.cs" />
+    <Compile Include="Operations\PixelOperations\PixelationOperation.cs" />
     <Compile Include="Operations\PixelOperations\QuantizationOperation.cs" />
     <Compile Include="Operations\JoinedOperations\SubtractOperation.cs" />
     <Compile Include="Operations\ResizeOperations\BilinearResizeOperation.cs" />

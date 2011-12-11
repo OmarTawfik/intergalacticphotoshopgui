@@ -83,7 +83,8 @@
                 new QuantizationOperation(),
                 new BinarizationOperation(),
                 new ColorExtractionOperation(),
-                new CustomMaskOperation());
+                new CustomMaskOperation(),
+                new PixelationOperation());
 
             this.AddOperationCategory(
                 "Joined Operations",
@@ -142,7 +143,8 @@
                 new AddSaltPepperNoiseOperation(),
                 new AddUniformNoiseOperation(),
                 new AddGaussianNoiseOperation(),
-                new AddExponentialNoiseOperation());
+                new AddExponentialNoiseOperation(),
+                new AddRayleighNoiseOperation());
 
             this.InitHistogramView();
             this.InitZoomView();
