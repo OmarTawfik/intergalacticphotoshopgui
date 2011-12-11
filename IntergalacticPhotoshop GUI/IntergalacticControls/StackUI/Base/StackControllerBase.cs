@@ -21,6 +21,16 @@
     public class StackControllerBase : UserControl
     {
         /// <summary>
+        /// Represents the normal opacity for buttons.
+        /// </summary>
+        private const double NormalOpacity = 0.2;
+
+        /// <summary>
+        /// Represents the hovered opacity for buttons.
+        /// </summary>
+        private const double HoveredOpacity = 1.0;
+    
+        /// <summary>
         /// Fade in/out animations
         /// </summary>
         private DoubleAnimation fadeIn, fadeOut;
@@ -35,12 +45,12 @@
         /// </summary>
         public StackControllerBase()
         {
-            this.Opacity = 0.6;
+            this.Opacity = StackControllerBase.NormalOpacity;
 
-            this.fadeIn = new DoubleAnimation(1, TimeSpan.FromSeconds(0.3));
+            this.fadeIn = new DoubleAnimation(StackControllerBase.HoveredOpacity, TimeSpan.FromSeconds(0.3));
             this.fadeIn.AccelerationRatio = 0.3;
             this.fadeIn.DecelerationRatio = 0.3;
-            this.fadeOut = new DoubleAnimation(0.6, TimeSpan.FromSeconds(0.3));
+            this.fadeOut = new DoubleAnimation(StackControllerBase.NormalOpacity, TimeSpan.FromSeconds(0.3));
             this.fadeOut.AccelerationRatio = 0.3;
             this.fadeOut.DecelerationRatio = 0.3;
         }

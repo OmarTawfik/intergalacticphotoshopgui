@@ -20,7 +20,7 @@
     /// <summary>
     /// Used to pass parameters to a thread start, to remove elements from a panel.
     /// </summary>
-    struct DelayActionParameters
+    private struct DelayActionParameters
     {
         /// <summary>
         /// The element to remove
@@ -340,12 +340,12 @@
         }
 
         /// <summary>
-        /// Call a function by using the given dispatcher object after delay
+        /// Call a function by using the given dispatcher object after delay.
         /// </summary>
         /// <param name="delayInSeconds">Delay time in seconds</param>
         /// <param name="dispatcher">The dispatcher object</param>
         /// <param name="function">The function to call</param>
-        /// <param name="parameters">Function parameters</param>
+        /// <param name="parametersList">Function parameters</param>
         public static void CallFunctionAfterDelay(double delayInSeconds, Dispatcher dispatcher, Delegate function, params object[] parametersList)
         {
             DelayActionParameters parameters = new DelayActionParameters(dispatcher, function, delayInSeconds, parametersList);
@@ -389,6 +389,10 @@
             }
         }
 
+        /// <summary>
+        /// Starts a function thread.
+        /// </summary>
+        /// <param name="parameters">Parameters to the function.</param>
         private static void CallFunctionThreadStart(object parameters)
         {
             DelayActionParameters param = (DelayActionParameters)parameters;

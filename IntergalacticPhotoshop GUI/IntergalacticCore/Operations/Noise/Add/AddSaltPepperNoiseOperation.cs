@@ -4,6 +4,27 @@
     using IntergalacticCore.Data;
 
     /// <summary>
+    /// The noise type for this pixel.
+    /// </summary>
+    private enum NoiseType
+    {
+        /// <summary>
+        /// No noise. Original pixel is put.
+        /// </summary>
+        None,
+        
+        /// <summary>
+        /// Salt noise. White pixel is put.
+        /// </summary>
+        Salt,
+
+        /// <summary>
+        /// Pepper noise. Black pixel is put.
+        /// </summary>
+        Pepper,
+    }
+
+    /// <summary>
     /// Adds random white and black pixels to the image.
     /// </summary>
     public class AddSaltPepperNoiseOperation : BaseOperation
@@ -24,8 +45,13 @@
         /// <param name="input">Array of input to be used (brightness value).</param>
         public override void SetInput(params object[] input)
         {
-            this.saltPercentage = (double)input[0];
-            this.pepperPercentage = (double)input[1];
+            this.saltPercentage = (double)input[0] / 100.0;
+            this.pepperPercentage = (double)input[1] / 100.0;
+
+            if (this.saltPercentage + this.pepperPercentage > 1.0)
+            {
+                throw new Exception("Salt Percentage + Pepper Percentage must be less than or equal 100%");
+            }
         }
 
         /// <summary>
@@ -51,30 +77,32 @@
         /// </summary>
         protected override void Operate()
         {
-            this.AddNoise(Pixel.White, this.saltPercentage);
-            this.AddNoise(Pixel.Black, this.pepperPercentage);
-        }
-
-        /// <summary>
-        /// Adds the specified color as a noise.
-        /// </summary>
-        /// <param name="color">Color to be added.</param>
-        /// <param name="percentage">Percentage of noise.</param>
-        private void AddNoise(Pixel color, double percentage)
-        {
-            bool[,] check = new bool[this.Image.Height, this.Image.Width];
-            int count = (int)((this.Image.Width * this.Image.Height) * percentage / 100);
+            NoiseType[,] check = new NoiseType[this.Image.Height, this.Image.Width];
             Random rand = new Random();
 
-            while (count > 0)
+            int saltCount = (int)(this.saltPercentage * this.Image.Width * this.Image.Height);
+            while (saltCount > 0)
             {
                 int x = rand.Next(this.Image.Width);
                 int y = rand.Next(this.Image.Height);
 
-                if (check[y, x] == false)
+                if (check[y, x] == NoiseType.None)
                 {
-                    check[y, x] = true;
-                    count--;
+                    check[y, x] = NoiseType.Salt;
+                    saltCount--;
+                }
+            }
+
+            int pepperCount = (int)(this.pepperPercentage * this.Image.Width * this.Image.Height);
+            while (pepperCount > 0)
+            {
+                int x = rand.Next(this.Image.Width);
+                int y = rand.Next(this.Image.Height);
+
+                if (check[y, x] == NoiseType.None)
+                {
+                    check[y, x] = NoiseType.Pepper;
+                    pepperCount--;
                 }
             }
 
@@ -82,9 +110,13 @@
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    if (check[i, j] == true)
+                    if (check[i, j] == NoiseType.Pepper)
                     {
-                        this.Image.SetPixel(j, i, color);
+                        this.Image.SetPixel(j, i, Pixel.Black);
+                    }
+                    else if (check[i, j] == NoiseType.Salt)
+                    {
+                        this.Image.SetPixel(j, i, Pixel.White);
                     }
                 }
             }
