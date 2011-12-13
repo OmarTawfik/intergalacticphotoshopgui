@@ -1,11 +1,13 @@
-﻿namespace IntergalacticCore.Operations.Filters.Smoothing
+﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
+    using System;
     using IntergalacticCore.Data;
+    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
-    /// Does noise reduction using 2D mean filtering.
+    /// Does noise reduction using geometric mean filter.
     /// </summary>
-    public class MeanFilter2D : ConvolutionBase
+    public class GeometricMeanFilter : ConvolutionBase
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -36,7 +38,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Mean Filter 2D";
+            return "Geometric Mean Filter";
         }
 
         /// <summary>
@@ -45,27 +47,25 @@
         protected override void Operate()
         {
             int side = (int)this.maskSize / 2;
+            double power = 1.0 / (this.maskSize * this.maskSize);
+
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    int red = 0, green = 0, blue = 0;
+                    double red = 1, green = 1, blue = 1;
                     for (int a = i - side; a <= i + side; a++)
                     {
                         for (int b = j - side; b <= j + side; b++)
                         {
                             Pixel p = this.GetLocation(b, a);
-                            red += p.Red;
-                            green += p.Green;
-                            blue += p.Blue;
+                            red *= Math.Pow(p.Red, power);
+                            green *= Math.Pow(p.Green, power);
+                            blue *= Math.Pow(p.Blue, power);
                         }
                     }
 
-                    Pixel newPixel = new Pixel(
-                       (byte)(red / (this.maskSize * this.maskSize)),
-                       (byte)(green / (this.maskSize * this.maskSize)),
-                       (byte)(blue / (this.maskSize * this.maskSize)));
-                    this.ResultImage.SetPixel(j, i, newPixel);
+                    this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
                 }
             }
         }

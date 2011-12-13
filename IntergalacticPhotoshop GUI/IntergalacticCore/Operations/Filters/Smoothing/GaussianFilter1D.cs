@@ -58,7 +58,7 @@
                 horizontalMask[x] = bracket * Math.Pow(Math.E, power);
             }
 
-            for (int y = 0, b = 0; y < maskSize; y++, b++)
+            for (int y = 0, b = -n; y < maskSize; y++, b++)
             {
                 double power = -(b * b) / (2 * this.sigma * this.sigma);
                 verticalMask[y] = bracket * Math.Pow(Math.E, power);

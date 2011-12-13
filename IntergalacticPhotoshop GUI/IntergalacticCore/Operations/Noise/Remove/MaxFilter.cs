@@ -1,11 +1,13 @@
-﻿namespace IntergalacticCore.Operations.Filters.Smoothing
+﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
+    using System;
     using IntergalacticCore.Data;
+    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
-    /// Does noise reduction using 2D mean filtering.
+    /// Does noise reduction using max filter.
     /// </summary>
-    public class MeanFilter2D : ConvolutionBase
+    public class MaxFilter : BaseNoiseRemovalOperation
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -36,7 +38,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Mean Filter 2D";
+            return "Max Filter";
         }
 
         /// <summary>
@@ -49,23 +51,16 @@
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    int red = 0, green = 0, blue = 0;
+                    int max = int.MinValue;
                     for (int a = i - side; a <= i + side; a++)
                     {
                         for (int b = j - side; b <= j + side; b++)
                         {
-                            Pixel p = this.GetLocation(b, a);
-                            red += p.Red;
-                            green += p.Green;
-                            blue += p.Blue;
+                            max = Math.Max(max, this.GetBitmixedAt(b, a));
                         }
                     }
 
-                    Pixel newPixel = new Pixel(
-                       (byte)(red / (this.maskSize * this.maskSize)),
-                       (byte)(green / (this.maskSize * this.maskSize)),
-                       (byte)(blue / (this.maskSize * this.maskSize)));
-                    this.ResultImage.SetPixel(j, i, newPixel);
+                    this.ResultImage.SetPixel(j, i, this.FromBitMixed(max));
                 }
             }
         }

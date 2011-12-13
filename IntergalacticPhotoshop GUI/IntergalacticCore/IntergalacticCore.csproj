@@ -134,6 +134,12 @@
     <Compile Include="Operations\Noise\Add\AddSaltPepperNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddUniformNoiseOperation.cs" />
     <Compile Include="Operations\Noise\BaseNoiseAdditionOperation.cs" />
+    <Compile Include="Operations\Noise\BaseNoiseRemovalOperation.cs" />
+    <Compile Include="Operations\Noise\Remove\GeometricMeanFilter.cs" />
+    <Compile Include="Operations\Noise\Remove\MaxFilter.cs" />
+    <Compile Include="Operations\Noise\Remove\MedianFilter.cs" />
+    <Compile Include="Operations\Noise\Remove\MidPointFilter.cs" />
+    <Compile Include="Operations\Noise\Remove\MinFilter.cs" />
     <Compile Include="Operations\PixelOperations\BinarizationOperation.cs" />
     <Compile Include="Operations\PixelOperations\BrightnessOperation.cs" />
     <Compile Include="Operations\PixelOperations\ColorExtractionOperation.cs" />

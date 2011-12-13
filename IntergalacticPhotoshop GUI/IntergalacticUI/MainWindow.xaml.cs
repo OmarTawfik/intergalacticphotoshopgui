@@ -19,6 +19,7 @@
     using IntergalacticCore.Operations.Matlab;
     using IntergalacticCore.Operations.Matlab.PassFilters;
     using IntergalacticCore.Operations.Noise.Add;
+    using IntergalacticCore.Operations.Noise.Remove;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
@@ -144,7 +145,12 @@
                 new AddUniformNoiseOperation(),
                 new AddGaussianNoiseOperation(),
                 new AddExponentialNoiseOperation(),
-                new AddRayleighNoiseOperation());
+                new AddRayleighNoiseOperation(),
+                new GeometricMeanFilter(),
+                new MinFilter(),
+                new MaxFilter(),
+                new MedianFilter(),
+                new MidPointFilter());
 
             this.InitHistogramView();
             this.InitZoomView();

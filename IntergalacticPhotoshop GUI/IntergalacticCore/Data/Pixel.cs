@@ -181,5 +181,19 @@
 
             return new Pixel((byte)red, (byte)green, (byte)blue);
         }
+
+        /// <summary>
+        /// Interpolates the values of two pixels into a middle one.
+        /// </summary>
+        /// <param name="a">The first pixel.</param>
+        /// <param name="b">The second pixel.</param>
+        /// <returns>Interpolated pixel.</returns>
+        public static Pixel Interpolate(Pixel a, Pixel b)
+        {
+            return new Pixel(
+                (byte)((a.red + b.red) / 2),
+                (byte)((a.green + b.green) / 2),
+                (byte)((a.blue + b.blue) / 2));
+        }
     }
 }

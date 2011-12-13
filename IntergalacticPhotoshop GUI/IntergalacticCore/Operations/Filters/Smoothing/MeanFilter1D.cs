@@ -51,7 +51,7 @@
                 {
                     int red = 0, green = 0, blue = 0;
 
-                    for (int b = j - side; b < j + side; b++)
+                    for (int b = j - side; b <= j + side; b++)
                     {
                         Pixel p = this.GetLocation(b, i);
                         red += p.Red;
@@ -79,7 +79,7 @@
                 {
                     int red = 0, green = 0, blue = 0;
 
-                    for (int a = i - side; a < i + side; a++)
+                    for (int a = i - side; a <= i + side; a++)
                     {
                         Pixel p = this.GetLocation(j, a);
                         red += p.Red;
