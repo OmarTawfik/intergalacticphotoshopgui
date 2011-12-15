@@ -10,16 +10,19 @@
     public abstract class PassFilterOperation : MatlabOperation
     {
         /// <summary>
+        /// Matlab Class Handle.
+        /// </summary>
+        private FrequencyDomain matlabCls = new FrequencyDomain();
+
+        /// <summary>
         /// Gets called before the operation begins.
         /// </summary>
         protected override void BeforeOperate()
         {
-            FrequencyDomain matlabCls = new FrequencyDomain();
-
             double[,] sourceRed, sourceGreen, sourceBlue;
             this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
 
-            MWArray[] frequencyComponents = matlabCls.ConvertToFrequencyDomain(
+            MWArray[] frequencyComponents = this.matlabCls.ConvertToFrequencyDomain(
                 6,
                 (MWNumericArray)sourceRed,
                 (MWNumericArray)sourceGreen,
@@ -53,7 +56,7 @@
                 }
             }
 
-            MWArray[] spatialComponents = matlabCls.ConvertToSpatialDomain(
+            MWArray[] spatialComponents = this.matlabCls.ConvertToSpatialDomain(
                 3,
                 (MWNumericArray)imagRed,
                 (MWNumericArray)realRed,

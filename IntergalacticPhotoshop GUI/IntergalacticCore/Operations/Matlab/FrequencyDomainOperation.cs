@@ -31,6 +31,11 @@
         private ImageBase frequencyDomainImage;
 
         /// <summary>
+        /// The Matlab Class Handle.
+        /// </summary>
+        private FrequencyDomain matlabCls = new FrequencyDomain();
+
+        /// <summary>
         /// Gets the result red image.
         /// </summary>
         public ImageBase RedImage
@@ -76,12 +81,10 @@
         /// </summary>
         protected override void BeforeOperate()
         {
-            FrequencyDomain matlabCls = new FrequencyDomain();
-
             double[,] sourceRed, sourceGreen, sourceBlue;
             this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
 
-            MWArray[] frequencyComponents = matlabCls.ConvertToFrequencyDomain(
+            MWArray[] frequencyComponents = this.matlabCls.ConvertToFrequencyDomain(
                 6,
                 (MWNumericArray)sourceRed,
                 (MWNumericArray)sourceGreen,

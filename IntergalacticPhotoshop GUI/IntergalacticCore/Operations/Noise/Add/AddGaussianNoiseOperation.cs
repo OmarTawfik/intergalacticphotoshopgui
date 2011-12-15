@@ -75,9 +75,9 @@
                         double powerBlue = Math.Pow(rand.NextDouble() - this.mean, 2) / (2 * this.variance);
 
                         p = Pixel.CutOff(
-                            p.Red + (Math.Pow(Math.E, -powerRed) / div),
-                            p.Green + (Math.Pow(Math.E, -powerGreen) / div),
-                            p.Blue + (Math.Pow(Math.E, -powerBlue) / div));
+                            p.Red + (256 * (Math.Pow(Math.E, -powerRed) / div)),
+                            p.Green + (256 * (Math.Pow(Math.E, -powerGreen) / div)),
+                            p.Blue + (256 * (Math.Pow(Math.E, -powerBlue) / div)));
 
                         this.Image.SetPixel(j, i, p);
                     }

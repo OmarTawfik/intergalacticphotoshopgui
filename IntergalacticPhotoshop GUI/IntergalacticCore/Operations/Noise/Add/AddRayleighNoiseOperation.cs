@@ -57,9 +57,7 @@
         protected override void Operate()
         {
             bool[,] table = this.GetRandomTable(this.percentage);
-
             Random rand = new Random();
-            double div = Math.Sqrt(2 * Math.PI * this.variance);
 
             for (int i = 0; i < this.Image.Height; i++)
             {
@@ -70,9 +68,9 @@
                         Pixel p = this.Image.GetPixel(j, i);
 
                         p = Pixel.CutOff(
-                            p.Red + this.GetNoise(rand.NextDouble()),
-                            p.Green + this.GetNoise(rand.NextDouble()),
-                            p.Blue + this.GetNoise(rand.NextDouble()));
+                            p.Red + (256 * this.GetNoise(rand.NextDouble())),
+                            p.Green + (256 * this.GetNoise(rand.NextDouble())),
+                            p.Blue + (256 * this.GetNoise(rand.NextDouble())));
 
                         this.Image.SetPixel(j, i, p);
                     }

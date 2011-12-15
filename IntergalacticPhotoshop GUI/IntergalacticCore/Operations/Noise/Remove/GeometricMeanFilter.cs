@@ -25,7 +25,7 @@
 
         /// <summary>
         /// Gets all input types associated with this operation.
-        /// </summary>
+        /// </summary> 
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {

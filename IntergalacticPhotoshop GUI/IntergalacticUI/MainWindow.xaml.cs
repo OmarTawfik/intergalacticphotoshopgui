@@ -367,16 +367,15 @@
         /// <param name="operate">Frequency Domain Operation.</param>
         private void AddFrequencyDomainOperationTabs(Manager mng, BaseOperation operate)
         {
-            FrequencyDomainOperation op = operate as FrequencyDomainOperation;
-            if (op == null)
+            if (operate is FrequencyDomainOperation)
             {
-                return;
-            }
+                FrequencyDomainOperation op = operate as FrequencyDomainOperation;
 
-            Manager.Instance.AddTab(op.FrequencyDomainImage, "Frequency");
-            Manager.Instance.AddTab(op.RedImage, "RED");
-            Manager.Instance.AddTab(op.GreenImage, "GREEN");
-            Manager.Instance.AddTab(op.BlueImage, "BLUE");
+                Manager.Instance.AddTab(op.FrequencyDomainImage, "Frequency");
+                Manager.Instance.AddTab(op.RedImage, "RED");
+                Manager.Instance.AddTab(op.GreenImage, "GREEN");
+                Manager.Instance.AddTab(op.BlueImage, "BLUE");
+            }
         }
     }
 }
