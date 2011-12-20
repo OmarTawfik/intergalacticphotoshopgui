@@ -76,14 +76,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\IntergalacticCLRCore\ImageData.h" />
-    <ClInclude Include="..\IntergalacticCLRCore\NotOperation.h" />
     <ClInclude Include="IntergalacticCpp.h" />
+    <ClInclude Include="NotOperation.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="ImageData.cpp" />
     <ClCompile Include="IntergalacticCpp.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

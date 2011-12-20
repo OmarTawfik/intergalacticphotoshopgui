@@ -30,10 +30,7 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\IntergalacticCLRCore\ImageData.h">
-      <Filter>Operations</Filter>
-    </ClInclude>
-    <ClInclude Include="..\IntergalacticCLRCore\NotOperation.h">
+    <ClInclude Include="NotOperation.h">
       <Filter>Operations\PixelOperations</Filter>
     </ClInclude>
   </ItemGroup>
@@ -46,6 +43,9 @@
     </ClCompile>
     <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageData.cpp">
+      <Filter>Operations</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
