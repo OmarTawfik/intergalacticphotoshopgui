@@ -155,6 +155,19 @@
     internal class UIHelpers
     {
         /// <summary>
+        /// List of current threads (to prevent the GC from removing them)
+        /// </summary>
+        private static List<Thread> threads;
+
+        /// <summary>
+        /// Initializes static members of the UIHelpers class
+        /// </summary>
+        static UIHelpers()
+        {
+            threads = new List<Thread>();
+        }
+
+        /// <summary>
         /// Delegate for element removal function
         /// </summary>
         /// <param name="element">The element</param>
@@ -325,6 +338,7 @@
             DelayActionParameters parameters = new DelayActionParameters(element, panel, delayInSeconds);
             Thread thread = new Thread(new ParameterizedThreadStart(new ParameterizedThreadStart(RemoveElementThreadStart)));
             thread.Start(parameters);
+            threads.Add(thread);
         }
 
         /// <summary>
@@ -337,6 +351,7 @@
             DelayActionParameters parameters = new DelayActionParameters(element, delayInSeconds);
             Thread thread = new Thread(new ParameterizedThreadStart(new ParameterizedThreadStart(HideElementThreadStart)));
             thread.Start(parameters);
+            threads.Add(thread);
         }
 
         /// <summary>
@@ -351,6 +366,7 @@
             DelayActionParameters parameters = new DelayActionParameters(dispatcher, function, delayInSeconds, parametersList);
             Thread thread = new Thread(new ParameterizedThreadStart(new ParameterizedThreadStart(CallFunctionThreadStart)));
             thread.Start(parameters);
+            threads.Add(thread);
         }
 
         /// <summary>
@@ -369,6 +385,8 @@
             {
                 param.Panel.Dispatcher.BeginInvoke(new RemoveElementDelegate(RemoveElementHelper), param.Element, param.Panel).Wait();
             }
+
+            threads.Remove(Thread.CurrentThread);
         }
 
         /// <summary>
@@ -387,6 +405,8 @@
             {
                 param.Element.Dispatcher.BeginInvoke(new HideElementDelegate(HideElementHelper), param.Element).Wait();
             }
+
+            threads.Remove(Thread.CurrentThread);
         }
 
         /// <summary>
@@ -479,6 +499,8 @@
                         throw new InvalidOperationException("Parameters are too much.");
                 }
             }
+
+            threads.Remove(Thread.CurrentThread);
         }
 
         /// <summary>

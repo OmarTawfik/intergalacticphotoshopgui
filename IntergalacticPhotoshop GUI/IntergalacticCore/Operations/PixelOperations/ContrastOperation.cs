@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
     using IntergalacticCore.Data;
+    using System;
 
     /// <summary>
     /// Adjusts the contrast of the image
@@ -22,6 +23,16 @@
             this.oldMax = (int)input[1];
             this.newMin = (int)input[2];
             this.newMax = (int)input[3];
+
+            if (this.oldMin >= this.oldMax)
+            {
+                throw new Exception("Old min value cannot be larger than old max.");
+            }
+
+            if (this.newMin >= this.newMax)
+            {
+                throw new Exception("New min value cannot be larger than new max.");
+            }
         }
 
         /// <summary>

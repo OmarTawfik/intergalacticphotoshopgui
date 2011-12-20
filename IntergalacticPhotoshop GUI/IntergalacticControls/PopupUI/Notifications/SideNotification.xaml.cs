@@ -27,6 +27,7 @@
         {
             InitializeComponent();
             this.BlocksUI = false;
+            this.DisplayTimeout = 7;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             this.Margin = new Thickness(10, 10, 10, 10);

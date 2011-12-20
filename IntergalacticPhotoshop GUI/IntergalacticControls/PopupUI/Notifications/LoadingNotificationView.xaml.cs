@@ -67,7 +67,8 @@
                 imgError.Visibility = System.Windows.Visibility.Visible;
                 lblTitle.Content = "Error!";
                 SideNotification notification = new SideNotification();
-                notification.SetTitle("Error while performing operation.");
+                notification.Height = 150;
+                notification.SetTitle("Error while performing operation: " + mng.CurrentTab.LastException.Message);
                 notification.ShowNotification();
             }
 

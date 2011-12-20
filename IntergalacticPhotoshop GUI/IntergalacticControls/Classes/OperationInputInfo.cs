@@ -56,7 +56,10 @@
                 {
                     if (type != this.GetInputType(from))
                     {
-                        throw new InvalidOperationException("The entered \"from\" and \"to\" types are different from the given type.");
+                        if (type != InputType.DoubleArray || this.GetInputType(from) != InputType.Double)
+                        {
+                            throw new InvalidOperationException("The entered \"from\" and \"to\" types are different from the given type.");
+                        }
                     }
                 }
 

@@ -16,7 +16,7 @@
         /// <summary>
         /// Shows whether the operation didn't have exceptions
         /// </summary>
-        private bool didOperationComplete = false;
+        private Exception exception = null;
 
         /// <summary>
         /// The current image.
@@ -125,7 +125,23 @@
         /// </summary>
         public bool DidOperationComplete
         {
-            get { return this.didOperationComplete; }
+            get { return this.exception == null; }
+        }
+
+        /// <summary>
+        /// Gets the exception occured in the last operation
+        /// </summary>
+        public Exception LastException
+        {
+            get
+            {
+                if (this.exception == null)
+                {
+                    throw new Exception("No exception occured in the last operation.");
+                }
+
+                return this.exception;
+            }
         }
 
         /// <summary>
@@ -134,12 +150,10 @@
         /// <param name="operation">Operation to be executed.</param>
         public void DoOperation(BaseOperation operation)
         {
-            this.didOperationComplete = false;
-
+            this.exception = null;
             try
             {
                 this.image = operation.Execute(this.image);
-                this.didOperationComplete = true;
                 for (int i = this.maxVersionNumber - this.currentVersionNumber; i > 0; i--)
                 {
                     this.thumbnails.Pop();
@@ -150,8 +164,9 @@
                 this.thumbnails.Push(this.image.GetThumbnail());
                 this.image.SaveImage(this.GetFullPath(), ImageFileType.BMP);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                this.exception = ex;
             }
         }
 

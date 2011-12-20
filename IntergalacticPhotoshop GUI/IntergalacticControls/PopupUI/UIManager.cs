@@ -234,21 +234,7 @@
 
             if (timeout != null)
             {
-                Timer timer = new Timer(
-                    obj =>
-                    {
-                        if (this.mainPanel.Dispatcher.Thread == Thread.CurrentThread)
-                        {
-                            this.CloseNoification(view);
-                        }
-                        else
-                        {
-                            this.mainPanel.Dispatcher.BeginInvoke(new CloseNotificationDelegate(CloseNoification), view);
-                        }
-                    },
-                null,
-                (int)(timeout * 1000),
-                Timeout.Infinite);
+                UIHelpers.CallFunctionAfterDelay((double)timeout, this.mainPanel.Dispatcher, new CloseNotificationDelegate(this.CloseNoification), view);
             }
         }
 
@@ -260,7 +246,7 @@
         {
             if (!this.notificationViews.ContainsKey(view))
             {
-                throw new InvalidOperationException("This notification instance is not shown.");
+                return; ////Notification already closed
             }
 
             switch (this.notificationViews[view])

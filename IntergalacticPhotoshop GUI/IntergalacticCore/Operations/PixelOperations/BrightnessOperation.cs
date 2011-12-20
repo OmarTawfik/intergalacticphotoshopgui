@@ -29,7 +29,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Brightness,byte_slider,0,255";
+            return "Brightness,int,-255,255";
         }
 
         /// <summary>

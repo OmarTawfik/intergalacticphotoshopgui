@@ -43,6 +43,11 @@
         /// <summary>
         /// ImageBase type
         /// </summary>
-        Image
+        Image,
+
+        /// <summary>
+        /// Array of doubles
+        /// </summary>
+        DoubleArray
     }
 }

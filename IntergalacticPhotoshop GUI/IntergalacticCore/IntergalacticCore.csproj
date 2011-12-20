@@ -35,6 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -118,6 +119,7 @@
     <Compile Include="Operations\HistogramOperations\HistogramCalculator.cs" />
     <Compile Include="Operations\JoinedOperations\HistogramMatchingOperation.cs" />
     <Compile Include="Operations\Matlab\FrequencyDomainOperation.cs" />
+    <Compile Include="Operations\Matlab\LocalHistogramEqualization.cs" />
     <Compile Include="Operations\Matlab\MatlabOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilterOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilters\ButterworthHighPassFilter.cs" />
@@ -128,6 +130,9 @@
     <Compile Include="Operations\Matlab\PassFilters\IdealBandRejectFilter.cs" />
     <Compile Include="Operations\Matlab\PassFilters\IdealHighPassFilter.cs" />
     <Compile Include="Operations\Matlab\PassFilters\IdealLowPassFilter.cs" />
+    <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexOperation.cs" />
+    <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationAndGainOffsetOperation.cs" />
+    <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddExponentialNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddGaussianNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddRayleighNoiseOperation.cs" />

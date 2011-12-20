@@ -53,6 +53,8 @@
             this.fadeOut = new DoubleAnimation(StackControllerBase.NormalOpacity, TimeSpan.FromSeconds(0.3));
             this.fadeOut.AccelerationRatio = 0.3;
             this.fadeOut.DecelerationRatio = 0.3;
+
+            this.MouseLeave += this.HidePopupView;
         }
 
         /// <summary>
@@ -62,6 +64,14 @@
         {
             get { return this.mainStackPanel; }
             set { this.mainStackPanel = value; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether to hide the popup view when the mouse leaves the stack controller
+        /// </summary>
+        protected virtual bool HidePopupOnMouseLeave
+        {
+            get { return false; }
         }
 
         /// <summary>
@@ -113,6 +123,19 @@
         {
             StackButtonBase source = sender as StackButtonBase;
             UIManager.CurrentUIManager.ViewPopup(source);
+        }
+
+        /// <summary>
+        /// Closes the popup view when the mouse exits the tab button
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void HidePopupView(object sender, MouseEventArgs e)
+        {
+            if (this.HidePopupOnMouseLeave)
+            {
+                UIManager.CurrentUIManager.HideCurrentPopup();
+            }
         }
     }
 }

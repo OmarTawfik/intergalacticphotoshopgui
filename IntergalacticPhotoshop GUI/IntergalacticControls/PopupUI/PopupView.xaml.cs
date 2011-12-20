@@ -181,21 +181,7 @@
         {
             this.isShown = false;
             this.BeginAnimation(UIElement.OpacityProperty, this.fadeOut);
-            Timer timer = new Timer(
-                obj =>
-            {
-                if (this.Dispatcher.Thread == Thread.CurrentThread)
-                {
-                    this.MakeInvisible();
-                }
-                else
-                {
-                    this.Dispatcher.BeginInvoke(new Action(this.MakeInvisible));
-                }
-            },
-            null,
-            300,
-            Timeout.Infinite);
+            UIHelpers.CallFunctionAfterDelay(0.3, this.mainGrid.Dispatcher, new Action(this.MakeInvisible));
         }
 
         /// <summary>

@@ -18,6 +18,7 @@
     using IntergalacticCore.Operations.JoinedOperations;
     using IntergalacticCore.Operations.Matlab;
     using IntergalacticCore.Operations.Matlab.PassFilters;
+    using IntergalacticCore.Operations.Matlab.Retinex;
     using IntergalacticCore.Operations.Noise.Add;
     using IntergalacticCore.Operations.Noise.Remove;
     using IntergalacticCore.Operations.PixelOperations;

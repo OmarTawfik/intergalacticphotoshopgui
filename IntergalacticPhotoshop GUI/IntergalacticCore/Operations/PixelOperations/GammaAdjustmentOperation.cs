@@ -11,7 +11,7 @@
         /// <summary>
         /// The gamma value
         /// </summary>
-        private byte gammaValue;
+        private double gammaValue;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -19,7 +19,7 @@
         /// <param name="input">Array of input to be used (Gamma value).</param>
         public override void SetInput(params object[] input)
         {
-            this.gammaValue = (byte)input[0];
+            this.gammaValue = (double)input[0];
         }
 
         /// <summary>
@@ -28,7 +28,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Gamma,byte_slider,0,255";
+            return "Gamma,double,0.1,10";
         }
 
         /// <summary>
@@ -50,15 +50,7 @@
                 for (int j = 0; j < this.Image.Width; j++)
                 {
                     Pixel color = this.Image.GetPixel(j, i);
-                    float power = this.gammaValue;
-                    if (power >= 128)
-                    {
-                        power -= 127;
-                    }
-                    else
-                    {
-                        power = 1.0f / (129.0f - power);
-                    }
+                    double power = this.gammaValue;
 
                     color.Red = (byte)(Math.Pow(color.Red / 255.0, power) * 255);
                     color.Green = (byte)(Math.Pow(color.Green / 255.0, power) * 255);

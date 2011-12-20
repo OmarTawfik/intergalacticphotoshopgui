@@ -38,6 +38,14 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether to hide the popup view when the mouse leaves the stack controller
+        /// </summary>
+        protected override bool HidePopupOnMouseLeave
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Adds a tab to the UI
         /// </summary>
         /// <param name="mng">The manager</param>

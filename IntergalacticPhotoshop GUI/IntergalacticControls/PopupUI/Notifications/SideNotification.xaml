@@ -4,7 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             Height="60" Width="275">
+             Height="80" Width="275">
     <Grid>
         <Ellipse Width="12" Height="12" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="3,3,0,0" Stroke="Gray" Name="btnClose" MouseDown="CloseButton_MouseDown">
             <Ellipse.Fill>
@@ -14,6 +14,6 @@
                 </LinearGradientBrush>
             </Ellipse.Fill>
         </Ellipse>
-        <TextBlock IsEnabled="False" TextWrapping="WrapWithOverflow" FontSize="14" Background="Transparent" Height="28" HorizontalAlignment="Stretch" Margin="10,10,10,10" Name="lblTitle" VerticalAlignment="Stretch" />
+        <TextBlock IsEnabled="False" TextWrapping="WrapWithOverflow" FontSize="14" Background="Transparent" HorizontalAlignment="Stretch" Margin="10,25,10,25" Name="lblTitle" VerticalAlignment="Stretch" />
     </Grid>
 </w:NotificationView>

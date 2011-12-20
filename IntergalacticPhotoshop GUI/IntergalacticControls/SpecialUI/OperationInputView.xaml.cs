@@ -138,6 +138,9 @@
                     case IntergalacticControls.InputType.Image:
                         this.AddImageInputControls(this.inputInfoList[i], ref shiftY);
                         break;
+                    case IntergalacticControls.InputType.DoubleArray:
+                        this.AddArrayInputControl(this.inputInfoList[i], ref shiftY);
+                        break;
                     default:
                         this.AddNumericInputControls(this.inputInfoList[i], ref shiftY);
                         break;
@@ -174,6 +177,29 @@
 
             this.mainGrid.Children.Add(checkBox);
             this.inputSourceList.Add(checkBox);
+
+            startY += 35;
+        }
+
+        /// <summary>
+        /// Adds boolean input controls to the UI
+        /// </summary>
+        /// <param name="info">Input information</param>
+        /// <param name="startY">The Y position to start with</param>
+        private void AddArrayInputControl(OperationInputInfo info, ref int startY)
+        {
+            this.AddLabel(info.Title, startY);
+
+            TextBox textBox = new TextBox();
+            textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            textBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            textBox.Margin = new Thickness(15, startY + 7, 0, 0);
+            textBox.Width = 265;
+            textBox.Height = 23;
+            textBox.Text = string.Empty;
+
+            this.mainGrid.Children.Add(textBox);
+            this.inputSourceList.Add(textBox);
 
             startY += 35;
         }
@@ -545,8 +571,31 @@
                 case IntergalacticControls.InputType.Image:
                     result = new WPFBitmap((BitmapSource)((ImageBrush)this.inputSourceList[index]).ImageSource);
                     break;
-                default:
+                case InputType.DoubleArray:
+                    string[] strings = ((TextBox)this.inputSourceList[index]).Text.Split(',');
+                    double[] numbers = new double[strings.Length];
+
+                    try
+                    {
+                        for (int i = 0; i < strings.Length; i++)
+                        {
+                            numbers[i] = Convert.ToDouble(strings[i]);
+
+                            if (numbers[i] > (double)this.inputInfoList[index].To || numbers[i] < (double)this.inputInfoList[index].From)
+                            {
+                                throw new Exception(string.Format("All entered numbers in the \"{0}\" input must be between {1} and {2}", this.inputInfoList[index].Title, this.inputInfoList[index].From, this.inputInfoList[index].From));
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("Invalid input.  Input must be numbers seperated by commas.", ex);
+                    }
+
+                    result = numbers;
                     break;
+                default:
+                    throw new NotSupportedException("Type is not supported.");
             }
 
             return result;
@@ -575,6 +624,7 @@
             catch (Exception ex)
             {
                 SideNotification notification = new SideNotification();
+                notification.Height = 150;
                 notification.SetTitle("Error: " + ex.Message);
                 notification.ShowNotification();
             }
@@ -651,6 +701,9 @@
                 case "mask":
                     result = InputType.Mask;
                     break;
+                case "doubleArray":
+                    result = InputType.DoubleArray;
+                    break;
                 default:
                     throw new InvalidOperationException("Type was not identified.");
             }
@@ -721,6 +774,7 @@
                     }
 
                     break;
+                case InputType.DoubleArray:
                 case InputType.Double:
                     if (parameter == "-inf")
                     {
