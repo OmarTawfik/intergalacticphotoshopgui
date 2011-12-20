@@ -134,6 +134,16 @@
             get { return this.height; }
         }
 
+        public unsafe override byte* Base
+        {
+            get { return (byte*)this.bitBase; }
+        }
+
+        public override int Stride
+        {
+            get { return this.bitStride; }
+        }
+
         /// <summary>
         /// Gets the width of the buffer
         /// </summary>

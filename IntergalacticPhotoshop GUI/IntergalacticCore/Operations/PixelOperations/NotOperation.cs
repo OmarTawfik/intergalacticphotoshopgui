@@ -19,19 +19,9 @@
         /// <summary>
         /// Does the actual operation to the specified image.
         /// </summary>
-        protected override void Operate()
+        protected unsafe override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-                    p.Red = (byte)(255 - p.Red);
-                    p.Green = (byte)(255 - p.Green);
-                    p.Blue = (byte)(255 - p.Blue);
-                    this.Image.SetPixel(j, i, p);
-                }
-            }
+            IntergalacticCpp.NotOperation.Execute(this.GetCppData(this.Image));
         }
     }
 }

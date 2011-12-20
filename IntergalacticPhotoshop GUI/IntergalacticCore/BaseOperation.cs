@@ -1,8 +1,6 @@
 ﻿namespace IntergalacticCore
 {
     using System;
-    using System.Collections.Generic;
-    using System.Windows.Forms;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -52,6 +50,23 @@
         public virtual string GetInput()
         {
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Constructs a new ImageData instance.
+        /// </summary>
+        /// <param name="imagePtr">Source image.</param>
+        /// <returns>Resulting ImageData.</returns>
+        protected unsafe ImageData GetCppData(ImageBase imagePtr)
+        {
+            ImageData data = new ImageData();
+
+            data.Base = imagePtr.Base;
+            data.Stride = imagePtr.Stride;
+            data.Width = imagePtr.Width;
+            data.Height = imagePtr.Height;
+
+            return data;
         }
 
         /// <summary>

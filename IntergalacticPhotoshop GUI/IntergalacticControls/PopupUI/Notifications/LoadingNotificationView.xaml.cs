@@ -57,7 +57,7 @@
                 imgCheck.Visibility = System.Windows.Visibility.Visible;
                 lblTitle.Content = "Done!";
                 SideNotification finishingNotification = new SideNotification();
-                finishingNotification.SetTitle("Done in " + operation.OperatingTime.Seconds + "." + (operation.OperatingTime.Milliseconds / 100) + " Seconds.");
+                finishingNotification.SetTitle("Done in " + operation.OperatingTime.ToString() + " Seconds.");
                 finishingNotification.DisplayTimeout = 3;
                 finishingNotification.AnimationType = NotificationAnimationType.Fade;
                 finishingNotification.ShowNotification();

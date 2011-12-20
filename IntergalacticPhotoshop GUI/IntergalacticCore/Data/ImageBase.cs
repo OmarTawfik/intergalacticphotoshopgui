@@ -42,6 +42,10 @@
         /// Gets the width (in pixels) of this image.
         /// </summary>
         public abstract int Width { get; }
+
+        public unsafe abstract byte* Base { get; }
+
+        public abstract int Stride { get; }
                
         /// <summary>
         /// This is called before editing the image to make any memory adjustments.

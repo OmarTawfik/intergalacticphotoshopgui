@@ -170,6 +170,12 @@
     <Content Include="Binaries\IntergalacticMatlab.dll" />
     <Content Include="Binaries\MWArray.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IntergalacticCpp\IntergalacticCpp.vcxproj">
+      <Project>{46A844EB-2F2F-457F-BA03-801005CD511C}</Project>
+      <Name>IntergalacticCpp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
