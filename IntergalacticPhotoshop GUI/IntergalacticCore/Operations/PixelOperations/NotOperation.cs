@@ -1,6 +1,8 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
     using IntergalacticCore.Data;
+    using IntergalacticCpp.Data;
+    using IntergalacticCpp.PixelOperations;
 
     /// <summary>
     /// Inverts all pixels contained in this image.
@@ -21,7 +23,7 @@
         /// </summary>
         protected unsafe override void Operate()
         {
-            IntergalacticCpp.NotOperation.Execute(this.GetCppData(this.Image));
+            NotCLROp.Execute(this.GetCppData(this.Image));
         }
     }
 }

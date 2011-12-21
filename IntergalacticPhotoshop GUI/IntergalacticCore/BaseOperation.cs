@@ -2,6 +2,7 @@
 {
     using System;
     using IntergalacticCore.Data;
+    using IntergalacticCpp.Data;
 
     /// <summary>
     /// Provides a base for all image based operations.

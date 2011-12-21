@@ -43,8 +43,14 @@
         /// </summary>
         public abstract int Width { get; }
 
+        /// <summary>
+        /// Gets the base pointer of the bitmap
+        /// </summary>
         public unsafe abstract byte* Base { get; }
 
+        /// <summary>
+        /// Gets the stride of the bitmap
+        /// </summary>
         public abstract int Stride { get; }
                
         /// <summary>

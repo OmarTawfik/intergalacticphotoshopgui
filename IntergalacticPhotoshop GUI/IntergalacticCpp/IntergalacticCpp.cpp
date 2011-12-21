@@ -2,5 +2,6 @@
 
 #include "stdafx.h"
 
-#include "IntergalacticCpp.h"
+// All operations should be places HERE
+#include "NotOperation.h"
 

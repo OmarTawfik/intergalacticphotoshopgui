@@ -44,7 +44,7 @@
     <ClCompile Include="Stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ImageData.cpp">
+    <ClCompile Include="ImageData.h">
       <Filter>Operations</Filter>
     </ClCompile>
   </ItemGroup>
