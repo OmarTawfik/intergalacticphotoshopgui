@@ -5,8 +5,7 @@ namespace IntergalacticCpp
 {
 	namespace PixelOperations
 	{
-		/// Not operation
-		public ref class NotCLROp
+		public ref class CLRInverseOperation
 		{
 		public:
 			static void Execute(ImageData^ image)
@@ -18,9 +17,9 @@ namespace IntergalacticCpp
 					for (j = 0; j<image->Width; ++j)
 					{
 						p = GETPIXEL(image,j, i);
-						p->R = 255 - p->R;
-						p->G = 255 - p->G;
-						p->B = 255 - p->B;
+						p->Red = 255 - p->Red;
+						p->Green = 255 - p->Green;
+						p->Blue = 255 - p->Blue;
 					}
 				}
 			}

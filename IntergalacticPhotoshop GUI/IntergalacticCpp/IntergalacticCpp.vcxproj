@@ -76,8 +76,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CLRBinarizationOperation.h" />
     <ClInclude Include="IntergalacticCpp.h" />
-    <ClInclude Include="NotOperation.h" />
+    <ClInclude Include="CLRInverseOperation.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>

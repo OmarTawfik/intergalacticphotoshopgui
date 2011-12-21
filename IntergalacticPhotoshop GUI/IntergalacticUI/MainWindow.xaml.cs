@@ -77,7 +77,7 @@
             this.AddOperationCategory(
                 "Pixel Operations",
                 "Pixel.png",
-                new NotOperation(),
+                new InverseOperation(),
                 new BrightnessOperation(),
                 new GrayOperation(),
                 new ContrastOperation(),

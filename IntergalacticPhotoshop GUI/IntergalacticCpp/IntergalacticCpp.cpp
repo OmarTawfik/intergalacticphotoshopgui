@@ -3,5 +3,5 @@
 #include "stdafx.h"
 
 // All operations should be places HERE
-#include "NotOperation.h"
-
+#include "CLRInverseOperation.h"
+#include "CLRBinarizationOperation.h"

@@ -152,7 +152,7 @@
     <Compile Include="Operations\PixelOperations\GammaAdjustmentOperation.cs" />
     <Compile Include="Operations\PixelOperations\GrayOperation.cs" />
     <Compile Include="Operations\PixelOperations\NormalizationOperation.cs" />
-    <Compile Include="Operations\PixelOperations\NotOperation.cs" />
+    <Compile Include="Operations\PixelOperations\InverseOperation.cs" />
     <Compile Include="Operations\PixelOperations\PixelationOperation.cs" />
     <Compile Include="Operations\PixelOperations\QuantizationOperation.cs" />
     <Compile Include="Operations\JoinedOperations\SubtractOperation.cs" />

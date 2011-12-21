@@ -134,11 +134,17 @@
             get { return this.height; }
         }
 
+        /// <summary>
+        /// Gets the base pointer to this image.
+        /// </summary>
         public unsafe override byte* Base
         {
             get { return (byte*)this.bitBase; }
         }
 
+        /// <summary>
+        /// Gets the stride of this image.
+        /// </summary>
         public override int Stride
         {
             get { return this.bitStride; }

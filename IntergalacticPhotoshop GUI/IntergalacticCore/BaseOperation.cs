@@ -54,23 +54,6 @@
         }
 
         /// <summary>
-        /// Constructs a new ImageData instance.
-        /// </summary>
-        /// <param name="imagePtr">Source image.</param>
-        /// <returns>Resulting ImageData.</returns>
-        protected unsafe ImageData GetCppData(ImageBase imagePtr)
-        {
-            ImageData data = new ImageData();
-
-            data.Base = imagePtr.Base;
-            data.Stride = imagePtr.Stride;
-            data.Width = imagePtr.Width;
-            data.Height = imagePtr.Height;
-
-            return data;
-        }
-
-        /// <summary>
         /// Prepares the variables and calls the actual operation.
         /// </summary>
         /// <param name="image">The input image to be processed.</param>
@@ -89,6 +72,23 @@
             this.operatingTime = DateTime.Now - start;
 
             return this.image;
+        }
+
+        /// <summary>
+        /// Constructs a new ImageData instance.
+        /// </summary>
+        /// <param name="imagePtr">Source image.</param>
+        /// <returns>Resulting ImageData.</returns>
+        protected unsafe ImageData GetCppData(ImageBase imagePtr)
+        {
+            ImageData data = new ImageData();
+
+            data.Base = imagePtr.Base;
+            data.Stride = imagePtr.Stride;
+            data.Width = imagePtr.Width;
+            data.Height = imagePtr.Height;
+
+            return data;
         }
 
         /// <summary>

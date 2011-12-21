@@ -30,7 +30,10 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NotOperation.h">
+    <ClInclude Include="CLRInverseOperation.h">
+      <Filter>Operations\PixelOperations</Filter>
+    </ClInclude>
+    <ClInclude Include="CLRBinarizationOperation.h">
       <Filter>Operations\PixelOperations</Filter>
     </ClInclude>
   </ItemGroup>

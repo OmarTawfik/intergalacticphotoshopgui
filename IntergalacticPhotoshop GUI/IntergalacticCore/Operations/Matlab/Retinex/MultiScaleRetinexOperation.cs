@@ -20,31 +20,6 @@
         private double[] sigmas, weights;
 
         /// <summary>
-        /// The main retinex operation
-        /// </summary>
-        protected override void BeforeOperate()
-        {
-            ////MultiScaleRetinex matlabCls = new MultiScaleRetinex();
-
-            ////double[,] sourceRed, sourceGreen, sourceBlue;
-            ////this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
-
-            ////MWArray[] retinexResult = matlabCls.MultiScaleRetinex(
-            ////    3,
-            ////    (MWNumericArray)sourceRed,
-            ////    (MWNumericArray)sourceGreen,
-            ////    (MWNumericArray)sourceBlue,
-            ////    this.sigmas,
-            ////    this.weights);
-
-            ////double[,] redComponent = this.Normalize((double[,])retinexResult[0].ToArray());
-            ////double[,] greenComponent = this.Normalize((double[,])retinexResult[1].ToArray());
-            ////double[,] blueComponent = this.Normalize((double[,])retinexResult[2].ToArray());
-
-            ////this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
-        }
-
-        /// <summary>
         /// Sets all input associated with this operation.
         /// </summary>
         /// <param name="input">Array of input to be used.</param>
@@ -75,6 +50,31 @@
         public override string ToString()
         {
             return "Multi-Scale Retinex";
+        }
+
+        /// <summary>
+        /// The main retinex operation
+        /// </summary>
+        protected override void BeforeOperate()
+        {
+            ////MultiScaleRetinex matlabCls = new MultiScaleRetinex();
+
+            ////double[,] sourceRed, sourceGreen, sourceBlue;
+            ////this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
+
+            ////MWArray[] retinexResult = matlabCls.MultiScaleRetinex(
+            ////    3,
+            ////    (MWNumericArray)sourceRed,
+            ////    (MWNumericArray)sourceGreen,
+            ////    (MWNumericArray)sourceBlue,
+            ////    this.sigmas,
+            ////    this.weights);
+
+            ////double[,] redComponent = this.Normalize((double[,])retinexResult[0].ToArray());
+            ////double[,] greenComponent = this.Normalize((double[,])retinexResult[1].ToArray());
+            ////double[,] blueComponent = this.Normalize((double[,])retinexResult[2].ToArray());
+
+            ////this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
         }
     } 
 }

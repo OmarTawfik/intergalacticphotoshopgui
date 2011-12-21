@@ -1,7 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
-    using IntergalacticCore.Data;
     using System;
+    using IntergalacticCore.Data;
 
     /// <summary>
     /// Adjusts the contrast of the image

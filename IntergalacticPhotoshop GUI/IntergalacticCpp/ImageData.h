@@ -23,13 +23,13 @@ namespace IntergalacticCpp
 		struct Pixel
 		{
 		public:
-			unsigned char R,G,B;
+			unsigned char Red,Green,Blue;
 
 			Pixel(unsigned char R, unsigned char G, unsigned char B)
 			{
-				this->R = R;
-				this->G = G;
-				this->B = B;
+				this->Red = R;
+				this->Green = G;
+				this->Blue = B;
 			}
 		};
 	}
