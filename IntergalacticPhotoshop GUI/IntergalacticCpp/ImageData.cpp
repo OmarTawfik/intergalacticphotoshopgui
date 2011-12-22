@@ -1,1 +1,0 @@
-// 7ot Pixel, wel #define we struct esmo ImageData beyshel height,width,stride, and base
