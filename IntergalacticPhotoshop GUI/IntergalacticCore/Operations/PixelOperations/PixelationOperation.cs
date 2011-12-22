@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -44,36 +45,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i += this.pixelSize)
-            {
-                for (int j = 0; j < this.Image.Width; j += this.pixelSize)
-                {
-                    int totalRed = 0, totalGreen = 0, totalBlue = 0;
-                    for (int a = i; a < i + this.pixelSize && a < this.Image.Height; a++)
-                    {
-                        for (int b = j; b < j + this.pixelSize && b < this.Image.Width; b++)
-                        {
-                            Pixel p = this.Image.GetPixel(b, a);
-                            totalRed += p.Red;
-                            totalGreen += p.Green;
-                            totalBlue += p.Blue;
-                        }
-                    }
-
-                    Pixel newPixel = Pixel.CutOff(
-                        totalRed / (this.pixelSize * this.pixelSize),
-                        totalGreen / (this.pixelSize * this.pixelSize),
-                        totalBlue / (this.pixelSize * this.pixelSize));
-
-                    for (int a = i; a < i + this.pixelSize && a < this.Image.Height; a++)
-                    {
-                        for (int b = j; b < j + this.pixelSize && b < this.Image.Width; b++)
-                        {
-                            this.Image.SetPixel(b, a, newPixel);
-                        }
-                    }
-                }
-            }
+            PixelationOperationExecute(this.GetCppData(this.Image), this.pixelSize);
         }
+
+        /// <summary>
+        /// The native pixelation processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="size">pixel size.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void PixelationOperationExecute(ImageData src, int size);
     }
 }

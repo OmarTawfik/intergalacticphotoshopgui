@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -56,21 +57,21 @@
         /// </summary>
         protected override void Operate()
         {
-            byte zero = 0;
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-
-                    p.Red = this.red ? p.Red : zero;
-                    p.Green = this.green ? p.Green : zero;
-                    p.Blue = this.blue ? p.Blue : zero;
-
-                    this.Image.SetPixel(j, i, p);
-                }
-            }
+            ColorExtractionOperationExecute(
+                this.GetCppData(this.Image),
+                this.red,
+                this.green,
+                this.blue);
         }
+
+        /// <summary>
+        /// The native color extraction processing function.
+        /// </summary>
+        /// <param name="src">Source image.</param>
+        /// <param name="r">Keep red.</param>
+        /// <param name="g">Keep green.</param>
+        /// <param name="b">Keep blue.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void ColorExtractionOperationExecute(ImageData src, bool r, bool g, bool b);
     }
 }

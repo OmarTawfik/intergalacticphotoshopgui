@@ -9,7 +9,7 @@
 
 // Used to set pixel data
 #define SETPIXEL(PIXEL1, PIXEL2) {(PIXEL1)->R = (PIXEL2)->R; (PIXEL1)->G = (PIXEL2)->G; (PIXEL1)->B = (PIXEL2)->B; }
-#define SETPIXELRGB(PIXEL,R, G, B) {(PIXEL)->R = (R); (PIXEL)->G = (G); (PIXEL)->B = (B);}
+#define SETPIXELRGB(PIXEL,Red, Green, Blue) {(PIXEL)->R = (Red); (PIXEL)->G = (Green); (PIXEL)->B = (Blue);}
 #define CUTOFF(PIXEL, Red, Green, Blue) { (PIXEL)->R = max(0,min(255,(Red))); (PIXEL)->G = max(0,min(255,(Green))); (PIXEL)->B = max(0,min(255,(Blue))); }
 
 // Holds the image data used in all operations

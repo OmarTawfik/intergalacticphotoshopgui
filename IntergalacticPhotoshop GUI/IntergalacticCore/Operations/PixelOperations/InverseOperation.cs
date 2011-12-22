@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,7 +22,14 @@
         /// </summary>
         protected unsafe override void Operate()
         {
-            // CLRInverseOperation.Execute(this.GetCppData(this.Image));
+            GrayOperationExecute(this.GetCppData(this.Image));
         }
+
+        /// <summary>
+        /// The native gray processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void GrayOperationExecute(ImageData src);
     }
 }

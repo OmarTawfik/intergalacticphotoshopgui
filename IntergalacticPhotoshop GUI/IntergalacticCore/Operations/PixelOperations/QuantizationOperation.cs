@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -27,7 +28,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Bits Per Channel,byte_slider,1,8";
+            return "Bits Per Channel,byte_slider,1,7";
         }
 
         /// <summary>
@@ -44,20 +45,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel color = this.Image.GetPixel(j, i);
-                    byte shiftAmount = (byte)(8 - this.bitsPerChannel);
-
-                    color.Red = (byte)((byte)(color.Red >> shiftAmount) << shiftAmount);
-                    color.Green = (byte)((byte)(color.Green >> shiftAmount) << shiftAmount);
-                    color.Blue = (byte)((byte)(color.Blue >> shiftAmount) << shiftAmount);
-
-                    this.Image.SetPixel(j, i, color);
-                }
-            }
+            QuantizationOperationExecute(this.GetCppData(this.Image), this.bitsPerChannel);
         }
+
+        /// <summary>
+        /// The native quantization processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="bits">bits per channel</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void QuantizationOperationExecute(ImageData src, int bits);
     }
 }

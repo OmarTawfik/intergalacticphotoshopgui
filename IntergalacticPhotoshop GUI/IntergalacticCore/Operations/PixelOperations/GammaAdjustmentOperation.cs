@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -45,20 +46,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel color = this.Image.GetPixel(j, i);
-                    double power = this.gammaValue;
-
-                    color.Red = (byte)(Math.Pow(color.Red / 255.0, power) * 255);
-                    color.Green = (byte)(Math.Pow(color.Green / 255.0, power) * 255);
-                    color.Blue = (byte)(Math.Pow(color.Blue / 255.0, power) * 255);
-
-                    this.Image.SetPixel(j, i, color);
-                }
-            }
+            GammaAdjustmentOperationExecute(this.GetCppData(this.Image), this.gammaValue);
         }
+
+        /// <summary>
+        /// The native gamma adjustment processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="gamma">gamma value.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void GammaAdjustmentOperationExecute(ImageData src, double gamma);
     }
 }

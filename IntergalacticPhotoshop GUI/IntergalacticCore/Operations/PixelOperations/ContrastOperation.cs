@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -58,26 +59,23 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-
-                    float oldMultiplier = (this.oldMax - this.oldMin) / 255.0f;
-                    float newMultiplier = (this.newMax - this.newMin) / 255.0f;
-
-                    int r = p.Red - this.oldMin;
-                    int g = p.Green - this.oldMin;
-                    int b = p.Blue - this.oldMin;
-
-                    r = (int)(((r / oldMultiplier) * newMultiplier) + this.newMin);
-                    g = (int)(((g / oldMultiplier) * newMultiplier) + this.newMin);
-                    b = (int)(((b / oldMultiplier) * newMultiplier) + this.newMin);
-
-                    this.Image.SetPixel(j, i, Pixel.CutOff(r, g, b));
-                }
-            }
+            ContrastOperationExecute(
+                this.GetCppData(this.Image),
+                this.oldMin,
+                this.oldMax,
+                this.newMin,
+                this.newMax);
         }
+
+        /// <summary>
+        /// The native cotrast processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="oldMin">old min.</param>
+        /// <param name="oldMax">old max.</param>
+        /// <param name="newMin">new min.</param>
+        /// <param name="newMax">new max.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void ContrastOperationExecute(ImageData src, int oldMin, int oldMax, int newMin, int newMax);
     }
 }

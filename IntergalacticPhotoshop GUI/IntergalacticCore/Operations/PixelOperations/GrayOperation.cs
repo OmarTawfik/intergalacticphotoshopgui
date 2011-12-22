@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,18 +22,14 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-                    int g = (p.Red + p.Green + p.Blue) / 3;
-                    p.Red = (byte)g;
-                    p.Green = (byte)g;
-                    p.Blue = (byte)g;
-                    this.Image.SetPixel(j, i, p);
-                }
-            }
+            GrayOperationExecute(this.GetCppData(this.Image));
         }
+
+        /// <summary>
+        /// The native gray operation processing function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void GrayOperationExecute(ImageData src);
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Window x:Class="IntergalacticUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="535" Width="922" xmlns:my="clr-namespace:IntergalacticControls;assembly=IntergalacticControls" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="SingleBorderWindow">
+        Title="Intergalactic Photoshop V2" Height="535" Width="922" xmlns:my="clr-namespace:IntergalacticControls;assembly=IntergalacticControls" WindowStartupLocation="CenterScreen" WindowState="Maximized" WindowStyle="SingleBorderWindow">
     <Grid Name="mainGrid" Background="#346" >
         <Image Name="backgroundRect" Visibility="Hidden" Stretch="None" Source="pack://application:,,,/Pictures/NormalMap.png" />
         <Rectangle HorizontalAlignment="Left" Width="150">
