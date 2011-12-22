@@ -1,7 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
     using IntergalacticCore.Data;
-    using IntergalacticCpp.PixelOperations;
 
     /// <summary>
     /// Converts all pixels of the image to a binary value (white or black).
@@ -22,7 +21,7 @@
         /// </summary>
         protected override void Operate()
         {
-            CLRBinarizationOperation.Execute(this.GetCppData(this.Image));
+            ////CLRBinarizationOperation.Execute(this.GetCppData(this.Image));
         }
     }
 }
