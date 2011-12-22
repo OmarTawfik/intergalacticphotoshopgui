@@ -92,6 +92,7 @@
     <Compile Include="CopyOperation.cs" />
     <Compile Include="Data\ConvolutionMask.cs" />
     <Compile Include="Data\Exporter.cs" />
+    <Compile Include="Data\ImageData.cs" />
     <Compile Include="Data\Importer.cs" />
     <Compile Include="Data\Pixel.cs" />
     <Compile Include="Data\ImageBase.cs" />
@@ -157,7 +158,6 @@
     <Compile Include="Operations\PixelOperations\QuantizationOperation.cs" />
     <Compile Include="Operations\JoinedOperations\SubtractOperation.cs" />
     <Compile Include="Operations\ResizeOperations\BilinearResizeOperation.cs" />
-    <Compile Include="Operations\ResizeOperations\BorderingOperation.cs" />
     <Compile Include="Operations\ResizeOperations\NearestNeighbourResizeOperation.cs" />
     <Compile Include="Operations\Transformations\HorizontalFlipOperation.cs" />
     <Compile Include="Operations\Transformations\HorizontalShearOperation.cs" />
@@ -169,12 +169,6 @@
   <ItemGroup>
     <Content Include="Binaries\IntergalacticMatlab.dll" />
     <Content Include="Binaries\MWArray.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\IntergalacticCpp\IntergalacticCpp.vcxproj">
-      <Project>{46A844EB-2F2F-457F-BA03-801005CD511C}</Project>
-      <Name>IntergalacticCpp</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

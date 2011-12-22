@@ -1,5 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.ResizeOperations
 {
+    using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.Filters;
 
@@ -60,36 +62,17 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.ResultImage.Height; i++)
-            {
-                for (int j = 0; j < this.ResultImage.Width; j++)
-                {
-                    float widthRatio = (float)this.Image.Width / (float)this.ResultImage.Width;
-                    float heightRatio = (float)this.Image.Height / (float)this.ResultImage.Height;
-
-                    float oldX = widthRatio * j;
-                    float oldY = heightRatio * i;
-
-                    int x1 = (int)oldX;
-                    int x2 = (x1 + 1 < this.Image.Width) ? x1 + 1 : x1;
-                    int y1 = (int)oldY;
-                    int y2 = (y1 + 1 < this.Image.Height) ? y1 + 1 : y1;
-
-                    Pixel p1 = this.Image.GetPixel(x1, y1);
-                    Pixel p2 = this.Image.GetPixel(x2, y1);
-                    Pixel p3 = this.Image.GetPixel(x1, y2);
-                    Pixel p4 = this.Image.GetPixel(x2, y2);
-
-                    float xfraction = oldX - x1;
-                    float yfraction = oldY - y1;
-
-                    Pixel z1 = (p1 * (1.0f - xfraction)) + (p2 * xfraction);
-                    Pixel z2 = (p3 * (1.0f - xfraction)) + (p4 * xfraction);
-
-                    Pixel newPixel = (z1 * (1 - yfraction)) + (z2 * yfraction);
-                    this.ResultImage.SetPixel(j, i, newPixel);
-                }
-            }
+            ImageData source = this.GetCppData(this.Image);
+            ImageData destination = this.GetCppData(this.ResultImage);
+            BilinearResizeOperationExecute(source, destination);
         }
+
+        /// <summary>
+        /// The native bilinear resize processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void BilinearResizeOperationExecute(ImageData src, ImageData dest);
     }
 }

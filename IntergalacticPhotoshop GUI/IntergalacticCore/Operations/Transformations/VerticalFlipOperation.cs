@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Transformations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,17 +22,14 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height / 2; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel topPixel = this.Image.GetPixel(j, i);
-                    Pixel bottomPixel = this.Image.GetPixel(j, this.Image.Height - i - 1);
-
-                    this.Image.SetPixel(j, i, bottomPixel);
-                    this.Image.SetPixel(j, this.Image.Height - i - 1, topPixel);
-                }
-            }
+            VerticalFlipOperationExecute(this.GetCppData(this.Image));
         }
+
+        /// <summary>
+        /// The native V flip processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void VerticalFlipOperationExecute(ImageData src);
     }
 }

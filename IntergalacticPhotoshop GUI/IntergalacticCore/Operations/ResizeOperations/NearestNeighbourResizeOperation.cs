@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.ResizeOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.Filters;
 
@@ -60,20 +61,15 @@
         /// </summary>
         protected override void Operate()
         {
-            float widthRatio = (float)this.Image.Width / (float)this.ResultImage.Width;
-            float heightRatio = (float)this.Image.Height / (float)this.ResultImage.Height;
-
-            for (int i = 0; i < ResultImage.Height; i++)
-            {
-                for (int j = 0; j < ResultImage.Width; j++)
-                {
-                    float oldX = ((float)j) * widthRatio;
-                    float oldY = ((float)i) * heightRatio;
-
-                    Pixel oldPixel = this.Image.GetPixel((int)oldX, (int)oldY);
-                    this.ResultImage.SetPixel(j, i, oldPixel);
-                }
-            }
+            NearestNeighbourResizeOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
+        /// <summary>
+        /// The native bilinear resize processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void NearestNeighbourResizeOperationExecute(ImageData src, ImageData dest);
     }
 }

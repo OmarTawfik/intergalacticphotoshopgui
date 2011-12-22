@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Transformations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -50,27 +51,17 @@
         /// </summary>
         protected override void Operate()
         {
-            while (this.displacementX < this.Image.Width)
-            {
-                this.displacementX += this.Image.Width;
-            }
-
-            while (this.displacementY < this.Image.Height)
-            {
-                this.displacementY += this.Image.Height;
-            }
-
-            for (int i = 0; i < this.ResultImage.Height; i++)
-            {
-                for (int j = 0; j < this.ResultImage.Width; j++)
-                {
-                    int newX = (j + this.displacementX) % this.ResultImage.Width;
-                    int newY = (i + this.displacementY) % this.ResultImage.Height;
-
-                    Pixel oldPixel = this.Image.GetPixel(j, i);
-                    this.ResultImage.SetPixel(newX, newY, oldPixel);
-                }
-            }
+            TranslationOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), this.displacementX, this.displacementY);
         }
+
+        /// <summary>
+        /// The native translation processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        /// <param name="displacementX">X displacement</param>
+        /// <param name="displacementY">Y displacement</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void TranslationOperationExecute(ImageData src, ImageData dest, int displacementX, int displacementY);
     }
 }

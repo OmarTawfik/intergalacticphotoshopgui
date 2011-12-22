@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Transformations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -44,16 +45,16 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.ResultImage.Height; i++)
-            {
-                for (int j = 0; j < this.ResultImage.Width; j++)
-                {
-                    int newY = ((int)(i + (this.factor * j))) % this.ResultImage.Height;
-
-                    Pixel oldPixel = this.Image.GetPixel(j, i);
-                    this.ResultImage.SetPixel(j, newY, oldPixel);
-                }
-            }
+            VerticalShearOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), this.factor);
         }
+
+        /// <summary>
+        /// The native V shear processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        /// <param name="factor">Shear factor</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void VerticalShearOperationExecute(ImageData src, ImageData dest, double factor);
     }
 }

@@ -2,7 +2,6 @@
 {
     using System;
     using IntergalacticCore.Data;
-    using IntergalacticCpp.Data;
 
     /// <summary>
     /// Provides a base for all image based operations.
@@ -81,13 +80,7 @@
         /// <returns>Resulting ImageData.</returns>
         protected unsafe ImageData GetCppData(ImageBase imagePtr)
         {
-            ImageData data = new ImageData();
-
-            data.Base = imagePtr.Base;
-            data.Stride = imagePtr.Stride;
-            data.Width = imagePtr.Width;
-            data.Height = imagePtr.Height;
-
+            ImageData data = new ImageData(imagePtr.Base, imagePtr.Stride, imagePtr.Width, imagePtr.Height);
             return data;
         }
 

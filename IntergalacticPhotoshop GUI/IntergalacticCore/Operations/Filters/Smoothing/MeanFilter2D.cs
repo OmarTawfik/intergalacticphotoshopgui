@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Smoothing
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -44,30 +45,16 @@
         /// </summary>
         protected override void Operate()
         {
-            int side = (int)this.maskSize / 2;
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    int red = 0, green = 0, blue = 0;
-                    for (int a = i - side; a <= i + side; a++)
-                    {
-                        for (int b = j - side; b <= j + side; b++)
-                        {
-                            Pixel p = this.GetLocation(b, a);
-                            red += p.Red;
-                            green += p.Green;
-                            blue += p.Blue;
-                        }
-                    }
-
-                    Pixel newPixel = new Pixel(
-                       (byte)(red / (this.maskSize * this.maskSize)),
-                       (byte)(green / (this.maskSize * this.maskSize)),
-                       (byte)(blue / (this.maskSize * this.maskSize)));
-                    this.ResultImage.SetPixel(j, i, newPixel);
-                }
-            }
+            MeanFilter2DOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), this.maskSize);
         }
+
+        /// <summary>
+        /// The native translation processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        /// <param name="maskSize">Mask size</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void MeanFilter2DOperationExecute(ImageData src, ImageData dest, int maskSize);
     }
 }
