@@ -23,7 +23,7 @@
         private int stride, width, height;
 
         /// <summary>
-        /// Initializes a new instance of the ImageData class
+        /// Initializes a new instance of the ImageData struct.
         /// </summary>
         /// <param name="pbase">Base pointer of the bitmap</param>
         /// <param name="stride">Stride of the bitmap</param>

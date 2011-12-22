@@ -42,6 +42,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\IntergalacticUI\bin\Release</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -82,6 +83,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BilinearResizeOperation.cpp" />
+    <ClCompile Include="BinarizationOperation.cpp" />
+    <ClCompile Include="BrightnessOperation.cpp" />
     <ClCompile Include="HorizontalFlipOperation.cpp" />
     <ClCompile Include="HorizontalShearOperation.cpp" />
     <ClCompile Include="MeanFilter2D.cpp" />

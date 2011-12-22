@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,7 +22,14 @@
         /// </summary>
         protected override void Operate()
         {
-            ////CLRBinarizationOperation.Execute(this.GetCppData(this.Image));
+            BinarizationOperationExecute(this.GetCppData(this.Image));
         }
+
+        /// <summary>
+        /// The native binarization processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void BinarizationOperationExecute(ImageData src);
     }
 }

@@ -1,7 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
-    using System;
-    using System.Collections.Generic;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -12,7 +11,7 @@
         /// <summary>
         /// The brightness value
         /// </summary>
-        private byte brightness;
+        private int brightness;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -20,7 +19,7 @@
         /// <param name="input">Array of input to be used (brightness value).</param>
         public override void SetInput(params object[] input)
         {
-            this.brightness = (byte)input[0];
+            this.brightness = (int)input[0];
         }
 
         /// <summary>
@@ -46,19 +45,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-
-                    int r = p.Red + this.brightness;
-                    int g = p.Green + this.brightness;
-                    int b = p.Blue + this.brightness;
-
-                    this.Image.SetPixel(j, i, Pixel.CutOff(r, g, b));
-                }
-            }
+            BrightnessOperationExecute(this.GetCppData(this.Image), this.brightness);
         }
+
+        /// <summary>
+        /// The native brightness processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="brightness">brightness input.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void BrightnessOperationExecute(ImageData src, int brightness);
     }
 }

@@ -21,7 +21,7 @@
         /// </summary>
         protected unsafe override void Operate()
         {
-            ///CLRInverseOperation.Execute(this.GetCppData(this.Image));
+            // CLRInverseOperation.Execute(this.GetCppData(this.Image));
         }
     }
 }

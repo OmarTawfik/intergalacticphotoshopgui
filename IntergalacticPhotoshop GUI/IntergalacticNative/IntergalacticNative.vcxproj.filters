@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Filters\Smoothing">
       <UniqueIdentifier>{b2f5bff1-83c8-41c4-9cb4-43ef5c7f6e92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PixelOperations">
+      <UniqueIdentifier>{a9243288-f45c-4b01-8d28-1407abcd5fec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageData.h">
@@ -55,6 +58,12 @@
     </ClCompile>
     <ClCompile Include="MeanFilter2D.cpp">
       <Filter>Source Files\Filters\Smoothing</Filter>
+    </ClCompile>
+    <ClCompile Include="BinarizationOperation.cpp">
+      <Filter>Source Files\PixelOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="BrightnessOperation.cpp">
+      <Filter>Source Files\PixelOperations</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

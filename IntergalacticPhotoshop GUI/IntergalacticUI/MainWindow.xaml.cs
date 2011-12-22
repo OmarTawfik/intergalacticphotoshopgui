@@ -62,8 +62,7 @@
                 "Resize",
                 "Resize.png",
                 new NearestNeighbourResizeOperation(),
-                new BilinearResizeOperation(),
-                new BorderingOperation());
+                new BilinearResizeOperation());
 
             this.AddOperationCategory(
                 "Transformations",
