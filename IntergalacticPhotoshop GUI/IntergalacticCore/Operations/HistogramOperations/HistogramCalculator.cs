@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.HistogramOperations
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -108,25 +109,23 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < 256; i++)
-            {
-                this.red[i] = 0;
-                this.green[i] = 0;
-                this.blue[i] = 0;
-                this.gray[i] = 0;
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p = this.Image.GetPixel(j, i);
-                    this.red[p.Red]++;
-                    this.green[p.Green]++;
-                    this.blue[p.Blue]++;
-                    this.gray[(p.Red + p.Green + p.Blue) / 3]++;
-                }
-            }
+            HistogramCalculatorExecute(
+                this.GetCppData(this.Image),
+                this.red,
+                this.green,
+                this.blue,
+                this.gray);
         }
+
+        /// <summary>
+        /// The native histogram calculator processing function.
+        /// </summary>
+        /// <param name="source">source image.</param>
+        /// <param name="red">red histogram.</param>
+        /// <param name="green">green histogram.</param>
+        /// <param name="blue">blue histogram.</param>
+        /// <param name="gray">gray histogram.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void HistogramCalculatorExecute(ImageData source, int[] red, int[] green, int[] blue, int[] gray);
     }
 }

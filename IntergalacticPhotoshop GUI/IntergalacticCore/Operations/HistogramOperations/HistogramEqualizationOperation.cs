@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.HistogramOperations
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -11,7 +12,7 @@
         /// <summary>
         /// The histogram values for the gray component.
         /// </summary>
-        private float[] gray = new float[256];
+        private int[] gray = new int[256];
 
         /// <summary>
         /// Returns the title of the operaion
@@ -29,18 +30,7 @@
         {
             HistogramCalculator calculator = new HistogramCalculator();
             calculator.Execute(this.Image);
-
-            float runningSum = 0, totalSum = 0;
-            foreach (float value in calculator.Gray)
-            {
-                totalSum += value;
-            }
-
-            for (int i = 0; i < this.gray.Length; i++)
-            {
-                runningSum += calculator.Gray[i];
-                this.gray[i] = (runningSum / totalSum) * 255.0f;
-            }
+            this.gray = calculator.Gray;
         }
 
         /// <summary>
@@ -48,19 +38,17 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel oldPixel = this.Image.GetPixel(j, i);
-
-                    oldPixel.Red = (byte)Math.Round(this.gray[oldPixel.Red]);
-                    oldPixel.Green = (byte)Math.Round(this.gray[oldPixel.Green]);
-                    oldPixel.Blue = (byte)Math.Round(this.gray[oldPixel.Blue]);
-
-                    this.Image.SetPixel(j, i, oldPixel);
-                }
-            }
+            HistogramEqualizationOperationExecute(
+                this.GetCppData(this.Image),
+                this.gray);
         }
+
+        /// <summary>
+        /// The native histogram equalization processing function.
+        /// </summary>
+        /// <param name="source">source image.</param>
+        /// <param name="gray">gray histogram.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void HistogramEqualizationOperationExecute(ImageData source, int[] gray);
     }
 }

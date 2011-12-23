@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.JoinedOperations
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.HistogramOperations;
 
@@ -12,12 +13,12 @@
         /// <summary>
         /// The bitmap to be matched
         /// </summary>
-        private ImageBase otherBitmap;
+        private ImageBase otherImage;
 
         /// <summary>
         /// Array of values used to match histograms
         /// </summary>
-        private int[] gray;
+        private int[] gray1, gray2;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -25,7 +26,7 @@
         /// <param name="input">Array of input to be used (the image to be matched).</param>
         public override void SetInput(params object[] input)
         {
-            this.otherBitmap = (ImageBase)input[0];
+            this.otherImage = (ImageBase)input[0];
         }
 
         /// <summary>
@@ -47,52 +48,18 @@
         }
 
         /// <summary>
-        /// Pre operations function
+        /// Gets called before the operation begins.
         /// </summary>
         protected override void BeforeOperate()
         {
-            HistogramCalculator operation = new HistogramCalculator();
-            operation.Execute(this.Image);
+            HistogramCalculator operation1 = new HistogramCalculator();
+            HistogramCalculator operation2 = new HistogramCalculator();
 
-            int[] gray1 = (int[])operation.Gray.Clone();
+            operation1.Execute(this.Image);
+            operation2.Execute(this.otherImage);
 
-            float totalSum = this.Sum(gray1), runningSum = 0.0f;
-            for (int i = 0; i < gray1.Length; i++)
-            {
-                runningSum += gray1[i];
-                gray1[i] = (int)((runningSum / totalSum) * 255);
-            }
-
-            operation.Execute(this.otherBitmap);
-
-            int[] gray2 = (int[])operation.Gray.Clone();
-
-            totalSum = this.Sum(gray2);
-            runningSum = 0.0f;
-            for (int i = 0; i < gray2.Length; i++)
-            {
-                runningSum += gray2[i];
-                gray2[i] = (int)((runningSum / totalSum) * 255);
-            }
-
-            this.gray = new int[256];
-            for (int i = 0; i < gray1.Length; i++)
-            {
-                int finalValue = 0;
-                int different = 255;
-                int currentDifference;
-                for (int j = 0; j < gray2.Length; j++)
-                {
-                    currentDifference = (int)Math.Abs(gray1[i] - gray2[j]);
-                    if (different > currentDifference)
-                    {
-                        different = currentDifference;
-                        finalValue = j;
-                    }
-                }
-
-                this.gray[i] = finalValue;
-            }
+            this.gray1 = operation1.Gray;
+            this.gray2 = operation2.Gray;
         }
 
         /// <summary>
@@ -100,35 +67,23 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int y = 0; y < this.Image.Height; y++)
-            {
-                for (int x = 0; x < this.Image.Width; x++)
-                {
-                    Pixel oldPixel = this.Image.GetPixel(x, y);
-
-                    oldPixel.Red = (byte)this.gray[oldPixel.Red];
-                    oldPixel.Green = (byte)this.gray[oldPixel.Green];
-                    oldPixel.Blue = (byte)this.gray[oldPixel.Blue];
-
-                    this.Image.SetPixel(x, y, oldPixel);
-                }
-            }
+            HistogramMatchingOperationExecute(
+                this.GetCppData(this.Image),
+                this.gray1,
+                this.gray2,
+                this.Image.Height * this.Image.Width,
+                this.otherImage.Height * this.otherImage.Width);
         }
 
         /// <summary>
-        /// Sums the input array
+        /// The native histogram matching processing function.
         /// </summary>
-        /// <param name="array">The array to sum</param>
-        /// <returns>Sum of the array</returns>
-        private int Sum(int[] array)
-        {
-            int sum = 0;
-            for (int i = 0; i < array.Length; i++)
-            {
-                sum += array[i];
-            }
-
-            return sum;
-        }
+        /// <param name="source">Soruce image.</param>
+        /// <param name="imageGray">Gray histogram of image.</param>
+        /// <param name="otherGray">Gray histogram of other image.</param>
+        /// <param name="imageSum">Pixel count of image.</param>
+        /// <param name="otherSum">Pixel count of other image.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void HistogramMatchingOperationExecute(ImageData source, int[] imageGray, int[] otherGray, int imageSum, int otherSum);
     }
 }

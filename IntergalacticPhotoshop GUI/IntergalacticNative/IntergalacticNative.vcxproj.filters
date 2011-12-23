@@ -24,11 +24,12 @@
     <Filter Include="Source Files\PixelOperations">
       <UniqueIdentifier>{a9243288-f45c-4b01-8d28-1407abcd5fec}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ImageData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <Filter Include="Source Files\JoinedOperatiosn">
+      <UniqueIdentifier>{bc71971e-8ff6-4d08-819e-bf4205016e79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HistogramOperations">
+      <UniqueIdentifier>{ff40de04-e42e-4b02-961b-695aef790617}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BilinearResizeOperation.cpp">
@@ -82,5 +83,25 @@
     <ClCompile Include="QuantizationOperation.cpp">
       <Filter>Source Files\PixelOperations</Filter>
     </ClCompile>
+    <ClCompile Include="AddOperation.cpp">
+      <Filter>Source Files\JoinedOperatiosn</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtractOperation.cpp">
+      <Filter>Source Files\JoinedOperatiosn</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramMatchingOperation.cpp">
+      <Filter>Source Files\JoinedOperatiosn</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramCalculator.cpp">
+      <Filter>Source Files\HistogramOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramEqualizationOperation.cpp">
+      <Filter>Source Files\HistogramOperations</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

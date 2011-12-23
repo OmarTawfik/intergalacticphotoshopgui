@@ -82,6 +82,7 @@
     <ClInclude Include="ImageData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddOperation.cpp" />
     <ClCompile Include="BilinearResizeOperation.cpp" />
     <ClCompile Include="BinarizationOperation.cpp" />
     <ClCompile Include="BrightnessOperation.cpp" />
@@ -89,6 +90,9 @@
     <ClCompile Include="ContrastOperation.cpp" />
     <ClCompile Include="GammaAdjustmentOperation.cpp" />
     <ClCompile Include="GrayOperation.cpp" />
+    <ClCompile Include="HistogramCalculator.cpp" />
+    <ClCompile Include="HistogramEqualizationOperation.cpp" />
+    <ClCompile Include="HistogramMatchingOperation.cpp" />
     <ClCompile Include="HorizontalFlipOperation.cpp" />
     <ClCompile Include="HorizontalShearOperation.cpp" />
     <ClCompile Include="InverseOperation.cpp" />
@@ -96,6 +100,7 @@
     <ClCompile Include="NearestNeighbourResizeOperation.cpp" />
     <ClCompile Include="PixelationOperation.cpp" />
     <ClCompile Include="QuantizationOperation.cpp" />
+    <ClCompile Include="SubtractOperation.cpp" />
     <ClCompile Include="TranslationOperation.cpp" />
     <ClCompile Include="VerticalFlipOperation.cpp" />
     <ClCompile Include="VerticalShearOperation.cpp" />

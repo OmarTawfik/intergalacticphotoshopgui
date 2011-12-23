@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.PixelOperations
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.ResizeOperations;
 
@@ -71,17 +72,19 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel p1 = this.Image.GetPixel(j, i);
-                    Pixel p2 = this.otherImage.GetPixel(j, i);
-
-                    p1 = (p1 * this.factor) + (p2 * (1.0f - this.factor));
-                    this.Image.SetPixel(j, i, p1);
-                }
-            }
+            AddOperationExecute(
+                this.GetCppData(this.Image),
+                this.GetCppData(this.otherImage),
+                this.factor);
         }
+
+        /// <summary>
+        /// The native add processing function.
+        /// </summary>
+        /// <param name="src">Source image.</param>
+        /// <param name="other">Other image.</param>
+        /// <param name="factor">Addition factor.</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void AddOperationExecute(ImageData src, ImageData other, double factor);
     }
 }
