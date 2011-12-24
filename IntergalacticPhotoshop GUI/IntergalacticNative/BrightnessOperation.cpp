@@ -9,9 +9,9 @@ extern "C" DllExport void BrightnessOperationExecute(ImageData source, int brigh
 	int i, j;
 
 #pragma omp parallel for shared(src, brightness) private(i, j, p)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 			CUTOFF(p, p->R + brightness, p->G + brightness, p->B + brightness);

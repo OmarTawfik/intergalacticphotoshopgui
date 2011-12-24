@@ -3,7 +3,7 @@
 extern "C" DllExport void TranslationOperationExecute(ImageData src, ImageData dest, int displacementX, int displacementY)
 {
 	int i, j, newX, newY;
-	Pixel *oldPixel, *newPixel;
+	Pixel *newPixel;
 
 	while (displacementX < src.Width)
     {
@@ -15,16 +15,16 @@ extern "C" DllExport void TranslationOperationExecute(ImageData src, ImageData d
         displacementY += src.Height;
     }
 
-#pragma omp parallel for shared(src, dest) private(i, j, oldPixel, newPixel, newX, newY) 
-    for (int i = 0; i < dest.Height; i++)
+#pragma omp parallel for shared(src, dest) private(i, j, newPixel, newX, newY) 
+    for (i = 0; i < dest.Height; i++)
     {
-        for (int j = 0; j < dest.Width; j++)
+        for (j = 0; j < dest.Width; j++)
         {
-            int newX = (j + displacementX) % dest.Width;
-            int newY = (i + displacementY) % dest.Height;
+            newX = (j + displacementX) % dest.Width;
+            newY = (i + displacementY) % dest.Height;
 
-            oldPixel = GETPIXEL(&src, j, i);
-            SETPIXEL(GETPIXEL(&dest, newX, newY), oldPixel);
+            newPixel = GETPIXEL(&src, j, i);
+            SETPIXEL(GETPIXEL(&dest, newX, newY), newPixel);
         }
     }
 }            

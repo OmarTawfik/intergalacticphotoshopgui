@@ -9,9 +9,9 @@ extern "C" DllExport void QuantizationOperationExecute(ImageData source, int bit
 	int i, j, mask = ~((1 << (8 - bitsPerChannel)) - 1);
 
 #pragma omp parallel for shared(src, mask) private(i, j, p)
-	for (int i = 0; i < src->Height; i ++)
+	for (i = 0; i < src->Height; i ++)
 	{
-		for (int j = 0; j < src->Width; j ++)
+		for (j = 0; j < src->Width; j ++)
 		{
 			p = GETPIXEL(src,j,i);
 			p->R &= mask;

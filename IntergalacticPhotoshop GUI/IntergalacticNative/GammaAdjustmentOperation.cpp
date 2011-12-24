@@ -10,9 +10,9 @@ extern "C" DllExport void GammaAdjustmentOperationExecute(ImageData source, doub
 	int i, j;
 
 #pragma omp parallel for shared(src, gamma) private(i, j, p)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 			p->R = pow(p->R / 255.0, gamma) * 255;

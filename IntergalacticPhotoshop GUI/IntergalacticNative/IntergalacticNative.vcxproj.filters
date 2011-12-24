@@ -24,12 +24,26 @@
     <Filter Include="Source Files\PixelOperations">
       <UniqueIdentifier>{a9243288-f45c-4b01-8d28-1407abcd5fec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\JoinedOperatiosn">
-      <UniqueIdentifier>{bc71971e-8ff6-4d08-819e-bf4205016e79}</UniqueIdentifier>
+    <Filter Include="Source Files\Filters\Sharpening">
+      <UniqueIdentifier>{0534a827-13f8-4c2a-ae19-ca56ce1db28b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\HistogramOperations">
-      <UniqueIdentifier>{ff40de04-e42e-4b02-961b-695aef790617}</UniqueIdentifier>
+    <Filter Include="Source Files\Filters\EdgeDetection">
+      <UniqueIdentifier>{43c23b35-30c3-4ad5-8f0b-fc080c926303}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LaplacianSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvolutionHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NoiseHelperFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BilinearResizeOperation.cpp">
@@ -52,9 +66,6 @@
     </ClCompile>
     <ClCompile Include="VerticalShearOperation.cpp">
       <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="MeanFilter2D.cpp">
-      <Filter>Source Files\Filters\Smoothing</Filter>
     </ClCompile>
     <ClCompile Include="BinarizationOperation.cpp">
       <Filter>Source Files\PixelOperations</Filter>
@@ -83,25 +94,65 @@
     <ClCompile Include="QuantizationOperation.cpp">
       <Filter>Source Files\PixelOperations</Filter>
     </ClCompile>
+    <ClCompile Include="GaussianFilter2DOperation.cpp">
+      <Filter>Source Files\Filters\Smoothing</Filter>
+    </ClCompile>
+    <ClCompile Include="MeanFilter2DOperation.cpp">
+      <Filter>Source Files\Filters\Smoothing</Filter>
+    </ClCompile>
+    <ClCompile Include="MeanFilter1DOperation.cpp">
+      <Filter>Source Files\Filters\Smoothing</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussianFilter1DOperation.cpp">
+      <Filter>Source Files\Filters\Smoothing</Filter>
+    </ClCompile>
+    <ClCompile Include="BackDiagonalLineSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontDiagonalLineSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalLineSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalLineSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClCompile>
+    <ClCompile Include="LaplacianPointSharpeningOperation.cpp">
+      <Filter>Source Files\Filters\Sharpening</Filter>
+    </ClCompile>
+    <ClCompile Include="BackDiagonalEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
+    <ClCompile Include="FrontDiagonalEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
+    <ClCompile Include="LaplacianEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
+    <ClCompile Include="LaplacianPointEdgeDetectionOperation.cpp">
+      <Filter>Source Files\Filters\EdgeDetection</Filter>
+    </ClCompile>
     <ClCompile Include="AddOperation.cpp">
-      <Filter>Source Files\JoinedOperatiosn</Filter>
-    </ClCompile>
-    <ClCompile Include="SubtractOperation.cpp">
-      <Filter>Source Files\JoinedOperatiosn</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramMatchingOperation.cpp">
-      <Filter>Source Files\JoinedOperatiosn</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HistogramCalculator.cpp">
-      <Filter>Source Files\HistogramOperations</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HistogramEqualizationOperation.cpp">
-      <Filter>Source Files\HistogramOperations</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ImageData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="HistogramMatchingOperation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubtractOperation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

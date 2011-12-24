@@ -9,9 +9,9 @@ extern "C" DllExport void InverseOperationExecute(ImageData source)
 	int i, j;
 
 #pragma omp parallel for shared(src) private(i, j, p)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 			p->R = 255 - p->R;

@@ -11,9 +11,9 @@ extern "C" DllExport void ContrastOperationExecute(ImageData source, int oldMin,
 	float newMultiplier = (newMax - newMin) / 255.0f;
 
 #pragma omp parallel for shared(src, oldMultiplier, newMultiplier) private(p, i, j, r, g, b)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 

@@ -3,10 +3,10 @@
 extern "C" DllExport void HorizontalShearOperationExecute(ImageData src, ImageData dest, double factor)
 {
 	int i, j, newX;
-	Pixel *oldPixel, *newPixel;
+	Pixel *oldPixel;
 
 
-#pragma omp parallel for shared(src, dest) private(i, j, oldPixel, newPixel, newX) 
+#pragma omp parallel for shared(src, dest) private(i, j, oldPixel, newX) 
     for (i = 0; i < dest.Height; i++)
     {
         for (j = 0; j < dest.Width; j++)

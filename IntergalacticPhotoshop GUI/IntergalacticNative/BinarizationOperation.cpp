@@ -9,9 +9,9 @@ extern "C" DllExport void BinarizationOperationExecute(ImageData source)
 	Pixel* p;
 
 	#pragma omp parallel for shared(src, totalGray) private(i, j, p)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 			totalGray += (p->R + p->G + p->B) / 3;

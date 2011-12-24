@@ -9,9 +9,9 @@ extern "C" DllExport void ColorExtractionOperationExecute(ImageData source, bool
 	int i, j;
 
 #pragma omp parallel for shared(src, keepRed, keepGreen, keepBlue) private(i, j, p)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p = GETPIXEL(src,j,i);
 			p->R = (keepRed) ? p->R : 0;
