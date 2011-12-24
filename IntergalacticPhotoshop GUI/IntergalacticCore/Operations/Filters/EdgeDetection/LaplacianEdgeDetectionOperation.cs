@@ -26,6 +26,7 @@
         {
             LaplacianEdgeDetectionOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
         /// <summary>
         /// The laplacian line edge detection processing function
         /// </summary>

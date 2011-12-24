@@ -26,6 +26,7 @@
         {
             HorizontalEdgeDetectionOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
         /// <summary>
         /// The horizontal line edge detection processing function
         /// </summary>

@@ -26,6 +26,7 @@
         {
             VerticalEdgeDetectionOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
         /// <summary>
         /// The vertical line edge detection processing function
         /// </summary>

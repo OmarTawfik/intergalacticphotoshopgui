@@ -26,6 +26,7 @@
         {
             BackDiagonalEdgeDetectionOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
         /// <summary>
         /// The back diagonal line edge detection processing function
         /// </summary>
