@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Sharpening
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,21 +22,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel center = this.Image.GetPixel(j, i),
-                          right = this.GetLocation(j + 1, i),
-                          left = this.GetLocation(j - 1, i);
-
-                    int red = center.Red + left.Red - right.Red;
-                    int green = center.Green + left.Green - right.Green;
-                    int blue = center.Blue + left.Blue - right.Blue;
-
-                    this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
-                }
-            }
+            VerticalLineSharpeningOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
+        /// <summary>
+        /// The vertical line sharpening processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void VerticalLineSharpeningOperationExecute(ImageData src, ImageData dest);
     }
 }

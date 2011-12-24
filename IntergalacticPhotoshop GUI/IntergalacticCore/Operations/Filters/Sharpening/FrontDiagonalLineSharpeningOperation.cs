@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Sharpening
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,21 +22,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    Pixel center = this.Image.GetPixel(j, i),
-                          leftUp = this.GetLocation(j - 1, i - 1),
-                          downRight = this.GetLocation(j + 1, i + 1);
-
-                    int red = center.Red + leftUp.Red - downRight.Red;
-                    int green = center.Green + leftUp.Green - downRight.Green;
-                    int blue = center.Blue + leftUp.Blue - downRight.Blue;
-
-                    this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
-                }
-            }
+            FrontDiagonalLineSharpeningOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
+        /// <summary>
+        /// The front diagonal line sharpening processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void FrontDiagonalLineSharpeningOperationExecute(ImageData src, ImageData dest);
     }
 }

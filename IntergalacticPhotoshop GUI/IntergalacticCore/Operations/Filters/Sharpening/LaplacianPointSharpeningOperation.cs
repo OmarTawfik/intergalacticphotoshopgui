@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Sharpening
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -21,29 +22,15 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    int red = 0, green = 0, blue = 0;
-                    for (int y = i - 1; y <= i + 1; y++)
-                    {
-                        for (int x = j - 1; x <= j + 1; x++)
-                        {
-                            Pixel p = this.GetLocation(x, y);
-                            red -= p.Red;
-                            green -= p.Green;
-                            blue -= p.Blue;
-                        }
-                    }
-
-                    Pixel center = this.Image.GetPixel(j, i);
-                    red += 10 * center.Red;
-                    green += 10 * center.Green;
-                    blue += 10 * center.Blue;
-                    this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
-                }
-            }
+            LaplacianPointSharpeningOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage));
         }
+
+        /// <summary>
+        /// The laplacian point sharpening processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void LaplacianPointSharpeningOperationExecute(ImageData src, ImageData dest);
     }
 }

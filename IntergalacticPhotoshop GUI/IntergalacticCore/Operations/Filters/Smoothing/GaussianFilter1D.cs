@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Smoothing
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -41,68 +42,29 @@
         }
 
         /// <summary>
+        /// Gets called before the operation begins.
+        /// </summary>
+        protected override void BeforeOperate()
+        {
+            this.ResultImage = this.Image.CreateCopyClone();
+            this.ResultImage.BeforeEdit();
+        }
+
+        /// <summary>
         /// Does the actual operation to the specified image.
         /// </summary>
         protected override void Operate()
         {
-            int n = (int)((3.7 * this.sigma) - 0.5);
-            double bracket = 1.0 / Math.Sqrt(2 * Math.PI * this.sigma);
-
-            int maskSize = (2 * n) + 1;
-            double[] horizontalMask = new double[maskSize];
-            double[] verticalMask = new double[maskSize];
-
-            for (int x = 0, a = -n; x < maskSize; x++, a++)
-            {
-                double power = -(a * a) / (2 * this.sigma * this.sigma);
-                horizontalMask[x] = bracket * Math.Pow(Math.E, power);
-            }
-
-            for (int y = 0, b = -n; y < maskSize; y++, b++)
-            {
-                double power = -(b * b) / (2 * this.sigma * this.sigma);
-                verticalMask[y] = bracket * Math.Pow(Math.E, power);
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    double red = 0, green = 0, blue = 0;
-                    for (int x = j - n, b = 0; x <= j + n; x++, b++)
-                    {
-                        Pixel p = this.GetLocation(x, i);
-                        red += p.Red * horizontalMask[b];
-                        green += p.Green * horizontalMask[b];
-                        blue += p.Blue * horizontalMask[b];
-                    }
-
-                    this.ResultImage.SetPixel(j, i, new Pixel((byte)red, (byte)green, (byte)blue));
-                }
-            }
-
-            this.Image.AfterEdit();
-            this.ResultImage.AfterEdit();
-            this.Image = ResultImage.CreateCopyClone();
-            this.Image.BeforeEdit();
-            this.ResultImage.BeforeEdit();
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    double red = 0, green = 0, blue = 0;
-                    for (int y = i - n, a = 0; y <= i + n; y++, a++)
-                    {
-                        Pixel p = this.GetLocation(j, y);
-                        red += p.Red * verticalMask[a];
-                        green += p.Green * verticalMask[a];
-                        blue += p.Blue * verticalMask[a];
-                    }
-
-                    this.ResultImage.SetPixel(j, i, new Pixel((byte)red, (byte)green, (byte)blue));
-                }
-            }
+            GaussianFilter1DOperationExecute(this.GetCppData(this.ResultImage), this.GetCppData(this.Image), this.sigma);
         }
+
+        /// <summary>
+        /// The gaussian filter 1D processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        /// <param name="sigma">Sigma value</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void GaussianFilter1DOperationExecute(ImageData src, ImageData dest, double sigma);
     }
 }

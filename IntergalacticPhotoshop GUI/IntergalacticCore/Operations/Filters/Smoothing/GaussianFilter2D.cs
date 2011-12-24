@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Smoothing
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -45,40 +46,16 @@
         /// </summary>
         protected override void Operate()
         {
-            int n = (int)Math.Ceiling(((3.7 * this.sigma) - 0.5));
-            double bracket = 1.0 / (2 * Math.PI * this.sigma * this.sigma);
-
-            int maskSize = (2 * n) + 1;
-            double[,] mask = new double[maskSize, maskSize];
-
-            for (int y = -n, a = 0; y <= n; y++, a++)
-            {
-                for (int x = -n, b = 0; x <= n; x++, b++)
-                {
-                    double power = -((x * x) + (y * y)) / (2 * this.sigma * this.sigma);
-                    mask[a, b] = bracket * Math.Pow(Math.E, power);
-                }
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    double red = 0, green = 0, blue = 0;
-                    for (int y = i - n, a = 0; y <= i + n; y++, a++)
-                    {
-                        for (int x = j - n, b = 0; x <= j + n; x++, b++)
-                        {
-                            Pixel p = this.GetLocation(x, y);
-                            red += p.Red * mask[a, b];
-                            green += p.Green * mask[a, b];
-                            blue += p.Blue * mask[a, b];
-                        }
-                    }
-
-                    this.ResultImage.SetPixel(j, i, new Pixel((byte)red, (byte)green, (byte)blue));
-                }
-            }
+            GaussianFilter2DOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), this.sigma);
         }
+
+        /// <summary>
+        /// The gaussian filter 2D processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        /// <param name="sigma">Sigma value</param>
+        [DllImport("IntergalacticNative.dll")]
+        private static extern void GaussianFilter2DOperationExecute(ImageData src, ImageData dest, double sigma);
     }
 }

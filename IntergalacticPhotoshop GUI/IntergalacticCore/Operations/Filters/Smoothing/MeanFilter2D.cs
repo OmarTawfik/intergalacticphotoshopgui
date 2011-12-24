@@ -49,7 +49,7 @@
         }
 
         /// <summary>
-        /// The native translation processing function
+        /// The mean filter 2D processing function
         /// </summary>
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
