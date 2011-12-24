@@ -5,9 +5,9 @@
     using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
-    /// Modifies each pixel by an exponential noise.
+    /// Modifies each pixel by a gaussian noise.
     /// </summary>
-    public class AddExponentialNoiseOperation : BaseOperation
+    public class AddGaussianNoiseOperation : BaseOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -15,7 +15,12 @@
         private double percentage;
 
         /// <summary>
-        /// Mean of the normal graph.
+        /// sigma of the gaussian graph.
+        /// </summary>
+        private double sigma;
+
+        /// <summary>
+        /// mean of the gaussian graph.
         /// </summary>
         private double mean;
 
@@ -26,7 +31,8 @@
         public override void SetInput(params object[] input)
         {
             this.percentage = (double)input[0] / 100;
-            this.mean = (double)input[1];
+            this.sigma = (double)input[1];
+            this.mean = (double)input[2];
         }
 
         /// <summary>
@@ -35,7 +41,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Mean,double,0,10";
+            return "Ammount,double,0,100|Sigma,double,0,255|Mean,double,0,255";
         }
 
         /// <summary>
@@ -44,7 +50,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Add Exponential Noise";
+            return "Add Gaussian Noise";
         }
 
         /// <summary>
@@ -55,9 +61,12 @@
             Random rnd = new Random();
             int[,] table = new int[this.Image.Height, this.Image.Width];
 
+            double variance = this.sigma * this.sigma;
+            double root = Math.Sqrt(2 * Math.PI * variance);
+
             for (int i = 0; i < 256; i++)
             {
-                double dist = this.mean * Math.Exp(-this.mean * i);
+                double dist = Math.Exp(-(i - this.mean) * (i - this.mean) / (2 * variance)) / root;
                 int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
 
                 while (count > 0)

@@ -2,6 +2,7 @@
 {
     using System;
     using IntergalacticCore.Data;
+    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// The noise type for this pixel.
@@ -120,6 +121,15 @@
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets called after the operation ends.
+        /// </summary>
+        protected override void AfterOperate()
+        {
+            NormalizationOperation operation = new NormalizationOperation();
+            this.Image = operation.Execute(this.Image);
         }
     }
 }

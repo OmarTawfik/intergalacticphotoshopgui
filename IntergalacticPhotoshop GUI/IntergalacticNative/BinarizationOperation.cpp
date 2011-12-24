@@ -2,24 +2,28 @@
 #include <iostream>
 using namespace std;
 
-extern "C" DllExport void BinarizationOperationExecute(ImageData source)
+extern "C" DllExport void BinarizationOperationExecute(ImageData source, bool calculate, int threshold)
 {
 	ImageData* src = &source;
 	int totalGray = 0, i, j;
 	Pixel* p;
 
-	#pragma omp parallel for shared(src, totalGray) private(i, j, p)
-	for (i = 0; i < src->Height; i++)
+	if ( calculate )
 	{
-		for (j = 0; j < src->Width; j++)
+		#pragma omp parallel for shared(src, totalGray) private(i, j, p)
+		for (i = 0; i < src->Height; i++)
 		{
-			p = GETPIXEL(src,j,i);
-			totalGray += (p->R + p->G + p->B) / 3;
+			for (j = 0; j < src->Width; j++)
+			{
+				p = GETPIXEL(src,j,i);
+				totalGray += (p->R + p->G + p->B) / 3;
+			}
 		}
+
+		threshold = totalGray / (src->Width * src->Height);
 	}
 
-	int threshold = totalGray / (src->Width * src->Height), gray;
-
+	int gray;
 	#pragma omp parallel for shared(src, threshold) private(i, j, p, gray)
 	for (i = 0; i < src->Height; i++)
 	{

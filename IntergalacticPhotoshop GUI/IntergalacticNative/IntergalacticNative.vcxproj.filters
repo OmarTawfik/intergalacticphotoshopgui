@@ -36,9 +36,6 @@
     <Filter Include="Source Files\HistogramOperations">
       <UniqueIdentifier>{8f026449-58d8-4556-9ae7-1ab13eb21adb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Noise">
-      <UniqueIdentifier>{56761b0a-aeab-450f-a3b0-aa0b8a56c208}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageData.h">

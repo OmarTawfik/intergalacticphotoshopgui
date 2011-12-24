@@ -75,7 +75,7 @@
         /// <param name="oldMax">old max.</param>
         /// <param name="newMin">new min.</param>
         /// <param name="newMax">new max.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void ContrastOperationExecute(ImageData src, int oldMin, int oldMax, int newMin, int newMax);
     }
 }

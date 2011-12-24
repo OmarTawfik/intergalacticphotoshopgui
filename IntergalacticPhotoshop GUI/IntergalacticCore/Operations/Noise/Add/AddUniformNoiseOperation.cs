@@ -2,6 +2,7 @@
 {
     using System;
     using IntergalacticCore.Data;
+    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// Modifies each pixel by a uniform noise.
@@ -90,6 +91,15 @@
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets called after the operation ends.
+        /// </summary>
+        protected override void AfterOperate()
+        {
+            NormalizationOperation operation = new NormalizationOperation();
+            this.Image = operation.Execute(this.Image);
         }
     }
 }
