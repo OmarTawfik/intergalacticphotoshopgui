@@ -10,6 +10,14 @@ extern "C" DllExport void HistogramCalculatorExecute(ImageData source, int* red,
 	Pixel* p;
 	int i, j;
 
+	for (int i = 0; i < 256; i++)
+    {
+        red[i] = 0;
+        green[i] = 0;
+        blue[i] = 0;
+        gray[i] = 0;
+    }
+
 #pragma omp parallel for shared(src, red, green, blue, gray) private(i, j, p)
 	for (int i = 0; i < src->Height; i++)
 	{
