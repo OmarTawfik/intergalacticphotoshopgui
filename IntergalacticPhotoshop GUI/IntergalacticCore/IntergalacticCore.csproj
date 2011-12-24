@@ -125,6 +125,7 @@
     <Compile Include="Operations\Matlab\FrequencyDomainOperation.cs" />
     <Compile Include="Operations\Matlab\LocalHistogramEqualization.cs" />
     <Compile Include="Operations\Matlab\MatlabOperation.cs" />
+    <Compile Include="Operations\Matlab\IdealNotchFilterOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilterOperation.cs" />
     <Compile Include="Operations\Matlab\PassFilters\ButterworthHighPassFilter.cs" />
     <Compile Include="Operations\Matlab\PassFilters\ButterworthLowPassFilter.cs" />
@@ -134,15 +135,19 @@
     <Compile Include="Operations\Matlab\PassFilters\IdealBandRejectFilter.cs" />
     <Compile Include="Operations\Matlab\PassFilters\IdealHighPassFilter.cs" />
     <Compile Include="Operations\Matlab\PassFilters\IdealLowPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealNotchPassFilter.cs" />
+    <Compile Include="Operations\Matlab\PassFilters\IdealNotchRejectFilter.cs" />
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexOperation.cs" />
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationAndGainOffsetOperation.cs" />
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddExponentialNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddGaussianNoiseOperation.cs" />
+    <Compile Include="Operations\Noise\Add\AddPeriodicNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddRayleighNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddSaltPepperNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddUniformNoiseOperation.cs" />
     <Compile Include="Operations\Noise\BaseNoiseRemovalOperation.cs" />
+    <Compile Include="Operations\Noise\Remove\AdaptiveMedianFilter.cs" />
     <Compile Include="Operations\Noise\Remove\GeometricMeanFilter.cs" />
     <Compile Include="Operations\Noise\Remove\MaxFilter.cs" />
     <Compile Include="Operations\Noise\Remove\MedianFilter.cs" />

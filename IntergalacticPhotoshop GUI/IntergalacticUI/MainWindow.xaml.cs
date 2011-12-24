@@ -136,7 +136,9 @@
                 new GaussianLowPassFilter(),
                 new GaussianHighPassFilter(),
                 new ButterworthLowPassFilter(),
-                new ButterworthHighPassFilter());
+                new ButterworthHighPassFilter(),
+                new IdealNotchPassFilter(),
+                new IdealNotchRejectFilter());
 
             this.AddOperationCategory(
                 "Noise Operations",
@@ -146,10 +148,12 @@
                 new AddGaussianNoiseOperation(),
                 new AddExponentialNoiseOperation(),
                 new AddRayleighNoiseOperation(),
+                new AddPeriodicNoiseOperation(),
                 new GeometricMeanFilter(),
                 new MinFilter(),
                 new MaxFilter(),
                 new MedianFilter(),
+                new AdaptiveMedianFilter(),
                 new MidPointFilter());
 
             this.InitHistogramView();
