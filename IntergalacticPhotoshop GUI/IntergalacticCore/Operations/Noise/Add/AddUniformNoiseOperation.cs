@@ -6,7 +6,7 @@
     /// <summary>
     /// Modifies each pixel by a uniform noise.
     /// </summary>
-    public class AddUniformNoiseOperation : BaseNoiseAdditionOperation
+    public class AddUniformNoiseOperation : BaseOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -57,20 +57,35 @@
         /// </summary>
         protected override void Operate()
         {
-            bool[,] table = this.GetRandomTable(this.percentage);
-            Random rand = new Random();
+            Random rnd = new Random();
+            int[,] table = new int[this.Image.Height, this.Image.Width];
+
+            for (int i = 0; i < 256; i++)
+            {
+                double dist = (this.start <= i && i <= this.end) ? 1.0 / (this.end - this.start) : 0;
+                int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
+
+                while (count > 0)
+                {
+                    int x = rnd.Next(this.Image.Width);
+                    int y = rnd.Next(this.Image.Height);
+
+                    if (table[y, x] == 0)
+                    {
+                        table[y, x] = i + 1;
+                        count--;
+                    }
+                }
+            }
 
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    if (table[i, j] == true)
+                    if (table[i, j] != 0)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
-                        p = Pixel.CutOff(
-                            p.Red + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Green + this.start + (rand.NextDouble() * (this.end - this.start)),
-                            p.Blue + this.start + (rand.NextDouble() * (this.end - this.start)));
+                        p.Red = p.Green = p.Blue = (byte)(table[i, j] - 1);
                         this.Image.SetPixel(j, i, p);
                     }
                 }

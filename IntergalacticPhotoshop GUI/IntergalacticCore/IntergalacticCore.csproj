@@ -69,6 +69,7 @@
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ComponentFactory.Krypton.Toolkit, Version=4.3.2.0, Culture=neutral, PublicKeyToken=a87e673e9ecb6e8e, processorArchitecture=MSIL" />
     <Reference Include="IntergalacticMatlab, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Binaries\IntergalacticMatlab.dll</HintPath>
@@ -79,6 +80,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -139,7 +142,6 @@
     <Compile Include="Operations\Noise\Add\AddRayleighNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddSaltPepperNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddUniformNoiseOperation.cs" />
-    <Compile Include="Operations\Noise\BaseNoiseAdditionOperation.cs" />
     <Compile Include="Operations\Noise\BaseNoiseRemovalOperation.cs" />
     <Compile Include="Operations\Noise\Remove\GeometricMeanFilter.cs" />
     <Compile Include="Operations\Noise\Remove\MaxFilter.cs" />

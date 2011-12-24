@@ -6,7 +6,7 @@
     /// <summary>
     /// Modifies each pixel by a rayleigh noise.
     /// </summary>
-    public class AddRayleighNoiseOperation : BaseNoiseAdditionOperation
+    public class AddRayleighNoiseOperation : BaseOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -14,9 +14,9 @@
         private double percentage;
 
         /// <summary>
-        /// Variance of the normal graph.
+        /// Variance of the rayleigh graph.
         /// </summary>
-        private double variance;
+        private double sigma;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -25,12 +25,7 @@
         public override void SetInput(params object[] input)
         {
             this.percentage = (double)input[0] / 100;
-            this.variance = (double)input[1];
-
-            if (this.variance == 0)
-            {
-                throw new Exception("Variance cannot be equal zero.");
-            }
+            this.sigma = (double)input[1];
         }
 
         /// <summary>
@@ -39,7 +34,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Variance,double,0,100";
+            return "Ammount,double,0,100|Sigma,double,0,100";
         }
 
         /// <summary>
@@ -56,36 +51,40 @@
         /// </summary>
         protected override void Operate()
         {
-            bool[,] table = this.GetRandomTable(this.percentage);
-            Random rand = new Random();
+            Random rnd = new Random();
+            int[,] table = new int[this.Image.Height, this.Image.Width];
+            double variance = this.sigma * this.sigma;
+
+            for (int i = 0; i < 256; i++)
+            {
+                double dist = i * Math.Exp(-i * i / (2 * variance)) / variance;
+                int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
+
+                while (count > 0)
+                {
+                    int x = rnd.Next(this.Image.Width);
+                    int y = rnd.Next(this.Image.Height);
+
+                    if (table[y, x] == 0)
+                    {
+                        table[y, x] = i + 1;
+                        count--;
+                    }
+                }
+            }
 
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    if (table[i, j] == true)
+                    if (table[i, j] != 0)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
-
-                        p = Pixel.CutOff(
-                            p.Red + (256 * this.GetNoise(rand.NextDouble())),
-                            p.Green + (256 * this.GetNoise(rand.NextDouble())),
-                            p.Blue + (256 * this.GetNoise(rand.NextDouble())));
-
+                        p.Red = p.Green = p.Blue = (byte)(table[i, j] - 1);
                         this.Image.SetPixel(j, i, p);
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the specified noise.
-        /// </summary>
-        /// <param name="x">Random Variable.</param>
-        /// <returns>Rayleigh Noise.</returns>
-        private double GetNoise(double x)
-        {
-            return x * Math.Exp(-x * x / (2 * this.variance)) / this.variance;
         }
     }
 }

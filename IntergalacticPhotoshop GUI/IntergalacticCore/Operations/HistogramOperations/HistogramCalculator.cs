@@ -125,7 +125,7 @@
         /// <param name="green">green histogram.</param>
         /// <param name="blue">blue histogram.</param>
         /// <param name="gray">gray histogram.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void HistogramCalculatorExecute(ImageData source, int[] red, int[] green, int[] blue, int[] gray);
     }
 }

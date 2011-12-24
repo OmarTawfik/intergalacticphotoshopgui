@@ -30,6 +30,15 @@
     <Filter Include="Source Files\Filters\EdgeDetection">
       <UniqueIdentifier>{43c23b35-30c3-4ad5-8f0b-fc080c926303}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\JoinedOperations">
+      <UniqueIdentifier>{45fa497b-439f-4ca0-8fe0-d1ae78b9c1af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\HistogramOperations">
+      <UniqueIdentifier>{8f026449-58d8-4556-9ae7-1ab13eb21adb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Noise">
+      <UniqueIdentifier>{56761b0a-aeab-450f-a3b0-aa0b8a56c208}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageData.h">
@@ -140,19 +149,19 @@
       <Filter>Source Files\Filters\EdgeDetection</Filter>
     </ClCompile>
     <ClCompile Include="AddOperation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramCalculator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramEqualizationOperation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\JoinedOperations</Filter>
     </ClCompile>
     <ClCompile Include="HistogramMatchingOperation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\JoinedOperations</Filter>
     </ClCompile>
     <ClCompile Include="SubtractOperation.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\JoinedOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramCalculator.cpp">
+      <Filter>Source Files\HistogramOperations</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramEqualizationOperation.cpp">
+      <Filter>Source Files\HistogramOperations</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
     /// <summary>
     /// Modifies each pixel by an exponential noise.
     /// </summary>
-    public class AddExponentialNoiseOperation : BaseNoiseAdditionOperation
+    public class AddExponentialNoiseOperation : BaseOperation
     {
         /// <summary>
         /// Ammount of noise to add.
@@ -34,7 +34,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Mean,double,0,100";
+            return "Ammount,double,0,100|Mean,double,0,10";
         }
 
         /// <summary>
@@ -51,42 +51,38 @@
         /// </summary>
         protected override void Operate()
         {
-            bool[,] table = this.GetRandomTable(this.percentage);
-            Random rand = new Random();
+            Random rnd = new Random();
+            int[,] table = new int[this.Image.Height, this.Image.Width];
+
+            for (int i = 0; i < 256; i++)
+            {
+                double dist = this.mean * Math.Exp(-this.mean * i);
+                int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
+
+                while (count > 0)
+                {
+                    int x = rnd.Next(this.Image.Width);
+                    int y = rnd.Next(this.Image.Height);
+
+                    if (table[y, x] == 0)
+                    {
+                        table[y, x] = i + 1;
+                        count--;
+                    }
+                }
+            }
 
             for (int i = 0; i < this.Image.Height; i++)
             {
                 for (int j = 0; j < this.Image.Width; j++)
                 {
-                    if (table[i, j] == true)
+                    if (table[i, j] != 0)
                     {
                         Pixel p = this.Image.GetPixel(j, i);
-
-                        p = Pixel.CutOff(
-                            p.Red + this.GetValue(rand.NextDouble()),
-                            p.Green + this.GetValue(rand.NextDouble()),
-                            p.Blue + this.GetValue(rand.NextDouble()));
-
+                        p.Red = p.Green = p.Blue = (byte)(table[i, j] - 1);
                         this.Image.SetPixel(j, i, p);
                     }
                 }
-            }
-        }
-
-        /// <summary>
-        /// Gets a distribution value from a random number.
-        /// </summary>
-        /// <param name="randomVariable">random variable to start with.</param>
-        /// <returns>the exponential distribution member.</returns>
-        private double GetValue(double randomVariable)
-        {
-            if (randomVariable != 0)
-            {
-                return -this.mean * Math.Log(randomVariable, Math.Exp(1));
-            }
-            else
-            {
-                return 0;
             }
         }
     }
