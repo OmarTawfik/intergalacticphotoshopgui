@@ -181,7 +181,11 @@
             this.operationInputView.SetInputTarget(operation);
             this.operationInputView.Visibility = Visibility.Visible;
             UIHelpers.SlideInFronBottomAnimation(this.operationInputView, new Thickness(0, 0, 0, 0), 0.5);
-            this.mainPanel.Children.Add(this.operationInputView);
+            if (!this.mainPanel.Children.Contains(this.operationInputView))
+            {
+                this.mainPanel.Children.Add(this.operationInputView);
+            }
+
             this.ShowBackCover();
         }
 

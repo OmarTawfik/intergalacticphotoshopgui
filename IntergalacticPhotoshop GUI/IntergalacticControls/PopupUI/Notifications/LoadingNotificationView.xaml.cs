@@ -58,7 +58,7 @@
                 lblTitle.Content = "Done!";
                 SideNotification finishingNotification = new SideNotification();
                 finishingNotification.SetTitle("Done in " + operation.OperatingTime.ToString() + " Seconds.");
-                finishingNotification.DisplayTimeout = 3;
+                finishingNotification.DisplayTimeout = 15;
                 finishingNotification.AnimationType = NotificationAnimationType.Fade;
                 finishingNotification.ShowNotification();
             }
