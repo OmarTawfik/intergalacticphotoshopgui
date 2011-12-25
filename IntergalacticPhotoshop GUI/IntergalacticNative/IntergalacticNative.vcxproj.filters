@@ -36,6 +36,9 @@
     <Filter Include="Source Files\HistogramOperations">
       <UniqueIdentifier>{8f026449-58d8-4556-9ae7-1ab13eb21adb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Matlab">
+      <UniqueIdentifier>{82bc61ce-956c-46db-9635-f16263b6a3b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageData.h">
@@ -162,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="CustomMaskOperation.cpp">
       <Filter>Source Files\Filters</Filter>
+    </ClCompile>
+    <ClCompile Include="MatlabOperations.cpp">
+      <Filter>Source Files\Matlab</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

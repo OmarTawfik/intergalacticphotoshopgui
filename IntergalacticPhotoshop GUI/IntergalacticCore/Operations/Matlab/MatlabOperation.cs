@@ -1,9 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Matlab
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -23,11 +20,11 @@
             image.SetSize(red.GetLength(1), red.GetLength(0));
             image.BeforeEdit();
 
-            for (int i = 0; i < image.Height; i++)
+            unsafe
             {
-                for (int j = 0; j < image.Width; j++)
+                fixed (double* pred = &red[0, 0], pgreen = &green[0, 0], pblue = &blue[0, 0])
                 {
-                    image.SetPixel(j, i, new Pixel((byte)red[i, j], (byte)green[i, j], (byte)blue[i, j]));
+                    DoubleToImageExecute(this.GetCppData(image), pred, pgreen, pblue);
                 }
             }
 
@@ -49,14 +46,11 @@
 
             image.BeforeEdit();
 
-            for (int i = 0; i < image.Height; i++)
+            unsafe
             {
-                for (int j = 0; j < image.Width; j++)
+                fixed (double* pred = &mred[0, 0], pgreen = &mgreen[0, 0], pblue = &mblue[0, 0])
                 {
-                    Pixel p = image.GetPixel(j, i);
-                    mred[i, j] = p.Red;
-                    mgreen[i, j] = p.Green;
-                    mblue[i, j] = p.Blue;
+                    ImageToDoubleExecute(this.GetCppData(image), pred, pgreen, pblue);
                 }
             }
 
@@ -68,34 +62,23 @@
         }
 
         /// <summary>
-        /// Normalizes an array in the range of 0 and 255.
+        /// Converts three double arrays back into the image.
         /// </summary>
-        /// <param name="ar">Input array.</param>
-        /// <returns>Normalized array.</returns>
-        protected double[,] Normalize(double[,] ar)
-        {
-            double min = double.MaxValue, max = double.MinValue;
+        /// <param name="src">source image.</param>
+        /// <param name="red">red component.</param>
+        /// <param name="green">green component.</param>
+        /// <param name="blue">blue component.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void DoubleToImageExecute(ImageData src, double* red, double* green, double* blue);
 
-            for (int i = 0; i < ar.GetLength(0); i++)
-            {
-                for (int j = 0; j < ar.GetLength(1); j++)
-                {
-                    min = Math.Min(min, ar[i, j]);
-                    max = Math.Max(max, ar[i, j]);
-                }
-            }
-
-            double ratio = (max - min) / 255.0;
-
-            for (int i = 0; i < ar.GetLength(0); i++)
-            {
-                for (int j = 0; j < ar.GetLength(1); j++)
-                {
-                    ar[i, j] = (ar[i, j] - min) / ratio;
-                }
-            }
-
-            return ar;
-        }
+        /// <summary>
+        /// Converts the image to three double arrays.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="red">red component.</param>
+        /// <param name="green">green component.</param>
+        /// <param name="blue">blue component.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void ImageToDoubleExecute(ImageData src, double* red, double* green, double* blue);
     }
 }

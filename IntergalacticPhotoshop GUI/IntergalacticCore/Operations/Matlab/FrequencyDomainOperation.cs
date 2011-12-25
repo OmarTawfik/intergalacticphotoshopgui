@@ -102,10 +102,6 @@
                 (double[,])frequencyComponents[4].ToArray(),
                 (double[,])frequencyComponents[5].ToArray());
 
-            logMagnitudeRed = this.Normalize(logMagnitudeRed);
-            logMagnitudeGreen = this.Normalize(logMagnitudeGreen);
-            logMagnitudeBlue = this.Normalize(logMagnitudeBlue);
-
             this.redImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);
             this.greenImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);
             this.blueImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);

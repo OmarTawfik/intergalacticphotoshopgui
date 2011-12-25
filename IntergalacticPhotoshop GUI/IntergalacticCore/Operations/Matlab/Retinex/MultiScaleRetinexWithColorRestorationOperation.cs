@@ -69,9 +69,9 @@
                 (MWNumericArray)this.sigmas,
                 (MWNumericArray)this.weights);
 
-            double[,] redComponent = this.Normalize((double[,])retinexResult[0].ToArray());
-            double[,] greenComponent = this.Normalize((double[,])retinexResult[1].ToArray());
-            double[,] blueComponent = this.Normalize((double[,])retinexResult[2].ToArray());
+            double[,] redComponent = (double[,])retinexResult[0].ToArray();
+            double[,] greenComponent = (double[,])retinexResult[1].ToArray();
+            double[,] blueComponent = (double[,])retinexResult[2].ToArray();
 
             this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
         }

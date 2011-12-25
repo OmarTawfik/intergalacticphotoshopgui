@@ -109,6 +109,7 @@
     <ClCompile Include="LaplacianEdgeDetectionOperation.cpp" />
     <ClCompile Include="LaplacianPointEdgeDetectionOperation.cpp" />
     <ClCompile Include="LaplacianPointSharpeningOperation.cpp" />
+    <ClCompile Include="MatlabOperations.cpp" />
     <ClCompile Include="SubtractOperation.cpp" />
     <ClCompile Include="VerticalEdgeDetectionOperation.cpp" />
     <ClCompile Include="VerticalLineSharpeningOperation.cpp" />

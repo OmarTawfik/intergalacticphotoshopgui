@@ -50,8 +50,6 @@
                     imagGreen[i, j] *= passValue;
                     realGreen[i, j] *= passValue;
                     imagBlue[i, j] *= passValue;
-                    realGreen[i, j] *= passValue;
-                    imagBlue[i, j] *= passValue;
                     realBlue[i, j] *= passValue;
                 }
             }
@@ -65,9 +63,9 @@
                 (MWNumericArray)imagBlue,
                 (MWNumericArray)realBlue);
 
-            double[,] redComponent = this.Normalize((double[,])spatialComponents[0].ToArray());
-            double[,] greenComponent = this.Normalize((double[,])spatialComponents[1].ToArray());
-            double[,] blueComponent = this.Normalize((double[,])spatialComponents[2].ToArray());
+            double[,] redComponent = (double[,])spatialComponents[0].ToArray();
+            double[,] greenComponent = (double[,])spatialComponents[1].ToArray();
+            double[,] blueComponent = (double[,])spatialComponents[2].ToArray();
 
             this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
         }
