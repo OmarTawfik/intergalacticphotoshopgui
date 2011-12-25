@@ -1,15 +1,17 @@
 ﻿namespace IntergalacticCore.Operations.Matlab
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
+    using MathWorks.MATLAB.NET.Arrays;
 
     /// <summary>
     /// Local Histogram Equalization operation 
     /// </summary>
     public class LocalHistogramEqualizationOperation : MatlabOperation
     {
+        /// <summary>
+        /// Matlab Class Handle.
+        /// </summary>
+        private IntergalacticMatlab.Retinex matlabCls = new IntergalacticMatlab.Retinex();
+
         /// <summary>
         /// Window size.
         /// </summary>
@@ -47,23 +49,21 @@
         /// </summary>
         protected override void BeforeOperate()
         {
-            ////LocalHistogramEqualization matlabCls = new LocalHistogramEqualization();
+            double[,] sourceRed, sourceGreen, sourceBlue;
+            this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
 
-            ////double[,] sourceRed, sourceGreen, sourceBlue;
-            ////this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
+            MWArray[] retinexResult = this.matlabCls.LocalHistogramEqualization(
+                3,
+                (MWNumericArray)sourceRed,
+                (MWNumericArray)sourceGreen,
+                (MWNumericArray)sourceBlue,
+                this.maskSize);
 
-            ////MWArray[] retinexResult = matlabCls.MultiScaleRetinex(
-            ////    3,
-            ////    (MWNumericArray)sourceRed,
-            ////    (MWNumericArray)sourceGreen,
-            ////    (MWNumericArray)sourceBlue,
-            ////    this.maskSize);
+            double[,] redComponent = (double[,])retinexResult[0].ToArray();
+            double[,] greenComponent = (double[,])retinexResult[1].ToArray();
+            double[,] blueComponent = (double[,])retinexResult[2].ToArray();
 
-            ////double[,] redComponent = (double[,])retinexResult[0].ToArray();
-            ////double[,] greenComponent = (double[,])retinexResult[1].ToArray();
-            ////double[,] blueComponent = (double[,])retinexResult[2].ToArray();
-
-            ////this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
+            this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
         }
     } 
 }

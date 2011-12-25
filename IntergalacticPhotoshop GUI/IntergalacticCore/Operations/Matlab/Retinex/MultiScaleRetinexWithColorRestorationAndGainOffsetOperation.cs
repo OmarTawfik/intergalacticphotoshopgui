@@ -1,10 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Matlab.Retinex
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using IntergalacticCore.Data;
     using IntergalacticCore.Operations.Matlab;
     using IntergalacticMatlab;
     using MathWorks.MATLAB.NET.Arrays;
@@ -14,6 +10,11 @@
     /// </summary>
     public class MultiScaleRetinexWithColorRestorationAndGainOffsetOperation : MatlabOperation
     {
+        /// <summary>
+        /// Matlab Class Handle.
+        /// </summary>
+        private Retinex matlabCls = new Retinex();
+
         /// <summary>
         /// Array of Retinex sigmas and weights
         /// </summary>
@@ -64,26 +65,24 @@
         /// </summary>
         protected override void BeforeOperate()
         {
-            ////MultiScaleRetinexWithColorRestorationAndGainOffset matlabCls = new MultiScaleRetinexWithColorRestorationAndGainOffset();
+            double[,] sourceRed, sourceGreen, sourceBlue;
+            this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
 
-            ////double[,] sourceRed, sourceGreen, sourceBlue;
-            ////this.ImageToDoubles(this.Image, out sourceRed, out sourceGreen, out sourceBlue);
+            MWArray[] retinexResult = this.matlabCls.MultiScaleRetinexWithColorRestorationAndGainOffset(
+                3,
+                (MWNumericArray)sourceRed,
+                (MWNumericArray)sourceGreen,
+                (MWNumericArray)sourceBlue,
+                (MWNumericArray)this.sigmas,
+                (MWNumericArray)this.weights,
+                this.gain,
+                this.offset);
 
-            ////MWArray[] retinexResult = matlabCls.MultiScaleRetinex(
-            ////    3,
-            ////    (MWNumericArray)sourceRed,
-            ////    (MWNumericArray)sourceGreen,
-            ////    (MWNumericArray)sourceBlue,
-            ////    this.sigmas,
-            ////    this.weights,
-            ////    this.gain,
-            ////    this.offset);
+            double[,] redComponent = this.Normalize((double[,])retinexResult[0].ToArray());
+            double[,] greenComponent = this.Normalize((double[,])retinexResult[1].ToArray());
+            double[,] blueComponent = this.Normalize((double[,])retinexResult[2].ToArray());
 
-            ////double[,] redComponent = this.Normalize((double[,])retinexResult[0].ToArray());
-            ////double[,] greenComponent = this.Normalize((double[,])retinexResult[1].ToArray());
-            ////double[,] blueComponent = this.Normalize((double[,])retinexResult[2].ToArray());
-
-            ////this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
+            this.DoublesToImage(this.Image, redComponent, greenComponent, blueComponent);
         }
     } 
 }

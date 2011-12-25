@@ -120,23 +120,15 @@
                 new VerticalEdgeDetectionOperation(),
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
-            
-            //this.AddOperationCategory(
-            //    "Matlab Operations",
-            //    "Matlab.png",
-            //    new FrequencyDomainOperation());
 
-            //this.AddOperationCategory(
-            //    "Pass Filters",
-            //    "PassFilter.png",
-            //    new IdealLowPassFilter(),
-            //    new IdealHighPassFilter(),
-            //    new IdealBandPassFilter(),
-            //    new IdealBandRejectFilter(),
-            //    new GaussianLowPassFilter(),
-            //    new GaussianHighPassFilter(),
-            //    new ButterworthLowPassFilter(),
-            //    new ButterworthHighPassFilter());
+            this.AddOperationCategory(
+               "Matlab Operations",
+               "Matlab.png",
+               new FrequencyDomainOperation(),
+               new LocalHistogramEqualizationOperation(),
+               new MultiScaleRetinexOperation(),
+               new MultiScaleRetinexWithColorRestorationOperation(),
+               new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
 
             this.AddOperationCategory(
                 "Pass Filters",
@@ -409,7 +401,7 @@
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event agruments</param>
-        private void topTabControllerRect_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void TopTabControllerRect_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             this.DragMove();
         }
@@ -419,7 +411,7 @@
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
         {
             if (this.WindowState != System.Windows.WindowState.Maximized)
             {
@@ -436,7 +428,7 @@
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = System.Windows.WindowState.Minimized;
         }
@@ -446,7 +438,7 @@
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }

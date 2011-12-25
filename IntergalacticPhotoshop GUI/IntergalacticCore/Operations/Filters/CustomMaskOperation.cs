@@ -47,7 +47,7 @@
         {
             unsafe
             {
-                fixed (double* arrPointer = &this.mask.Data[0,0])
+                fixed (double* arrPointer = &this.mask.Data[0, 0])
                 {
                     CustomMaskOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), arrPointer, this.mask.Data.GetLength(0));
                 }
@@ -59,6 +59,8 @@
         /// </summary>
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
+        /// <param name="mask">mask array</param>
+        /// <param name="maskSize">mask size</param>
         [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static unsafe extern void CustomMaskOperationExecute(ImageData src, ImageData dest, double* mask, int maskSize);
     }
