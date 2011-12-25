@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="src">source image.</param>
         /// <param name="bits">bits per channel</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void QuantizationOperationExecute(ImageData src, int bits);
     }
 }

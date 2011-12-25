@@ -32,12 +32,7 @@
         /// <summary>
         /// The sub view to show in the popup view
         /// </summary>
-        private FrameworkElement subView;
-
-        /// <summary>
-        /// the category to be shown in the popup view
-        /// </summary>
-        private Category category = null;
+        private List<FrameworkElement> subViews;
 
         /// <summary>
         /// Title of the button
@@ -49,6 +44,7 @@
         /// </summary>
         public StackButtonBase()
         {
+            this.subViews = new List<FrameworkElement>();
         }
         
         /// <summary>
@@ -63,19 +59,10 @@
         /// <summary>
         /// Gets or sets the sub view of its resulting popup view
         /// </summary>
-        public FrameworkElement SubView
+        public List<FrameworkElement> SubViews
         {
-            get { return this.subView; }
-            set { this.subView = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the category of its resulting popup view
-        /// </summary>
-        public Category Category
-        {
-            get { return this.category; }
-            set { this.category = value; }
+            get { return this.subViews; }
+            set { this.subViews = value; }
         }
 
         /// <summary>

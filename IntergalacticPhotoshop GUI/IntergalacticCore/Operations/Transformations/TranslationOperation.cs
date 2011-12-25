@@ -61,7 +61,7 @@
         /// <param name="dest">Destination image data</param>
         /// <param name="displacementX">X displacement</param>
         /// <param name="displacementY">Y displacement</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void TranslationOperationExecute(ImageData src, ImageData dest, int displacementX, int displacementY);
     }
 }

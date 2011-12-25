@@ -48,7 +48,7 @@
         /// </summary>
         /// <param name="source">source image.</param>
         /// <param name="gray">gray histogram.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void HistogramEqualizationOperationExecute(ImageData source, int[] gray);
     }
 }

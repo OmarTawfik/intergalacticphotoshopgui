@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="src">Source image data</param>
         /// <param name="brightness">brightness input.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void BrightnessOperationExecute(ImageData src, int brightness);
     }
 }

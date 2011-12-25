@@ -1,5 +1,6 @@
 ﻿namespace IntergalacticCore.Operations.Filters.Sharpening
 {
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
 
     /// <summary>
@@ -44,28 +45,21 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
+            unsafe
             {
-                for (int j = 0; j < this.Image.Width; j++)
+                fixed (double* arrPointer = &this.mask.Data[0,0])
                 {
-                    double red = 0, green = 0, blue = 0;
-                    for (int y = i - (this.mask.Height / 2), a = 0; y <= i + (this.mask.Height / 2); y++, a++)
-                    {
-                        for (int x = j - (this.mask.Width / 2), b = 0; x <= j + (this.mask.Width / 2); x++, b++)
-                        {
-                            if (this.mask.Data[a, b] != 0)
-                            {
-                                Pixel p = this.GetLocation(x, y);
-                                red += this.mask.Data[a, b] * p.Red;
-                                green += this.mask.Data[a, b] * p.Green;
-                                blue += this.mask.Data[a, b] * p.Blue;
-                            }
-                        }
-                    }
-
-                    this.ResultImage.SetPixel(j, i, Pixel.CutOff((int)red, (int)green, (int)blue));
+                    CustomMaskOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), arrPointer, this.mask.Data.GetLength(0));
                 }
             }
         }
+
+        /// <summary>
+        /// The custom mask processing function
+        /// </summary>
+        /// <param name="src">Source image data</param>
+        /// <param name="dest">Destination image data</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void CustomMaskOperationExecute(ImageData src, ImageData dest, double* mask, int maskSize);
     }
 }

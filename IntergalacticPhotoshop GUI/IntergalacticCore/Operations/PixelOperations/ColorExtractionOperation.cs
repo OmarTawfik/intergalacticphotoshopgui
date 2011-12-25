@@ -71,7 +71,7 @@
         /// <param name="r">Keep red.</param>
         /// <param name="g">Keep green.</param>
         /// <param name="b">Keep blue.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void ColorExtractionOperationExecute(ImageData src, bool r, bool g, bool b);
     }
 }

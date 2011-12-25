@@ -34,10 +34,10 @@
         {
             InitializeComponent();
             this.tab = tab;
-            this.SubView = new Image();
-            this.SubView.Width = 250;
-            this.SubView.Height = 150;
-            ((Image)this.SubView).Stretch = Stretch.Uniform;
+            this.SubViews.Add(new Image());
+            this.SubViews[0].Width = 250;
+            this.SubViews[0].Height = 150;
+            ((Image)this.SubViews[0]).Stretch = Stretch.Uniform;
             this.UpdateSubview(tab);
             this.lblTitle.Content = tab.Name;
 
@@ -101,9 +101,9 @@
         private void UpdateSubview(Tab tab)
         {
             WriteableBitmap source = (WriteableBitmap)((WPFBitmap)tab.Thumbnails.Peek()).GetImageSource();
-            this.SubView.Width = source.PixelWidth;
-            this.SubView.Height = source.PixelHeight;
-            ((Image)this.SubView).Source = source;
+            this.SubViews[0].Width = source.PixelWidth;
+            this.SubViews[0].Height = source.PixelHeight;
+            ((Image)this.SubViews[0]).Source = source;
         }
 
         /// <summary>

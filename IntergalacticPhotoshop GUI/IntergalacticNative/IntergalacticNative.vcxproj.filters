@@ -160,5 +160,8 @@
     <ClCompile Include="HistogramEqualizationOperation.cpp">
       <Filter>Source Files\HistogramOperations</Filter>
     </ClCompile>
+    <ClCompile Include="CustomMaskOperation.cpp">
+      <Filter>Source Files\Filters</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

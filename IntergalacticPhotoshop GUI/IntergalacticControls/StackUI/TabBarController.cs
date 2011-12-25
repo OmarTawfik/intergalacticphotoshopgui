@@ -46,6 +46,14 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether to fade the stack controller when the mouse hovers.
+        /// </summary>
+        protected override bool FadeControllerOnHover
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Adds a tab to the UI
         /// </summary>
         /// <param name="mng">The manager</param>

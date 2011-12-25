@@ -54,7 +54,7 @@
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
         /// <param name="maskSize">Mask size</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void MeanFilter2DOperationExecute(ImageData src, ImageData dest, int maskSize);
     }
 }

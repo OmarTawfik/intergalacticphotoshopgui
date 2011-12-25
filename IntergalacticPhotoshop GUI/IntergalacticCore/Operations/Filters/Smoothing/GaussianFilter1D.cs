@@ -64,7 +64,7 @@
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
         /// <param name="sigma">Sigma value</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void GaussianFilter1DOperationExecute(ImageData src, ImageData dest, double sigma);
     }
 }

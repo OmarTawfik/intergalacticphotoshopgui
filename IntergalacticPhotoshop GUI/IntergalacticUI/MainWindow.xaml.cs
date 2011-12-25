@@ -120,11 +120,23 @@
                 new VerticalEdgeDetectionOperation(),
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
+            
+            //this.AddOperationCategory(
+            //    "Matlab Operations",
+            //    "Matlab.png",
+            //    new FrequencyDomainOperation());
 
-            this.AddOperationCategory(
-                "Matlab Operations",
-                "Matlab.png",
-                new FrequencyDomainOperation());
+            //this.AddOperationCategory(
+            //    "Pass Filters",
+            //    "PassFilter.png",
+            //    new IdealLowPassFilter(),
+            //    new IdealHighPassFilter(),
+            //    new IdealBandPassFilter(),
+            //    new IdealBandRejectFilter(),
+            //    new GaussianLowPassFilter(),
+            //    new GaussianHighPassFilter(),
+            //    new ButterworthLowPassFilter(),
+            //    new ButterworthHighPassFilter());
 
             this.AddOperationCategory(
                 "Pass Filters",
@@ -231,8 +243,11 @@
                 category.AddAction(actionPair.Action, actionPair.Name);
             }
 
+            SubmenuContainer menu = new SubmenuContainer();
+            menu.SetCategory(category);
+
             PanelButton button = new PanelButton();
-            button.Category = category;
+            button.SubViews.Add(menu);
             button.Icon = category.Icon;
 
             leftStackController.AddButton(button);
@@ -253,8 +268,11 @@
                 category.AddOperation(operation);
             }
 
+            SubmenuContainer menu = new SubmenuContainer();
+            menu.SetCategory(category);
+
             PanelButton button = new PanelButton();
-            button.Category = category;
+            button.SubViews.Add(menu);
             button.Icon = category.Icon;
 
             leftStackController.AddButton(button);
@@ -269,12 +287,16 @@
 
             PanelButton button = new PanelButton();
             button.Icon = new BitmapImage(new Uri("pack://application:,,,/Pictures/Histogram.png"));
-            button.SubView = view;
+            button.SubViews.Add(view);
 
-            OperationCategory menu = new OperationCategory("Histogram Operations", null);
-            menu.AddOperation(new HistogramMatchingOperation());
-            menu.AddOperation(new HistogramEqualizationOperation());
-            button.Category = menu;
+            OperationCategory category = new OperationCategory("Histogram Operations", null);
+            category.AddOperation(new HistogramMatchingOperation());
+            category.AddOperation(new HistogramEqualizationOperation());
+
+            SubmenuContainer menu = new SubmenuContainer();
+            menu.SetCategory(category);
+
+            button.SubViews.Add(menu);
             button.IsLockable = true;
 
             rightStackController.AddButton(button);
@@ -287,7 +309,7 @@
         {
             PanelButton button = new PanelButton();
             button.Icon = new BitmapImage(new Uri("pack://application:,,,/Pictures/Zoom.png"));
-            button.SubView = new ZoomView(imageView);
+            button.SubViews.Add(new ZoomView(imageView));
 
             rightStackController.AddButton(button);
         }
@@ -380,6 +402,53 @@
                 Manager.Instance.AddTab(op.GreenImage, "GREEN");
                 Manager.Instance.AddTab(op.BlueImage, "BLUE");
             }
+        }
+
+        /// <summary>
+        /// To make the window draggable with the top rectangle
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event agruments</param>
+        private void topTabControllerRect_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        /// <summary>
+        /// Maximizes the window
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState != System.Windows.WindowState.Maximized)
+            {
+                this.WindowState = System.Windows.WindowState.Maximized;
+            }
+            else
+            {
+                this.WindowState = System.Windows.WindowState.Normal;
+            }
+        }
+
+        /// <summary>
+        /// Minimizes the window
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Closes the window
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

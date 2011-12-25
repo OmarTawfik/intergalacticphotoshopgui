@@ -83,7 +83,7 @@
         /// <param name="otherGray">Gray histogram of other image.</param>
         /// <param name="imageSum">Pixel count of image.</param>
         /// <param name="otherSum">Pixel count of other image.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void HistogramMatchingOperationExecute(ImageData source, int[] imageGray, int[] otherGray, int imageSum, int otherSum);
     }
 }

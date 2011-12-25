@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="src">source image.</param>
         /// <param name="size">pixel size.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void PixelationOperationExecute(ImageData src, int size);
     }
 }

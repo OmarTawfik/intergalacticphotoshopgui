@@ -93,6 +93,7 @@
     <ClCompile Include="BrightnessOperation.cpp" />
     <ClCompile Include="ColorExtractionOperation.cpp" />
     <ClCompile Include="ContrastOperation.cpp" />
+    <ClCompile Include="CustomMaskOperation.cpp" />
     <ClCompile Include="FrontDiagonalEdgeDetectionOperation.cpp" />
     <ClCompile Include="FrontDiagonalLineSharpeningOperation.cpp" />
     <ClCompile Include="GammaAdjustmentOperation.cpp" />

@@ -45,7 +45,14 @@
         /// </summary>
         public StackControllerBase()
         {
-            this.Opacity = StackControllerBase.NormalOpacity;
+            if (this.FadeControllerOnHover)
+            {
+                this.Opacity = StackControllerBase.NormalOpacity;
+            }
+            else
+            {
+                this.Opacity = 1.0;
+            }
 
             this.fadeIn = new DoubleAnimation(StackControllerBase.HoveredOpacity, TimeSpan.FromSeconds(0.3));
             this.fadeIn.AccelerationRatio = 0.3;
@@ -75,6 +82,14 @@
         }
 
         /// <summary>
+        /// Gets a value indicating whether to fade the stack controller when the mouse hovers.
+        /// </summary>
+        protected virtual bool FadeControllerOnHover
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Adds a stack button to this controls
         /// </summary>
         /// <param name="button">The button</param>
@@ -101,7 +116,10 @@
         protected override void OnMouseEnter(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
-            this.BeginAnimation(UserControl.OpacityProperty, this.fadeIn);
+            if (this.FadeControllerOnHover)
+            {
+                this.BeginAnimation(UserControl.OpacityProperty, this.fadeIn);
+            }
         }
 
         /// <summary>
@@ -111,7 +129,10 @@
         protected override void OnMouseLeave(MouseEventArgs e)
         {
             base.OnMouseEnter(e);
-            this.BeginAnimation(UserControl.OpacityProperty, this.fadeOut);
+            if (this.FadeControllerOnHover)
+            {
+                this.BeginAnimation(UserControl.OpacityProperty, this.fadeOut);
+            }
         }
 
         /// <summary>

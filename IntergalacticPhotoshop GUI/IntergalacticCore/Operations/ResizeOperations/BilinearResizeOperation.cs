@@ -72,7 +72,7 @@
         /// </summary>
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void BilinearResizeOperationExecute(ImageData src, ImageData dest);
     }
 }

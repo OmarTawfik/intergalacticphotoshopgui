@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="src">Source image.</param>
         /// <param name="other">Other image.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void SubtractOperationExecute(ImageData src, ImageData other);
     }
 }

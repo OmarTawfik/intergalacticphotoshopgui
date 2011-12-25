@@ -13,9 +13,9 @@ extern "C" DllExport void SubtractOperationExecute(ImageData source, ImageData o
 	int i, j;
 
 #pragma omp parallel for shared(src, other) private(i, j, p1, p2)
-	for (int i = 0; i < src->Height; i++)
+	for (i = 0; i < src->Height; i++)
 	{
-		for (int j = 0; j < src->Width; j++)
+		for (j = 0; j < src->Width; j++)
 		{
 			p1 = GETPIXEL(src,j,i);
 			p2 = GETPIXEL(other,j,i);

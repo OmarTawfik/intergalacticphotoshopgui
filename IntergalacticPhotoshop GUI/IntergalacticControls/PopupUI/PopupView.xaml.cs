@@ -55,7 +55,7 @@
         /// <summary>
         /// Current popup content
         /// </summary>
-        private FrameworkElement currentPopupContent = null;
+        private FrameworkElement[] currentPopupContent = null;
 
         /// <summary>
         /// Current popup source
@@ -122,42 +122,39 @@
 
             this.currentSource = source;
 
-            if (source.SubView != null)
+            if (source.SubViews.Count > 0)
             {
-                this.currentPopupContent = source.SubView;
-            }
-
-            if (source.Category != null)
-            {
-                if (source.SubView == null)
-                {
-                    this.currentPopupContent = this.submenuContainer;
-                }
-
-                OperationCategory tmp = source.Category as OperationCategory;
-                if (tmp != null)
-                {
-                    this.submenuContainer.SetCategory((OperationCategory)source.Category);
-                }
-                else
-                {
-                    this.submenuContainer.SetCategory((ActionCategory)source.Category);
-                }
+                this.currentPopupContent = source.SubViews.ToArray();
             }
 
             this.currentSource = source;
-            this.Width = this.currentPopupContent.Width + 30;
-            this.Height = this.currentPopupContent.Height + 30 + ((source.Category != null && source.SubView != null) ? this.submenuContainer.Height : 0);
+            double maxWidth = 0, maxHeight = 0;
+            for (int i = 0; i < this.currentPopupContent.Length; i++)
+            {
+                if (maxWidth < this.currentPopupContent[i].Width)
+                {
+                    maxWidth = this.currentPopupContent[i].Width;
+                }
+
+                maxHeight += this.currentPopupContent[i].Height;
+            }
+
+            for (int i = 0; i < this.currentPopupContent.Length; i++)
+            {
+                this.currentPopupContent[i].Width = maxWidth;
+            }
+
+            this.Width = maxWidth + 30;
+            this.Height = maxHeight + 30;
             this.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             this.VerticalAlignment = System.Windows.VerticalAlignment.Top;
 
-            this.currentPopupContent.Margin = new Thickness(0, 0, 0, 0);
-            this.currentPopupContent.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-            this.currentPopupContent.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-            this.contentContainer.Children.Add(this.currentPopupContent);
-            if (source.SubView != null && source.Category != null)
+            for (int i = 0; i < this.currentPopupContent.Length; i++)
             {
-                this.contentContainer.Children.Add(this.submenuContainer);
+                this.currentPopupContent[i].Margin = new Thickness(0, 0, 0, 0);
+                this.currentPopupContent[i].HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                this.currentPopupContent[i].VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+                this.contentContainer.Children.Add(this.currentPopupContent[i]);
             }
 
             Point centerOfSource = source.TranslatePoint(new Point(source.ActualWidth / 2, source.ActualHeight / 2), UIHelpers.GetParentWindow(this.currentSource));

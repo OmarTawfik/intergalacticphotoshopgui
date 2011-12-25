@@ -148,14 +148,9 @@
                 }
             }
 
-            if (source.SubView == null && source.Category == null)
+            if (source.SubViews.Count == 0)
             {
-                throw new InvalidOperationException("At least one of the Subview or the Category of the PanelButton must be set.");
-            }
-
-            if (source.IsLockable && source.Category != null && source.SubView == null)
-            {
-                source.IsLockable = false;
+                throw new InvalidOperationException("At least one Subview in the PanelButton must be set.");
             }
 
             this.currentPopupView.SetPopupContent(source);

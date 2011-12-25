@@ -5,9 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             Height="30" Width="100">
+             d:DesignHeight="30" Width="100">
     <w:Grid>
-        <w:Rectangle Stroke="#ddd" StrokeThickness="1">
+        <w:Rectangle Stroke="#ddd" Opacity="0"  StrokeThickness="1">
             <w:Rectangle.Fill>
                 <w:LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
                     <w:GradientStop Color="#889" Offset="0" />
@@ -15,15 +15,16 @@
                 </w:LinearGradientBrush>
             </w:Rectangle.Fill>
         </w:Rectangle>
-        <w:Rectangle Name="toggleRect" Visibility="Hidden" Stroke="#ddd" StrokeThickness="1">
+        <w:Rectangle Name="toggleRect" Margin="1,1,1,1" Visibility="Hidden" StrokeThickness="1">
             <w:Rectangle.Fill>
                 <w:LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                    <w:GradientStop Color="#667" Offset="1" />
-                    <w:GradientStop Color="#88a" Offset="0" />
+                    <w:GradientStop Color="#6666" Offset="0.5" />
+                    <w:GradientStop Color="#0fff" Offset="0" />
+                    <w:GradientStop Color="#0fff" Offset="1" />
                 </w:LinearGradientBrush>
             </w:Rectangle.Fill>
         </w:Rectangle>
         <w:Label Content="Title" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Name="lblTitle" Foreground="#EEE" Margin="10,0,0,0" />
-        <w:Image Height="16" HorizontalAlignment="Left" Margin="79,8,0,0" Name="CloseBtn" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/IntergalacticControls;component/Pictures/close.png" MouseDown="CloseBtn_MouseDown" />
+        <w:Image Height="13" HorizontalAlignment="right" Margin="0,0,7,0" Name="CloseBtn" Stretch="Fill" VerticalAlignment="Center" Width="13" Source="/IntergalacticControls;component/Pictures/close.png" MouseDown="CloseBtn_MouseDown" />
     </w:Grid>
 </StackButtonBase>

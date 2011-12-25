@@ -54,7 +54,7 @@
         /// </summary>
         /// <param name="src">source image.</param>
         /// <param name="gamma">gamma value.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void GammaAdjustmentOperationExecute(ImageData src, double gamma);
     }
 }

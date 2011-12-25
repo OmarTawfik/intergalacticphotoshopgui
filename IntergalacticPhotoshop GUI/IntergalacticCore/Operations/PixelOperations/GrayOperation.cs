@@ -29,7 +29,7 @@
         /// The native gray operation processing function.
         /// </summary>
         /// <param name="src">source image.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void GrayOperationExecute(ImageData src);
     }
 }

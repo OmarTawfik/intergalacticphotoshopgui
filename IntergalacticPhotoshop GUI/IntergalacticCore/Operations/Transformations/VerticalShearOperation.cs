@@ -54,7 +54,7 @@
         /// <param name="src">Source image data</param>
         /// <param name="dest">Destination image data</param>
         /// <param name="factor">Shear factor</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void VerticalShearOperationExecute(ImageData src, ImageData dest, double factor);
     }
 }

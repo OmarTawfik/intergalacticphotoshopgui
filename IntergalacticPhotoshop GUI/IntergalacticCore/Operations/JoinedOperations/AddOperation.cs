@@ -84,7 +84,7 @@
         /// <param name="src">Source image.</param>
         /// <param name="other">Other image.</param>
         /// <param name="factor">Addition factor.</param>
-        [DllImport("IntergalacticNative.dll")]
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void AddOperationExecute(ImageData src, ImageData other, double factor);
     }
 }
