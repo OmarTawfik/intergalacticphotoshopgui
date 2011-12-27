@@ -71,6 +71,8 @@
         public OperationInputView()
         {
             InitializeComponent();
+
+            this.UseTextBoxesForNumericInput = false;
         }
 
         /// <summary>
@@ -89,6 +91,15 @@
         {
             get { return this.isShown; }
             set { this.isShown = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use text boxes for numeric input.
+        /// </summary>
+        internal bool UseTextBoxesForNumericInput
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -216,47 +227,63 @@
         {
             this.AddLabel(info.Title, startY);
 
-            Slider numericSlider = this.CreateSliderWithLabel(ref startY);
-
-            switch (info.Type)
+            if (!this.UseTextBoxesForNumericInput)
             {
-                case IntergalacticControls.InputType.Byte:
-                    numericSlider.Minimum = (byte)info.From;
-                    numericSlider.Maximum = (byte)info.To;
-                    numericSlider.SmallChange = 1;
-                    numericSlider.LargeChange = 1;
-                    numericSlider.TickFrequency = 1;
-                    numericSlider.IsSnapToTickEnabled = true;
-                    break;
-                case IntergalacticControls.InputType.Int:
-                    numericSlider.Minimum = (int)info.From;
-                    numericSlider.Maximum = (int)info.To;
-                    numericSlider.SmallChange = 1;
-                    numericSlider.LargeChange = 1;
-                    numericSlider.TickFrequency = 1;
-                    numericSlider.IsSnapToTickEnabled = true;
-                    break;
-                case IntergalacticControls.InputType.Float:
-                    numericSlider.Minimum = (float)info.From;
-                    numericSlider.Maximum = (float)info.To;
-                    numericSlider.SmallChange = 0.05;
-                    numericSlider.LargeChange = 1;
-                    numericSlider.TickFrequency = 0.001;
-                    numericSlider.IsSnapToTickEnabled = true;
-                    break;
-                case IntergalacticControls.InputType.Double:
-                    numericSlider.Minimum = (double)info.From;
-                    numericSlider.Maximum = (double)info.To;
-                    numericSlider.SmallChange = 0.05;
-                    numericSlider.LargeChange = 1;
-                    numericSlider.TickFrequency = 0.001;
-                    numericSlider.IsSnapToTickEnabled = true;
-                    break;
-                default:
-                    break;
-            }
+                Slider numericSlider = this.CreateSliderWithLabel(ref startY);
 
-            this.inputSourceList.Add(numericSlider);
+                switch (info.Type)
+                {
+                    case IntergalacticControls.InputType.Byte:
+                        numericSlider.Minimum = (byte)info.From;
+                        numericSlider.Maximum = (byte)info.To;
+                        numericSlider.SmallChange = 1;
+                        numericSlider.LargeChange = 1;
+                        numericSlider.TickFrequency = 1;
+                        numericSlider.IsSnapToTickEnabled = true;
+                        break;
+                    case IntergalacticControls.InputType.Int:
+                        numericSlider.Minimum = (int)info.From;
+                        numericSlider.Maximum = (int)info.To;
+                        numericSlider.SmallChange = 1;
+                        numericSlider.LargeChange = 1;
+                        numericSlider.TickFrequency = 1;
+                        numericSlider.IsSnapToTickEnabled = true;
+                        break;
+                    case IntergalacticControls.InputType.Float:
+                        numericSlider.Minimum = (float)info.From;
+                        numericSlider.Maximum = (float)info.To;
+                        numericSlider.SmallChange = 0.05;
+                        numericSlider.LargeChange = 1;
+                        numericSlider.TickFrequency = 0.001;
+                        numericSlider.IsSnapToTickEnabled = true;
+                        break;
+                    case IntergalacticControls.InputType.Double:
+                        numericSlider.Minimum = (double)info.From;
+                        numericSlider.Maximum = (double)info.To;
+                        numericSlider.SmallChange = 0.05;
+                        numericSlider.LargeChange = 1;
+                        numericSlider.TickFrequency = 0.001;
+                        numericSlider.IsSnapToTickEnabled = true;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.inputSourceList.Add(numericSlider);
+            }
+            else
+            {
+                TextBox textBox = new TextBox();
+                textBox.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                textBox.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                textBox.Margin = new Thickness(15, startY + 7, 0, 0);
+                textBox.Width = 265;
+                textBox.Height = 23;
+                textBox.Text = string.Empty;
+
+                this.mainGrid.Children.Add(textBox);
+                this.inputSourceList.Add(textBox);
+            }
 
             startY += 10;
         }
@@ -583,16 +610,16 @@
                     result = ((CheckBox)this.inputSourceList[index]).IsChecked == true;
                     break;
                 case IntergalacticControls.InputType.Byte:
-                    result = (byte)((Slider)this.inputSourceList[index]).Value;
+                    result = (byte)this.GetNumericInputFromSource(this.inputSourceList[index], this.inputInfoList[index]);
                     break;
                 case IntergalacticControls.InputType.Int:
-                    result = (int)((Slider)this.inputSourceList[index]).Value;
+                    result = (int)this.GetNumericInputFromSource(this.inputSourceList[index], this.inputInfoList[index]);
                     break;
                 case IntergalacticControls.InputType.Float:
-                    result = (float)((Slider)this.inputSourceList[index]).Value;
+                    result = (float)this.GetNumericInputFromSource(this.inputSourceList[index], this.inputInfoList[index]);
                     break;
                 case IntergalacticControls.InputType.Double:
-                    result = ((Slider)this.inputSourceList[index]).Value;
+                    result = this.GetNumericInputFromSource(this.inputSourceList[index], this.inputInfoList[index]);
                     break;
                 case IntergalacticControls.InputType.Color:
                     Color color = ((SolidColorBrush)((Rectangle)this.inputSourceList[index]).Fill).Color;
@@ -638,6 +665,35 @@
         }
 
         /// <summary>
+        /// Gets the numeric input value from the given source
+        /// </summary>
+        /// <param name="source">the source of the input</param>
+        /// <param name="info">Input info</param>
+        /// <returns>The value</returns>
+        private double GetNumericInputFromSource(object source, OperationInputInfo info)
+        {
+            if (this.UseTextBoxesForNumericInput)
+            {
+                TextBox textbox = (TextBox)source;
+                try
+                {
+                    double value = Convert.ToDouble(textbox.Text);
+                    throw new Exception(string.Format("The entered number in the \"{0}\" input must be between {1} and {2}", info.Title, info.From, info.From));
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Invalid input.  Input must be a number.");
+                }
+            }
+            else
+            {
+                return ((Slider)source).Value;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
         /// Click function for the Apply button
         /// </summary>
         /// <param name="sender">The sender</param>
@@ -646,9 +702,15 @@
         {
             object[] inputList = new object[this.inputInfoList.Count];
 
+            int i;
+            for (i = 0; i < this.labelList.Count; i++)
+            {
+                this.labelList[i].Foreground = Brushes.Black;
+            }
+
             try
             {
-                for (int i = 0; i < this.inputInfoList.Count; i++)
+                for (i = 0; i < this.inputInfoList.Count; i++)
                 {
                     inputList[i] = this.GetInputFromSourceList(i);
                 }
@@ -659,6 +721,7 @@
             }
             catch (Exception ex)
             {
+                this.labelList[i].Foreground = Brushes.Red;
                 SideNotification notification = new SideNotification();
                 notification.Height = 150;
                 notification.SetTitle("Error: " + ex.Message);

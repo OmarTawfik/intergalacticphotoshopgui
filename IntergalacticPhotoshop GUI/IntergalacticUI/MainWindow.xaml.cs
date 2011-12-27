@@ -171,7 +171,10 @@
             this.InitHistogramView();
             this.InitZoomView();
             this.InitBackground();
-            Manager.Instance.AddTab(new WPFBitmap(new BitmapImage(new Uri("C:\\Users\\Public\\Pictures\\Sample Pictures\\Desert.jpg"))), "Default", false);
+
+            this.Width = this.splash.Width;
+            this.Height = this.splash.Height;
+            this.splash.OpenAnImageAction = this.OpenFile;
         }
 
         /// <summary>
@@ -225,6 +228,29 @@
                 }
 
                 Manager.Instance.AddTab(bitmap, tabName);
+            }
+
+            if (this.splash.Visibility == System.Windows.Visibility.Visible)
+            {
+                DoubleAnimation w = new DoubleAnimation(900, TimeSpan.FromSeconds(0.5));
+                w.AccelerationRatio = 0.3;
+                w.DecelerationRatio = 0.3;
+
+                DoubleAnimation h = new DoubleAnimation(600, TimeSpan.FromSeconds(0.5));
+                h.AccelerationRatio = 0.3;
+                h.DecelerationRatio = 0.3;
+                h.BeginTime = TimeSpan.FromSeconds(0.5);
+
+                DoubleAnimation fadeOut = new DoubleAnimation(0, TimeSpan.FromSeconds(0.2));
+                fadeOut.BeginTime = TimeSpan.FromSeconds(1);
+
+                this.BeginAnimation(Window.WidthProperty, w);
+                this.BeginAnimation(Window.HeightProperty, h);
+                this.splash.BeginAnimation(FrameworkElement.OpacityProperty, fadeOut);
+                this.splashBack.BeginAnimation(FrameworkElement.OpacityProperty, fadeOut);
+
+                IntergalacticControls.UIHelpers.HideElementAfterDelay(this.splash, 1.3);
+                IntergalacticControls.UIHelpers.HideElementAfterDelay(this.splashBack, 1.3);
             }
         }
 

@@ -152,7 +152,7 @@
     /// <summary>
     /// Provides helper funcitons relative to the UI framwwork
     /// </summary>
-    internal class UIHelpers
+    public class UIHelpers
     {
         /// <summary>
         /// List of current threads (to prevent the GC from removing them)

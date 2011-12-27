@@ -113,13 +113,13 @@
         /// </summary>
         private void UpdateZoom()
         {
-            if (this.targetedImageView == null)
+            if (this.targetedImageView == null || this.targetedImage == null)
             {
                 return;
             }
 
-            this.widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
-            this.heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
+            this.targetedImageView.Width = this.widthRatio * this.targetedImage.PixelWidth;
+            this.targetedImageView.Height = this.heightRatio * this.targetedImage.PixelHeight;
 
             if (this.widthRatio > 1 || this.heightRatio > 1)
             {
@@ -180,13 +180,7 @@
 
             double rectX = this.centerX * this.Width, rectY = this.centerY * (this.Height - this.zoomSlider.Height);
 
-            
             this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
-
-            if (double.IsNaN(this.targetedImageView.Width))
-            {
-                return;
-            }
 
             this.targetedImageView.Margin = new Thickness(
                 ((0.5 - this.centerX) * this.targetedImageView.Width) + ((this.imageViewParent.ActualWidth - this.targetedImageView.Width) / 2),
@@ -207,9 +201,9 @@
                 return;
             }
 
+            this.widthRatio = e.NewValue;
+            this.heightRatio = e.NewValue;
             this.targetedImageView.Stretch = Stretch.Uniform;
-            this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
-            this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
 
             this.UpdateZoom();
         }

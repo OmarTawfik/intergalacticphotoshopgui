@@ -27,5 +27,24 @@
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Gets or sets the action to open images
+        /// </summary>
+        public Action OpenAnImageAction
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Opens the image.
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event args</param>
+        private void Button1_Click(object sender, RoutedEventArgs e)
+        {
+            this.OpenAnImageAction();
+        }
     }
 }

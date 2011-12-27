@@ -5,16 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              Height="344" Width="602">
-    <UserControl.Resources>
-        <Storyboard x:Key="Start">
-            <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="lblWelcome" Storyboard.TargetProperty="(Label.Margin)">
-                <SplineThicknessKeyFrame KeyTime="00:00:00" Value="148,81,386,0" />
-                <SplineThicknessKeyFrame KeyTime="00:00:03" Value="78,81,316,0" KeySpline="0,0,0,1"/>
-            </ThicknessAnimationUsingKeyFrames>
-            <DoubleAnimation BeginTime="00:00:00" Storyboard.TargetName="lblWelcome" Storyboard.TargetProperty="(Label.Opacity)" From="0" To="1" DecelerationRatio="0.7"/>
-            <ThicknessAnimation BeginTime="00:00:00" Storyboard.TargetName="polygonArrow" Storyboard.TargetProperty="(Polygon.Margin)" From="0,0,0,0" To="15,15,0,0" AccelerationRatio="0.5" DecelerationRatio="0.5" RepeatBehavior="Forever" />
-        </Storyboard>
-    </UserControl.Resources>
     <Grid>
         <Rectangle>
             <Rectangle.Fill>
@@ -27,7 +17,7 @@
         <Label Content="Welcome" Height="51" Margin="78,81,386,0" Name="lblWelcome" VerticalAlignment="Top" FontSize="26" Foreground="#A0FFFFFF" HorizontalContentAlignment="Center" />
         <Label Content="Intergalactic" Height="95" HorizontalAlignment="Center" Margin="88,96,138,0" Name="lblInter" FontSize="56" Foreground="#A0FFFFFF" VerticalAlignment="Top" Width="375" />
         <Label Content="Photoshop" Height="95" HorizontalAlignment="Center" Margin="233,138,-7,0" Name="lblPhotoshop" FontSize="56" Foreground="#A0FFFFFF" VerticalAlignment="Top" Width="375" />
-        <Label Content="Start by opening an image form the 'File' menu." Height="41" HorizontalAlignment="Left" Margin="89,265,0,0" Name="lblHelp" Foreground="#A0FFFFFF" FontSize="20" VerticalAlignment="Top" Width="437" />
-        <Polygon Points="0,0 50,0 0,50" Fill="Green" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Name="polygonArrow" />
+        <Label Content="Start by opening an image." Height="41" HorizontalAlignment="Left" Margin="89,265,0,0" Name="lblHelp" Foreground="#A0FFFFFF" FontSize="20" VerticalAlignment="Top" Width="437" />
+        <Button Content="Open" Height="43" Margin="405,265,95,0" Name="button1" VerticalAlignment="Top" FontSize="20" Click="Button1_Click" />
     </Grid>
 </UserControl>
