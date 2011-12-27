@@ -1,17 +1,22 @@
-﻿namespace IntergalacticCore.Operations.Filters.Sharpening
+﻿namespace IntergalacticCore.Operations.Morphology
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.InteropServices;
+    using System.Text;
     using IntergalacticCore.Data;
+    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
-    /// Applies a custom mask to the image.
+    /// Erosion Operation
     /// </summary>
-    public class CustomMaskOperation : ConvolutionBase
+    public class DialationOperation : ConvolutionBase
     {
         /// <summary>
-        /// Holds the mask data to be applied to the image.
+        /// Binary mask to be used in the operation
         /// </summary>
-        private ConvolutionMask mask;
+        private BinaryMask mask;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -19,7 +24,7 @@
         /// <param name="input">Array of input to be used.</param>
         public override void SetInput(params object[] input)
         {
-            this.mask = (ConvolutionMask)input[0];
+            this.mask = (BinaryMask)input[0];
         }
 
         /// <summary>
@@ -28,7 +33,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Mask,doubeMask";
+            return "Mask,binaryMask";
         }
 
         /// <summary>
@@ -37,7 +42,7 @@
         /// <returns>The title</returns>
         public override string ToString()
         {
-            return "Custom Mask";
+            return "Dialation";
         }
 
         /// <summary>
@@ -47,21 +52,22 @@
         {
             unsafe
             {
-                fixed (double* arrPointer = &this.mask.Data[0, 0])
+                fixed (bool* arrPointer = &this.mask.Data[0, 0])
                 {
-                    CustomMaskOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), arrPointer, this.mask.Data.GetLength(0));
+                    DialationOperationExecute(this.GetCppData(this.Image), this.GetCppData(this.ResultImage), arrPointer, this.mask.Data.GetLength(1), this.mask.Data.GetLength(0));
                 }
             }
         }
 
         /// <summary>
-        /// The custom mask processing function
+        /// The dialation native processing function
         /// </summary>
-        /// <param name="src">Source image data</param>
-        /// <param name="dest">Destination image data</param>
-        /// <param name="mask">mask array</param>
-        /// <param name="maskSize">mask size</param>
+        /// <param name="src">Source image</param>
+        /// <param name="dest">Destinated image</param>
+        /// <param name="mask">The Binary mask</param>
+        /// <param name="maskWidth">Mask width</param>
+        /// <param name="maskHeight">Mask height</param>
         [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static unsafe extern void CustomMaskOperationExecute(ImageData src, ImageData dest, double* mask, int maskSize);
+        private static unsafe extern void DialationOperationExecute(ImageData src, ImageData dest, bool* mask, int maskWidth, int maskHeight);
     }
 }

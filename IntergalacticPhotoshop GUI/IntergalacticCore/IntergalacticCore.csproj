@@ -140,6 +140,9 @@
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexOperation.cs" />
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationAndGainOffsetOperation.cs" />
     <Compile Include="Operations\Matlab\Retinex\MultiScaleRetinexWithColorRestorationOperation.cs" />
+    <Compile Include="Data\BinaryMask.cs" />
+    <Compile Include="Operations\Morphology\DialationOperation.cs" />
+    <Compile Include="Operations\Morphology\ErosionOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddExponentialNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddGaussianNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddPeriodicNoiseOperation.cs" />
@@ -177,6 +180,7 @@
     <Content Include="Binaries\IntergalacticMatlab.dll" />
     <Content Include="Binaries\MWArray.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
