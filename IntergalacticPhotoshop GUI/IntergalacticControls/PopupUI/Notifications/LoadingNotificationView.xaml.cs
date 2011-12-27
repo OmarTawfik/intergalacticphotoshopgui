@@ -56,20 +56,11 @@
             {
                 imgCheck.Visibility = System.Windows.Visibility.Visible;
                 lblTitle.Content = "Done!";
-                SideNotification finishingNotification = new SideNotification();
-                finishingNotification.SetTitle("Done in " + operation.OperatingTime.ToString() + " Seconds.");
-                finishingNotification.DisplayTimeout = 15;
-                finishingNotification.AnimationType = NotificationAnimationType.Fade;
-                finishingNotification.ShowNotification();
             }
             else
             {
                 imgError.Visibility = System.Windows.Visibility.Visible;
                 lblTitle.Content = "Error!";
-                SideNotification notification = new SideNotification();
-                notification.Height = 150;
-                notification.SetTitle("Error while performing operation: " + mng.CurrentTab.LastException.Message);
-                notification.ShowNotification();
             }
 
             this.CloseNotification();

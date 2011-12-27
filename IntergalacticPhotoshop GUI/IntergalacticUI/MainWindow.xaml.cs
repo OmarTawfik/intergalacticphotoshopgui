@@ -38,6 +38,11 @@
         private DateTime doubleClickTimer;
 
         /// <summary>
+        /// The time it took to show the image
+        /// </summary>
+        private TimeSpan imageShowingTime;
+
+        /// <summary>
         /// Loading notification view in use
         /// </summary>
         private LoadingNotificationView loadingNotificationView;
@@ -56,7 +61,9 @@
             Manager.Instance.OnOperationFinshed += this.AddFrequencyDomainOperationTabs;
             Manager.Instance.OnOperationStarted += this.ShowLoadingNotification;
             Manager.Instance.OnOperationFinshed += this.HideLoadingNotification;
+            Manager.Instance.OnOperationFinshed += this.ShowTheFinishingNotification;
             Manager.Instance.OnOperationFailed += this.HideLoadingNotification;
+            Manager.Instance.OnOperationFailed += this.ShowTheFinishingNotification;
 
             this.AddActionCategory(
                 "File",
@@ -129,28 +136,28 @@
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
 
-            this.AddOperationCategory(
-               "Matlab Operations",
-               "Matlab.png",
-               new FrequencyDomainOperation(),
-               new LocalHistogramEqualizationOperation(),
-               new MultiScaleRetinexOperation(),
-               new MultiScaleRetinexWithColorRestorationOperation(),
-               new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
+            ////this.AddOperationCategory(
+            ////   "Matlab Operations",
+            ////   "Matlab.png",
+            ////   new FrequencyDomainOperation(),
+            ////   new LocalHistogramEqualizationOperation(),
+            ////   new MultiScaleRetinexOperation(),
+            ////   new MultiScaleRetinexWithColorRestorationOperation(),
+            ////   new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
 
-            this.AddOperationCategory(
-                "Pass Filters",
-                "PassFilter.png",
-                new IdealLowPassFilter(),
-                new IdealHighPassFilter(),
-                new IdealBandPassFilter(),
-                new IdealBandRejectFilter(),
-                new GaussianLowPassFilter(),
-                new GaussianHighPassFilter(),
-                new ButterworthLowPassFilter(),
-                new ButterworthHighPassFilter(),
-                new IdealNotchPassFilter(),
-                new IdealNotchRejectFilter());
+            ////this.AddOperationCategory(
+            ////    "Pass Filters",
+            ////    "PassFilter.png",
+            ////    new IdealLowPassFilter(),
+            ////    new IdealHighPassFilter(),
+            ////    new IdealBandPassFilter(),
+            ////    new IdealBandRejectFilter(),
+            ////    new GaussianLowPassFilter(),
+            ////    new GaussianHighPassFilter(),
+            ////    new ButterworthLowPassFilter(),
+            ////    new ButterworthHighPassFilter(),
+            ////    new IdealNotchPassFilter(),
+            ////    new IdealNotchRejectFilter());
 
             this.AddOperationCategory(
                 "Noise Operations",
@@ -231,6 +238,15 @@
 
             if (this.splash.Visibility == System.Windows.Visibility.Visible)
             {
+                DoubleAnimation l = new DoubleAnimation((System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 900) / 2, TimeSpan.FromSeconds(0.5));
+                l.AccelerationRatio = 0.3;
+                l.DecelerationRatio = 0.3;
+
+                DoubleAnimation t = new DoubleAnimation((System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - 600) / 2, TimeSpan.FromSeconds(0.5));
+                t.AccelerationRatio = 0.3;
+                t.DecelerationRatio = 0.3;
+                t.BeginTime = TimeSpan.FromSeconds(0.5);
+
                 DoubleAnimation w = new DoubleAnimation(900, TimeSpan.FromSeconds(0.5));
                 w.AccelerationRatio = 0.3;
                 w.DecelerationRatio = 0.3;
@@ -245,6 +261,8 @@
 
                 this.BeginAnimation(Window.WidthProperty, w);
                 this.BeginAnimation(Window.HeightProperty, h);
+                this.BeginAnimation(Window.LeftProperty, l);
+                this.BeginAnimation(Window.TopProperty, t);
                 this.splash.BeginAnimation(FrameworkElement.OpacityProperty, fadeOut);
                 this.splashBack.BeginAnimation(FrameworkElement.OpacityProperty, fadeOut);
 
@@ -374,22 +392,47 @@
         /// Updates the displayed image.
         /// </summary>
         /// <param name="mng">Global Manager.</param>
-        /// <param name="tab">Active Tab.</param>
-        private void UpdateImage(Manager mng, Tab tab)
+        /// <param name="dontCare">Dontcare object</param>
+        private void UpdateImage(Manager mng, object dontCare)
         {
-            this.imageView.Source = ((WPFBitmap)tab.Image).GetImageSource();
-            this.mainGrid.ClipToBounds = false;
-            this.ClipToBounds = false;
-        }
+            if (dontCare != null)
+            {
+                DateTime start = DateTime.Now;
+                this.imageView.Source = ((WPFBitmap)mng.CurrentTab.Image).GetImageSource();
+                this.imageShowingTime = DateTime.Now - start;
+            }
+            else
+            {
+                DoubleAnimation l = new DoubleAnimation((System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - this.splash.Width) / 2, TimeSpan.FromSeconds(0.5));
+                l.AccelerationRatio = 0.3;
+                l.DecelerationRatio = 0.3;
 
-        /// <summary>
-        /// Updates the displayed image.
-        /// </summary>
-        /// <param name="mng">Global Manager.</param>
-        /// <param name="operation">The operation</param>
-        private void UpdateImage(Manager mng, BaseOperation operation)
-        {
-            this.imageView.Source = ((WPFBitmap)mng.CurrentTab.Image).GetImageSource();
+                DoubleAnimation t = new DoubleAnimation((System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height - this.splash.Height) / 2, TimeSpan.FromSeconds(0.5));
+                t.AccelerationRatio = 0.3;
+                t.DecelerationRatio = 0.3;
+                t.BeginTime = TimeSpan.FromSeconds(0.5);
+
+                DoubleAnimation w = new DoubleAnimation(this.splash.Width, TimeSpan.FromSeconds(0.5));
+                w.AccelerationRatio = 0.3;
+                w.DecelerationRatio = 0.3;
+
+                DoubleAnimation h = new DoubleAnimation(this.splash.Height, TimeSpan.FromSeconds(0.5));
+                h.AccelerationRatio = 0.3;
+                h.DecelerationRatio = 0.3;
+                h.BeginTime = TimeSpan.FromSeconds(0.5);
+
+                DoubleAnimation fadeIn = new DoubleAnimation(1, TimeSpan.FromSeconds(0.2));
+
+                this.BeginAnimation(Window.WidthProperty, w);
+                this.BeginAnimation(Window.HeightProperty, h);
+                this.BeginAnimation(Window.LeftProperty, l);
+                this.BeginAnimation(Window.TopProperty, t);
+                this.splash.BeginAnimation(FrameworkElement.OpacityProperty, fadeIn);
+                this.splashBack.BeginAnimation(FrameworkElement.OpacityProperty, fadeIn);
+
+                this.splash.Visibility = System.Windows.Visibility.Visible;
+                this.splashBack.Visibility = System.Windows.Visibility.Visible;
+            }
         }
 
         /// <summary>
@@ -500,6 +543,30 @@
             }
 
             this.doubleClickTimer = now;
+        }
+
+        /// <summary>
+        /// Shows the finishing notfication.
+        /// </summary>
+        /// <param name="mng">The Manager</param>
+        /// <param name="operation">The last operation</param>
+        private void ShowTheFinishingNotification(Manager mng, BaseOperation operation)
+        {
+            if (mng.CurrentTab.DidOperationComplete)
+            {
+                SideNotification finishingNotification = new SideNotification();
+                finishingNotification.SetTitle("Done in " + (operation.OperatingTime + this.imageShowingTime).ToString() + " Seconds.");
+                finishingNotification.DisplayTimeout = 15;
+                finishingNotification.AnimationType = NotificationAnimationType.Fade;
+                finishingNotification.ShowNotification();
+            }
+            else
+            {
+                SideNotification notification = new SideNotification();
+                notification.Height = 150;
+                notification.SetTitle("Error while performing operation: " + mng.CurrentTab.LastException.Message);
+                notification.ShowNotification();
+            }
         }
     }
 }

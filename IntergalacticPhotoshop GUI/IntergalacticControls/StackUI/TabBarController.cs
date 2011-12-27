@@ -126,7 +126,10 @@
         /// <param name="tab">THe tab</param>
         private void SwitchTab(Manager mng, Tab tab)
         {
-            this.SelectTab(tab.Name);
+            if (tab != null)
+            {
+                this.SelectTab(tab.Name);
+            }
         }
 
         /// <summary>

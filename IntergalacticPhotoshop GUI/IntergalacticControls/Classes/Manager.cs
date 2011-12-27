@@ -184,7 +184,7 @@
             }
             else
             {
-                this.SwitchImage("Default");
+                this.OnTabChanged(this, null);
             }
         }
 

@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" Width="100">
     <w:Grid Margin="2,0,2,0">
-        <w:Rectangle Stroke="#ddd" Opacity="1"  StrokeThickness="1">
+        <w:Rectangle Stroke="#ddd" Opacity="0"  StrokeThickness="1">
             <w:Rectangle.Fill>
                 <w:LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
                     <w:GradientStop Color="#eef" Offset="0" />
@@ -19,8 +19,8 @@
             <w:Rectangle.Fill>
                 <w:LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
                     <w:GradientStop Color="#6666" Offset="0.5" />
-                    <w:GradientStop Color="#0fff" Offset="0" />
-                    <w:GradientStop Color="#0fff" Offset="1" />
+                    <w:GradientStop Color="#0333" Offset="0" />
+                    <w:GradientStop Color="#0333" Offset="1" />
                 </w:LinearGradientBrush>
             </w:Rectangle.Fill>
         </w:Rectangle>

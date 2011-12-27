@@ -69,6 +69,11 @@
         /// <param name="tab">The tab</param>
         public void UpdateHistogramWhenTabChanges(Manager mng, Tab tab)
         {
+            if (tab == null)
+            {
+                return;
+            }
+
             this.UpdateHistogram(mng, null);
         }
 
