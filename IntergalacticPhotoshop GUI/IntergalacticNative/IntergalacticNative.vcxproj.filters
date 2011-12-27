@@ -39,6 +39,9 @@
     <Filter Include="Source Files\Matlab">
       <UniqueIdentifier>{82bc61ce-956c-46db-9635-f16263b6a3b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Morphology">
+      <UniqueIdentifier>{a1334987-09f0-4d75-83d1-b15d4966a688}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ImageData.h">
@@ -168,6 +171,12 @@
     </ClCompile>
     <ClCompile Include="MatlabOperations.cpp">
       <Filter>Source Files\Matlab</Filter>
+    </ClCompile>
+    <ClCompile Include="ErosionOperation.cpp">
+      <Filter>Source Files\Morphology</Filter>
+    </ClCompile>
+    <ClCompile Include="DialationOperation.cpp">
+      <Filter>Source Files\Morphology</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

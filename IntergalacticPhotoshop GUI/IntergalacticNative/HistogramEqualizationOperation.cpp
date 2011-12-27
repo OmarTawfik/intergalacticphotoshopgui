@@ -10,7 +10,6 @@ extern "C" DllExport void HistogramEqualizationOperationExecute(ImageData source
 	int imageSum = source.Height * source.Width;
 	int i, j;
 
-#pragma omp parallel for shared(imageGray, gray, imageRunning, imageSum) private(i)
 	for (i = 0; i < 256; i++)
 	{
 		imageRunning += imageGray[i];

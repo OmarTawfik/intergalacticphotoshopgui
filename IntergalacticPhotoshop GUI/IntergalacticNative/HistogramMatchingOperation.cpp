@@ -11,7 +11,6 @@ extern "C" DllExport void HistogramMatchingOperationExecute(ImageData source, in
 	double imageRunning = 0, otherRunning =0;
 	int i, j;
 
-#pragma omp parallel for shared(imageGray, otherGray, imageRunning, otherRunning, gray1, gray2) private(i)
 	for (i = 0; i < 256; i++)
 	{
 		imageRunning += imageGray[i];
@@ -22,7 +21,7 @@ extern "C" DllExport void HistogramMatchingOperationExecute(ImageData source, in
 	}
 
 	int finalValue, difference, currentDifference;
-#pragma omp parallel for shared(finalValue, difference, gray, gray1, gray2) private(i, j, currentDifference)
+#pragma omp parallel for shared(gray, gray1, gray2) private(i, j, currentDifference, finalValue, difference)
 	for (i = 0; i < 256; i++)
 	{
 		finalValue = 0;
