@@ -568,5 +568,21 @@
                 notification.ShowNotification();
             }
         }
+
+        /// <summary>
+        /// Undos the last operation
+        /// </summary>
+        private void UndoAction()
+        {
+            Manager.Instance.UndoOperation();
+        }
+
+        /// <summary>
+        /// Redos the previous operation
+        /// </summary>
+        private void RedoOperation()
+        {
+            Manager.Instance.RedoOperation();
+        }
     }
 }

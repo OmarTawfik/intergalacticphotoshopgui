@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading;
     using System.Windows.Threading;
     using IntergalacticCore;
@@ -184,7 +185,14 @@
             }
             else
             {
-                this.OnTabChanged(this, null);
+                if (this.tabs.Count > 0)
+                {
+                    this.SwitchImage(this.tabs.Keys.ElementAt(0));
+                }
+                else
+                {
+                    this.OnTabChanged(this, null);
+                }
             }
         }
 

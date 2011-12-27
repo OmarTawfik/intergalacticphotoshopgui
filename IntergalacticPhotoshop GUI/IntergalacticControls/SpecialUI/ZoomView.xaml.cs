@@ -201,8 +201,11 @@
                 return;
             }
 
-            this.widthRatio = e.NewValue;
-            this.heightRatio = e.NewValue;
+            this.widthRatio = 1 / e.NewValue;
+            this.heightRatio = 1 / e.NewValue;
+            this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
+            this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
+
             this.targetedImageView.Stretch = Stretch.Uniform;
 
             this.UpdateZoom();
