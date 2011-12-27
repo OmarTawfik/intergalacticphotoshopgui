@@ -22,14 +22,14 @@
         /// </summary>
         protected unsafe override void Operate()
         {
-            GrayOperationExecute(this.GetCppData(this.Image));
+            InverseOperationExecute(this.GetCppData(this.Image));
         }
 
         /// <summary>
-        /// The native gray processing function.
+        /// The native inverse processing function.
         /// </summary>
         /// <param name="src">source image.</param>
         [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void GrayOperationExecute(ImageData src);
+        private static extern void InverseOperationExecute(ImageData src);
     }
 }

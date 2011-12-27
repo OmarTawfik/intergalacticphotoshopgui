@@ -1,182 +1,58 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Source Files\ResizeOperation">
-      <UniqueIdentifier>{fe0f7e36-7947-4872-86fc-648f8e2bd437}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Transformations">
-      <UniqueIdentifier>{396b8314-d4e3-4d35-b47e-5acbcfc9069d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Filters">
-      <UniqueIdentifier>{a618a2b5-79a0-4753-9b6a-38b8b0cac3f3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Filters\Smoothing">
-      <UniqueIdentifier>{b2f5bff1-83c8-41c4-9cb4-43ef5c7f6e92}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\PixelOperations">
-      <UniqueIdentifier>{a9243288-f45c-4b01-8d28-1407abcd5fec}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Filters\Sharpening">
-      <UniqueIdentifier>{0534a827-13f8-4c2a-ae19-ca56ce1db28b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Filters\EdgeDetection">
-      <UniqueIdentifier>{43c23b35-30c3-4ad5-8f0b-fc080c926303}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\JoinedOperations">
-      <UniqueIdentifier>{45fa497b-439f-4ca0-8fe0-d1ae78b9c1af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\HistogramOperations">
-      <UniqueIdentifier>{8f026449-58d8-4556-9ae7-1ab13eb21adb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Matlab">
-      <UniqueIdentifier>{82bc61ce-956c-46db-9635-f16263b6a3b1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Morphology">
-      <UniqueIdentifier>{a1334987-09f0-4d75-83d1-b15d4966a688}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="AddExponentialNoise.cpp" />
+    <ClCompile Include="AddGaussianNoise.cpp" />
+    <ClCompile Include="AddOperation.cpp" />
+    <ClCompile Include="AddPeriodicNoise.cpp" />
+    <ClCompile Include="AddRayleighNoise.cpp" />
+    <ClCompile Include="AddUniformNoise.cpp" />
+    <ClCompile Include="BackDiagonalEdgeDetectionOperation.cpp" />
+    <ClCompile Include="BackDiagonalLineSharpeningOperation.cpp" />
+    <ClCompile Include="BilinearResizeOperation.cpp" />
+    <ClCompile Include="BinarizationOperation.cpp" />
+    <ClCompile Include="BrightnessOperation.cpp" />
+    <ClCompile Include="ColorExtractionOperation.cpp" />
+    <ClCompile Include="ContrastOperation.cpp" />
+    <ClCompile Include="CustomMaskOperation.cpp" />
+    <ClCompile Include="DialationOperation.cpp" />
+    <ClCompile Include="ErosionOperation.cpp" />
+    <ClCompile Include="FrontDiagonalEdgeDetectionOperation.cpp" />
+    <ClCompile Include="FrontDiagonalLineSharpeningOperation.cpp" />
+    <ClCompile Include="GammaAdjustmentOperation.cpp" />
+    <ClCompile Include="GaussianFilter1DOperation.cpp" />
+    <ClCompile Include="GaussianFilter2DOperation.cpp" />
+    <ClCompile Include="GrayOperation.cpp" />
+    <ClCompile Include="HistogramCalculator.cpp" />
+    <ClCompile Include="HistogramEqualizationOperation.cpp" />
+    <ClCompile Include="HistogramMatchingOperation.cpp" />
+    <ClCompile Include="HorizontalEdgeDetectionOperation.cpp" />
+    <ClCompile Include="HorizontalFlipOperation.cpp" />
+    <ClCompile Include="HorizontalLineSharpeningOperation.cpp" />
+    <ClCompile Include="LaplacianEdgeDetectionOperation.cpp" />
+    <ClCompile Include="LaplacianPointEdgeDetectionOperation.cpp" />
+    <ClCompile Include="LaplacianPointSharpeningOperation.cpp" />
+    <ClCompile Include="MatlabOperations.cpp" />
+    <ClCompile Include="NoiseHelperFunctions.cpp" />
+    <ClCompile Include="SaltandPepperNoiseAdditionOperation.cpp" />
+    <ClCompile Include="SubtractOperation.cpp" />
+    <ClCompile Include="VerticalEdgeDetectionOperation.cpp" />
+    <ClCompile Include="VerticalLineSharpeningOperation.cpp" />
+    <ClCompile Include="HorizontalShearOperation.cpp" />
+    <ClCompile Include="InverseOperation.cpp" />
+    <ClCompile Include="MeanFilter1DOperation.cpp" />
+    <ClCompile Include="MeanFilter2DOperation.cpp" />
+    <ClCompile Include="NearestNeighbourResizeOperation.cpp" />
+    <ClCompile Include="PixelationOperation.cpp" />
+    <ClCompile Include="QuantizationOperation.cpp" />
+    <ClCompile Include="TranslationOperation.cpp" />
+    <ClCompile Include="VerticalFlipOperation.cpp" />
+    <ClCompile Include="VerticalShearOperation.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ImageData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LaplacianSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClInclude>
-    <ClInclude Include="ConvolutionHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="NoiseHelperFunctions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BilinearResizeOperation.cpp">
-      <Filter>Source Files\ResizeOperation</Filter>
-    </ClCompile>
-    <ClCompile Include="NearestNeighbourResizeOperation.cpp">
-      <Filter>Source Files\ResizeOperation</Filter>
-    </ClCompile>
-    <ClCompile Include="HorizontalFlipOperation.cpp">
-      <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="VerticalFlipOperation.cpp">
-      <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="TranslationOperation.cpp">
-      <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="HorizontalShearOperation.cpp">
-      <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="VerticalShearOperation.cpp">
-      <Filter>Source Files\Transformations</Filter>
-    </ClCompile>
-    <ClCompile Include="BinarizationOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="BrightnessOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="ColorExtractionOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="ContrastOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="GammaAdjustmentOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="GrayOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="InverseOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="PixelationOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="QuantizationOperation.cpp">
-      <Filter>Source Files\PixelOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="GaussianFilter2DOperation.cpp">
-      <Filter>Source Files\Filters\Smoothing</Filter>
-    </ClCompile>
-    <ClCompile Include="MeanFilter2DOperation.cpp">
-      <Filter>Source Files\Filters\Smoothing</Filter>
-    </ClCompile>
-    <ClCompile Include="MeanFilter1DOperation.cpp">
-      <Filter>Source Files\Filters\Smoothing</Filter>
-    </ClCompile>
-    <ClCompile Include="GaussianFilter1DOperation.cpp">
-      <Filter>Source Files\Filters\Smoothing</Filter>
-    </ClCompile>
-    <ClCompile Include="BackDiagonalLineSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClCompile>
-    <ClCompile Include="FrontDiagonalLineSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClCompile>
-    <ClCompile Include="VerticalLineSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClCompile>
-    <ClCompile Include="HorizontalLineSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClCompile>
-    <ClCompile Include="LaplacianPointSharpeningOperation.cpp">
-      <Filter>Source Files\Filters\Sharpening</Filter>
-    </ClCompile>
-    <ClCompile Include="BackDiagonalEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="FrontDiagonalEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="HorizontalEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="VerticalEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="LaplacianEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="LaplacianPointEdgeDetectionOperation.cpp">
-      <Filter>Source Files\Filters\EdgeDetection</Filter>
-    </ClCompile>
-    <ClCompile Include="AddOperation.cpp">
-      <Filter>Source Files\JoinedOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramMatchingOperation.cpp">
-      <Filter>Source Files\JoinedOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="SubtractOperation.cpp">
-      <Filter>Source Files\JoinedOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramCalculator.cpp">
-      <Filter>Source Files\HistogramOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="HistogramEqualizationOperation.cpp">
-      <Filter>Source Files\HistogramOperations</Filter>
-    </ClCompile>
-    <ClCompile Include="CustomMaskOperation.cpp">
-      <Filter>Source Files\Filters</Filter>
-    </ClCompile>
-    <ClCompile Include="MatlabOperations.cpp">
-      <Filter>Source Files\Matlab</Filter>
-    </ClCompile>
-    <ClCompile Include="ErosionOperation.cpp">
-      <Filter>Source Files\Morphology</Filter>
-    </ClCompile>
-    <ClCompile Include="DialationOperation.cpp">
-      <Filter>Source Files\Morphology</Filter>
-    </ClCompile>
+    <ClInclude Include="ConvolutionHelpers.h" />
+    <ClInclude Include="ImageData.h" />
+    <ClInclude Include="LaplacianSharpeningOperation.cpp" />
+    <ClInclude Include="NoiseHelperFunctions.h" />
   </ItemGroup>
 </Project>

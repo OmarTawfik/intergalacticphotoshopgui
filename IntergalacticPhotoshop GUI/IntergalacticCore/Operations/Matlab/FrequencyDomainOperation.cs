@@ -107,33 +107,17 @@
             this.blueImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);
             this.frequencyDomainImage = this.Image.CreateEmptyClone(this.Image.Width, this.Image.Height);
 
-            this.Image.BeforeEdit();
-            this.RedImage.BeforeEdit();
-            this.GreenImage.BeforeEdit();
-            this.BlueImage.BeforeEdit();
-            this.FrequencyDomainImage.BeforeEdit();
+            double[,] zeroes = new double[this.Image.Height, this.Image.Width];
+            
+            this.DoublesToImage(this.redImage, logMagnitudeRed, zeroes, zeroes);
+            this.DoublesToImage(this.greenImage, zeroes, logMagnitudeGreen, zeroes);
+            this.DoublesToImage(this.blueImage, zeroes, zeroes, logMagnitudeBlue);
 
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    this.RedImage.SetPixel(j, i, new Pixel((byte)logMagnitudeRed[i, j], 0, 0));
-                    this.GreenImage.SetPixel(j, i, new Pixel(0, (byte)logMagnitudeGreen[i, j], 0));
-                    this.BlueImage.SetPixel(j, i, new Pixel(0, 0, (byte)logMagnitudeBlue[i, j]));
-
-                    Pixel frequencyDomainPixel = new Pixel(
-                        (byte)logMagnitudeRed[i, j],
-                        (byte)logMagnitudeGreen[i, j],
-                        (byte)logMagnitudeBlue[i, j]);
-                    this.FrequencyDomainImage.SetPixel(j, i, frequencyDomainPixel);
-                }
-            }
-
-            this.Image.AfterEdit();
-            this.RedImage.AfterEdit();
-            this.GreenImage.AfterEdit();
-            this.BlueImage.AfterEdit();
-            this.FrequencyDomainImage.AfterEdit();
+            this.DoublesToImage(
+                this.frequencyDomainImage,
+                logMagnitudeRed,
+                logMagnitudeGreen,
+                logMagnitudeBlue);
         }
 
         /// <summary>

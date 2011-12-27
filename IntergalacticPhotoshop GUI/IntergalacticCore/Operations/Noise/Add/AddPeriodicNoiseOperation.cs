@@ -1,14 +1,19 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Add
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// Modifies each pixel by a periodic noise.
     /// </summary>
     public class AddPeriodicNoiseOperation : BaseOperation
     {
+        /// <summary>
+        /// Ammount of noise to add.
+        /// </summary>
+        private double percentage;
+
         /// <summary>
         /// Ammount of noise to add.
         /// </summary>
@@ -40,11 +45,12 @@
         /// <param name="input">Array of input to be used (brightness value).</param>
         public override void SetInput(params object[] input)
         {
-            this.amplitude = (byte)input[0];
-            this.frequencyX = (double)input[1];
-            this.frequencyY = (double)input[2];
-            this.shiftX = (double)input[3];
-            this.shiftY = (double)input[4];
+            this.percentage = (double)input[0] / 100;
+            this.amplitude = (byte)input[1];
+            this.frequencyX = (double)input[2];
+            this.frequencyY = (double)input[3];
+            this.shiftX = (double)input[4];
+            this.shiftY = (double)input[5];
         }
 
         /// <summary>
@@ -53,7 +59,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Amplitude,byte_slider,0,255|Frequency in X,double,0,100|"
+            return "Ammount,double,0,100|Amplitude,byte_slider,0,255|Frequency in X,double,0,100|"
                 + "Frequency in Y,double,0,100|Shift in X,double,0,100|Shift in Y,double,0,100";
         }
 
@@ -71,32 +77,43 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
+            int[,] red = new int[this.Image.Height, this.Image.Width];
+            int[,] green = new int[this.Image.Height, this.Image.Width];
+            int[,] blue = new int[this.Image.Height, this.Image.Width];
+
+            unsafe
             {
-                for (int j = 0; j < this.Image.Width; j++)
+                fixed (int* pred = &red[0, 0], pgreen = &green[0, 0], pblue = &blue[0, 0])
                 {
-                    Pixel p = this.Image.GetPixel(j, i);
-
-                    double part1 = (2 * Math.PI * this.frequencyX * j) / (this.Image.Width + this.shiftX);
-                    double part2 = (2 * Math.PI * this.frequencyY * i) / (this.Image.Height + this.shiftY);
-                    double noise = this.amplitude * Math.Sin(part1 + part2);
-
-                    p.Red = (byte)(p.Red + noise);
-                    p.Green = (byte)(p.Green + noise);
-                    p.Blue = (byte)(p.Blue + noise);
-
-                    this.Image.SetPixel(j, i, p);
+                    AddPeriodicNoiseExecute(
+                        this.GetCppData(this.Image),
+                        pred,
+                        pgreen,
+                        pblue,
+                        this.percentage,
+                        this.amplitude,
+                        this.frequencyX,
+                        this.frequencyY,
+                        this.shiftX,
+                        this.shiftY);
                 }
             }
         }
 
         /// <summary>
-        /// Gets called after the operation ends.
+        /// the native periodic noise processing function.
         /// </summary>
-        protected override void AfterOperate()
-        {
-            NormalizationOperation operation = new NormalizationOperation();
-            this.Image = operation.Execute(this.Image);
-        }
+        /// <param name="source">source image</param>
+        /// <param name="red">random red array</param>
+        /// <param name="green">random green array</param>
+        /// <param name="blue">random blue array</param>
+        /// <param name="percentage">percentage of noise</param>
+        /// <param name="amplitude">amplitude of periodic noise</param>
+        /// <param name="frequencyX">horizontal frequency of periodic noise</param>
+        /// <param name="frequencyY">vertical frequency of periodic noise</param>
+        /// <param name="shiftX">horizontal shift of periodic noise</param>
+        /// <param name="shiftY">vertical shift of periodic noise</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void AddPeriodicNoiseExecute(ImageData source, int* red, int* green, int* blue, double percentage, double amplitude, double frequencyX, double frequencyY, double shiftX, double shiftY);
     }
 }

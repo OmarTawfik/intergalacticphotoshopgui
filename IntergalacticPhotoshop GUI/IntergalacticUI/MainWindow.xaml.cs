@@ -124,28 +124,28 @@
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
 
-            ////this.AddOperationCategory(
-            ////   "Matlab Operations",
-            ////   "Matlab.png",
-            ////   new FrequencyDomainOperation(),
-            ////   new LocalHistogramEqualizationOperation(),
-            ////   new MultiScaleRetinexOperation(),
-            ////   new MultiScaleRetinexWithColorRestorationOperation(),
-            ////   new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
+            this.AddOperationCategory(
+               "Matlab Operations",
+               "Matlab.png",
+               new FrequencyDomainOperation(),
+               new LocalHistogramEqualizationOperation(),
+               new MultiScaleRetinexOperation(),
+               new MultiScaleRetinexWithColorRestorationOperation(),
+               new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
 
-            ////this.AddOperationCategory(
-            ////    "Pass Filters",
-            ////    "PassFilter.png",
-            ////    new IdealLowPassFilter(),
-            ////    new IdealHighPassFilter(),
-            ////    new IdealBandPassFilter(),
-            ////    new IdealBandRejectFilter(),
-            ////    new GaussianLowPassFilter(),
-            ////    new GaussianHighPassFilter(),
-            ////    new ButterworthLowPassFilter(),
-            ////    new ButterworthHighPassFilter(),
-            ////    new IdealNotchPassFilter(),
-            ////    new IdealNotchRejectFilter());
+            this.AddOperationCategory(
+                "Pass Filters",
+                "PassFilter.png",
+                new IdealLowPassFilter(),
+                new IdealHighPassFilter(),
+                new IdealBandPassFilter(),
+                new IdealBandRejectFilter(),
+                new GaussianLowPassFilter(),
+                new GaussianHighPassFilter(),
+                new ButterworthLowPassFilter(),
+                new ButterworthHighPassFilter(),
+                new IdealNotchPassFilter(),
+                new IdealNotchRejectFilter());
 
             this.AddOperationCategory(
                 "Noise Operations",

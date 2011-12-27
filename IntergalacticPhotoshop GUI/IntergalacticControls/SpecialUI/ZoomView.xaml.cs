@@ -206,8 +206,6 @@
             this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
             this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
 
-
-
             this.UpdateZoom();
         }
     }

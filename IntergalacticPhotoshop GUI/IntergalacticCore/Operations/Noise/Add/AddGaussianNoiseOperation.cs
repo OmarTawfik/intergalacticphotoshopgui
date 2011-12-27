@@ -1,8 +1,8 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Add
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// Modifies each pixel by a gaussian noise.
@@ -58,51 +58,37 @@
         /// </summary>
         protected override void Operate()
         {
-            Random rnd = new Random();
-            int[,] table = new int[this.Image.Height, this.Image.Width];
+            int[,] red = new int[this.Image.Height, this.Image.Width];
+            int[,] green = new int[this.Image.Height, this.Image.Width];
+            int[,] blue = new int[this.Image.Height, this.Image.Width];
 
-            double variance = this.sigma * this.sigma;
-            double root = Math.Sqrt(2 * Math.PI * variance);
-
-            for (int i = 0; i < 256; i++)
+            unsafe
             {
-                double dist = Math.Exp(-(i - this.mean) * (i - this.mean) / (2 * variance)) / root;
-                int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
-
-                while (count > 0)
+                fixed (int* pred = &red[0, 0], pgreen = &green[0, 0], pblue = &blue[0, 0])
                 {
-                    int x = rnd.Next(this.Image.Width);
-                    int y = rnd.Next(this.Image.Height);
-
-                    if (table[y, x] == 0)
-                    {
-                        table[y, x] = i + 1;
-                        count--;
-                    }
-                }
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    if (table[i, j] != 0)
-                    {
-                        Pixel p = this.Image.GetPixel(j, i);
-                        p.Red = p.Green = p.Blue = (byte)(table[i, j] - 1);
-                        this.Image.SetPixel(j, i, p);
-                    }
+                    AddGaussianNoiseExecute(
+                        this.GetCppData(this.Image),
+                        pred,
+                        pgreen,
+                        pblue,
+                        this.percentage,
+                        this.mean,
+                        this.sigma);
                 }
             }
         }
 
         /// <summary>
-        /// Gets called after the operation ends.
+        /// The native gaussian noise processing function.
         /// </summary>
-        protected override void AfterOperate()
-        {
-            NormalizationOperation operation = new NormalizationOperation();
-            this.Image = operation.Execute(this.Image);
-        }
+        /// <param name="source">source image.</param>
+        /// <param name="red">random red.</param>
+        /// <param name="green">random green.</param>
+        /// <param name="blue">random blue.</param>
+        /// <param name="percentage">percentage of noise.</param>
+        /// <param name="mean">mean of gaussian graph.</param>
+        /// <param name="sigma">sigma of gaussian graph.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void AddGaussianNoiseExecute(ImageData source, int* red, int* green, int* blue, double percentage, double mean, double sigma);
     }
 }

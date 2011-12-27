@@ -6,13 +6,15 @@ extern "C" DllExport void BilinearResizeOperationExecute(ImageData source, Image
 	ImageData* dest = &destination;
 
 	int i, j, x1, x2, y1, y2;
-	float widthRatio, heightRatio, oldX, oldY, xfraction, yfraction;
-	Pixel *p1, *p2, *p3, *p4, z1, z2, *newPixel;
+	double widthRatio, heightRatio, oldX, oldY, xfraction, yfraction;
+	Pixel *p1, *p2, *p3, *p4, *newPixel;
 
-	widthRatio = (float)src->Width / (float)dest->Width;
-	heightRatio = (float)src->Height / (float)dest->Height;
+	widthRatio = (double)src->Width / (double)dest->Width;
+	heightRatio = (double)src->Height / (double)dest->Height;
 
-#pragma omp parallel for shared(src, dest, widthRatio, heightRatio) private(i, j, x1, x2, y1, y2, p1, p2, p3, p4, z1, z2, newPixel, oldX, oldY, xfraction, yfraction) 
+	double z1R, z1B, z1G, z2R, z2G, z2B;
+
+#pragma omp parallel for shared(src, dest, widthRatio, heightRatio) private(i, j, x1, x2, y1, y2, p1, p2, p3, p4, z1R, z1B, z1G, z2R, z2G, z2B, newPixel, oldX, oldY, xfraction, yfraction) 
 	for (i = 0; i < dest->Height; ++i)
 	{
 		for (j = 0; j < dest->Width; ++j)
@@ -33,19 +35,19 @@ extern "C" DllExport void BilinearResizeOperationExecute(ImageData source, Image
 			xfraction = oldX - x1;
 			yfraction = oldY - y1;
 						
-			z1.R = (p1->R * (1.0f - xfraction)) + (p2->R * xfraction);
-			z1.G = (p1->G * (1.0f - xfraction)) + (p2->G * xfraction);
-			z1.B = (p1->B * (1.0f - xfraction)) + (p2->B * xfraction);
+			z1R = (p1->R * (1.0 - xfraction)) + (p2->R * xfraction);
+			z1G = (p1->G * (1.0 - xfraction)) + (p2->G * xfraction);
+			z1B = (p1->B * (1.0 - xfraction)) + (p2->B * xfraction);
 
-			z2.R = (p3->R * (1.0f - xfraction)) + (p4->R * xfraction);
-			z2.G = (p3->G * (1.0f - xfraction)) + (p4->G * xfraction);
-			z2.B = (p3->B * (1.0f - xfraction)) + (p4->B * xfraction);
+			z2R = (p3->R * (1.0 - xfraction)) + (p4->R * xfraction);
+			z2G = (p3->G * (1.0 - xfraction)) + (p4->G * xfraction);
+			z2B = (p3->B * (1.0 - xfraction)) + (p4->B * xfraction);
 
 			newPixel = GETPIXEL(dest, j, i);
 
-			newPixel->R = (z1.R * (1 - yfraction)) + (z2.R * yfraction);
-			newPixel->G = (z1.G * (1 - yfraction)) + (z2.G * yfraction);
-			newPixel->B = (z1.B * (1 - yfraction)) + (z2.B * yfraction);
+			newPixel->R = (z1R * (1.0 - yfraction)) + (z2R * yfraction);
+			newPixel->G = (z1G * (1.0 - yfraction)) + (z2G * yfraction);
+			newPixel->B = (z1B * (1.0 - yfraction)) + (z2B * yfraction);
 		}
 	}
 }

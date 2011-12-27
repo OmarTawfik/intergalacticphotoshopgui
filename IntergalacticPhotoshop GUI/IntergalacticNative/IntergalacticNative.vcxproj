@@ -151,7 +151,12 @@
     <ClInclude Include="NoiseHelperFunctions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AddExponentialNoise.cpp" />
+    <ClCompile Include="AddGaussianNoise.cpp" />
     <ClCompile Include="AddOperation.cpp" />
+    <ClCompile Include="AddPeriodicNoise.cpp" />
+    <ClCompile Include="AddRayleighNoise.cpp" />
+    <ClCompile Include="AddUniformNoise.cpp" />
     <ClCompile Include="BackDiagonalEdgeDetectionOperation.cpp" />
     <ClCompile Include="BackDiagonalLineSharpeningOperation.cpp" />
     <ClCompile Include="BilinearResizeOperation.cpp" />
@@ -178,6 +183,8 @@
     <ClCompile Include="LaplacianPointEdgeDetectionOperation.cpp" />
     <ClCompile Include="LaplacianPointSharpeningOperation.cpp" />
     <ClCompile Include="MatlabOperations.cpp" />
+    <ClCompile Include="NoiseHelperFunctions.cpp" />
+    <ClCompile Include="SaltandPepperNoiseAdditionOperation.cpp" />
     <ClCompile Include="SubtractOperation.cpp" />
     <ClCompile Include="VerticalEdgeDetectionOperation.cpp" />
     <ClCompile Include="VerticalLineSharpeningOperation.cpp" />

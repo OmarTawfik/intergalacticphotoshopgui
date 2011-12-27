@@ -1,8 +1,8 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Add
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// Modifies each pixel by a uniform noise.
@@ -17,12 +17,12 @@
         /// <summary>
         /// Start of the uniform graph.
         /// </summary>
-        private byte start;
+        private int start;
 
         /// <summary>
         /// End of the uniform graph.
         /// </summary>
-        private byte end;
+        private int end;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -31,8 +31,13 @@
         public override void SetInput(params object[] input)
         {
             this.percentage = (double)input[0] / 100;
-            this.start = (byte)input[1];
-            this.end = (byte)input[2];
+            this.start = (int)input[1];
+            this.end = (int)input[2];
+
+            if (this.start > this.end)
+            {
+                throw new Exception("Start must be less than or equal end");
+            }
         }
 
         /// <summary>
@@ -41,7 +46,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "Ammount,double,0,100|Start,byte_slider,0,255|End,byte_slider,0,255";
+            return "Ammount,double,0,100|Start,int,0,255|End,int,0,255";
         }
 
         /// <summary>
@@ -58,48 +63,37 @@
         /// </summary>
         protected override void Operate()
         {
-            Random rnd = new Random();
-            int[,] table = new int[this.Image.Height, this.Image.Width];
+            int[,] red = new int[this.Image.Height, this.Image.Width];
+            int[,] green = new int[this.Image.Height, this.Image.Width];
+            int[,] blue = new int[this.Image.Height, this.Image.Width];
 
-            for (int i = 0; i < 256; i++)
+            unsafe
             {
-                double dist = (this.start <= i && i <= this.end) ? 1.0 / (this.end - this.start) : 0;
-                int count = (int)(dist * this.percentage * this.Image.Height * this.Image.Width);
-
-                while (count > 0)
+                fixed (int* pred = &red[0, 0], pgreen = &green[0, 0], pblue = &blue[0, 0])
                 {
-                    int x = rnd.Next(this.Image.Width);
-                    int y = rnd.Next(this.Image.Height);
-
-                    if (table[y, x] == 0)
-                    {
-                        table[y, x] = i + 1;
-                        count--;
-                    }
-                }
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    if (table[i, j] != 0)
-                    {
-                        Pixel p = this.Image.GetPixel(j, i);
-                        p.Red = p.Green = p.Blue = (byte)(table[i, j] - 1);
-                        this.Image.SetPixel(j, i, p);
-                    }
+                    AddUniformNoiseExecute(
+                        this.GetCppData(this.Image),
+                        pred,
+                        pgreen,
+                        pblue,
+                        this.percentage,
+                        this.start,
+                        this.end);
                 }
             }
         }
 
         /// <summary>
-        /// Gets called after the operation ends.
+        /// The native uniform noise processing function.
         /// </summary>
-        protected override void AfterOperate()
-        {
-            NormalizationOperation operation = new NormalizationOperation();
-            this.Image = operation.Execute(this.Image);
-        }
+        /// <param name="source">source image.</param>
+        /// <param name="red">random red.</param>
+        /// <param name="green">random green.</param>
+        /// <param name="blue">random blue.</param>
+        /// <param name="percentage">percentage of noise.</param>
+        /// <param name="start">start of uniform graph.</param>
+        /// <param name="end">end of uniform graph.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void AddUniformNoiseExecute(ImageData source, int* red, int* green, int* blue, double percentage, int start, int end);
     }
 }

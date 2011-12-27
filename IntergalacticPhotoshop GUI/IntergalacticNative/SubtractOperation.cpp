@@ -19,7 +19,7 @@ extern "C" DllExport void SubtractOperationExecute(ImageData source, ImageData o
 		{
 			p1 = GETPIXEL(src,j,i);
 			p2 = GETPIXEL(other,j,i);
-			CUTOFF(p1, p1->R - p2->R, p1->G - p2->G, p1->B - p2->B);
+			CUTOFF(p1, abs(p1->R - p2->R), abs(p1->G - p2->G), abs(p1->B - p2->B));
 		}
 	}
-}            
+}

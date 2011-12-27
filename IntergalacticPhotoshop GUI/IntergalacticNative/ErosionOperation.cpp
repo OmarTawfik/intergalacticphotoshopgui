@@ -3,7 +3,7 @@
 #include <iostream>
 using namespace std;
 
-extern "C" DllExport void ErosionOperationExecute(ImageData src, ImageData dest, bool * mask, int maskWidth, int maskHeight)
+extern "C" DllExport void ErosionOperationExecute(ImageData src, ImageData dest, bool * mask, int maskWidth, int maskHeight, int centerX, int centerY)
 {
 	bool resultBit, bit;
 	int i, j, a, b;
@@ -12,7 +12,7 @@ extern "C" DllExport void ErosionOperationExecute(ImageData src, ImageData dest,
 	int nx = maskWidth / 2;
 	int ny = maskHeight / 2;
 
-	#pragma omp parallel for shared(src, dest, mask, maskWidth, maskHeight) private(i, j, a, b, p, resultBit, bit) 
+	#pragma omp parallel for shared(src, dest, mask, maskWidth, maskHeight, centerX, centerY) private(i, j, a, b, p, resultBit, bit) 
 	for (i = 0; i < src.Height; i++)
 	{
 		for (j = 0; j < src.Width; j++)
@@ -36,7 +36,7 @@ extern "C" DllExport void ErosionOperationExecute(ImageData src, ImageData dest,
 			}
 RESULT:
 			a = resultBit? 255 : 0;
-			p = GETPIXEL(&dest, j, i);
+			p = GETPIXEL(&dest, j - nx + centerX, i - ny + centerY);
 			p->R = a;
 			p->G = a;
 			p->B = a;

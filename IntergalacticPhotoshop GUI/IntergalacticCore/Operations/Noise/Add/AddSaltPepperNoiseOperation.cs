@@ -1,8 +1,8 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Add
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.PixelOperations;
 
     /// <summary>
     /// The noise type for this pixel.
@@ -13,7 +13,7 @@
         /// No noise. Original pixel is put.
         /// </summary>
         None,
-        
+
         /// <summary>
         /// Salt noise. White pixel is put.
         /// </summary>
@@ -78,58 +78,28 @@
         /// </summary>
         protected override void Operate()
         {
-            NoiseType[,] check = new NoiseType[this.Image.Height, this.Image.Width];
-            Random rand = new Random();
-
-            int saltCount = (int)(this.saltPercentage * this.Image.Width * this.Image.Height);
-            while (saltCount > 0)
+            int[,] random = new int[this.Image.Height, this.Image.Width];
+            unsafe
             {
-                int x = rand.Next(this.Image.Width);
-                int y = rand.Next(this.Image.Height);
-
-                if (check[y, x] == NoiseType.None)
+                fixed (int* ptr = &random[0, 0])
                 {
-                    check[y, x] = NoiseType.Salt;
-                    saltCount--;
-                }
-            }
-
-            int pepperCount = (int)(this.pepperPercentage * this.Image.Width * this.Image.Height);
-            while (pepperCount > 0)
-            {
-                int x = rand.Next(this.Image.Width);
-                int y = rand.Next(this.Image.Height);
-
-                if (check[y, x] == NoiseType.None)
-                {
-                    check[y, x] = NoiseType.Pepper;
-                    pepperCount--;
-                }
-            }
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    if (check[i, j] == NoiseType.Pepper)
-                    {
-                        this.Image.SetPixel(j, i, Pixel.Black);
-                    }
-                    else if (check[i, j] == NoiseType.Salt)
-                    {
-                        this.Image.SetPixel(j, i, Pixel.White);
-                    }
+                    SaltandPepperNoiseAdditionOperationExecute(
+                        this.GetCppData(this.Image),
+                        ptr,
+                        this.saltPercentage,
+                        this.pepperPercentage);
                 }
             }
         }
 
         /// <summary>
-        /// Gets called after the operation ends.
+        /// the native salt and pepper processing function.
         /// </summary>
-        protected override void AfterOperate()
-        {
-            NormalizationOperation operation = new NormalizationOperation();
-            this.Image = operation.Execute(this.Image);
-        }
+        /// <param name="src">source image.</param>
+        /// <param name="ar">random array.</param>
+        /// <param name="salt">salt percentage.</param>
+        /// <param name="pepper">pepper percentage.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void SaltandPepperNoiseAdditionOperationExecute(ImageData src, int* ar, double salt, double pepper);
     }
 }

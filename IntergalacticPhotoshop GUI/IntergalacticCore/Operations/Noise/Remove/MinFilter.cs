@@ -1,13 +1,11 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
     using System;
-    using System.Runtime.InteropServices;
-    using IntergalacticCore.Data;
 
     /// <summary>
     /// Does noise reduction using min filter.
     /// </summary>
-    public class MinFilter : CopyOperation
+    public class MinFilter : BaseNoiseRemovalOperation
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -46,19 +44,23 @@
         /// </summary>
         protected override void Operate()
         {
-            MinFilterExecute(
-                this.GetCppData(this.Image),
-                this.GetCppData(this.ResultImage),
-                this.maskSize);
-        }
+            int side = (int)this.maskSize / 2;
+            for (int i = 0; i < this.Image.Height; i++)
+            {
+                for (int j = 0; j < this.Image.Width; j++)
+                {
+                    int min = int.MaxValue;
+                    for (int a = i - side; a <= i + side; a++)
+                    {
+                        for (int b = j - side; b <= j + side; b++)
+                        {
+                            min = Math.Min(min, this.GetBitmixedAt(b, a));
+                        }
+                    }
 
-        /// <summary>
-        /// The native min filter processing function.
-        /// </summary>
-        /// <param name="src">source image.</param>
-        /// <param name="dest">destination image.</param>
-        /// <param name="maskSize">mask size</param>
-        [DllImport("IntergalacticNative.dll")]
-        private static extern void MinFilterExecute(ImageData src, ImageData dest, int maskSize);
+                    this.ResultImage.SetPixel(j, i, this.FromBitMixed(min));
+                }
+            }
+        }
     }
 }
