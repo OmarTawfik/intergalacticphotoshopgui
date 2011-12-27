@@ -5,14 +5,14 @@ using namespace std;
 
 extern "C" DllExport void DialationOperationExecute(ImageData src, ImageData dest, bool * mask, int maskWidth, int maskHeight)
 {
-	bool resultBit;
+	bool resultBit, bit;
 	int i, j, a, b;
 	Pixel *p;
 	
 	int nx = maskWidth / 2;
 	int ny = maskHeight / 2;
 
-	#pragma omp parallel for shared(src, dest, mask, maskWidth, maskHeight) private(i, j, a, b, p, resultBit) 
+	#pragma omp parallel for shared(src, dest, mask, maskWidth, maskHeight) private(i, j, a, b, p, resultBit, bit) 
 	for (i = 0; i < src.Height; i++)
 	{
 		for (j = 0; j < src.Width; j++)
@@ -23,6 +23,10 @@ extern "C" DllExport void DialationOperationExecute(ImageData src, ImageData des
 				for (b = 0; b < maskWidth; b++)
 				{
 					p = GETLOCATION(&src, j + b - nx, i + a - ny);
+					bit = GET2D(mask, maskWidth, b, a);
+
+					if (!bit)
+						continue;
 
 					if ((p->R != 0) == GET2D(mask, maskWidth, b, a))
 					{
