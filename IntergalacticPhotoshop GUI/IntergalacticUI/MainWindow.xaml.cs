@@ -33,6 +33,11 @@
     public partial class MainWindow : Window
     {
         /// <summary>
+        /// Used to make double clicks
+        /// </summary>
+        private DateTime doubleClickTimer;
+
+        /// <summary>
         /// Loading notification view in use
         /// </summary>
         private LoadingNotificationView loadingNotificationView;
@@ -446,6 +451,30 @@
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        /// <summary>
+        /// To handle double clicks on the tab bar
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event arguments</param>
+        private void TopTabControllerRect_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DateTime now = DateTime.Now;
+
+            if ((now - this.doubleClickTimer) < TimeSpan.FromMilliseconds(300))
+            {
+                if (this.WindowState != System.Windows.WindowState.Maximized)
+                {
+                    this.WindowState = System.Windows.WindowState.Maximized;
+                }
+                else
+                {
+                    this.WindowState = System.Windows.WindowState.Normal;
+                }
+            }
+
+            this.doubleClickTimer = now;
         }
     }
 }

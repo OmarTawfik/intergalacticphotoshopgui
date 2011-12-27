@@ -87,14 +87,14 @@
         /// The native histogram matching processing function.
         /// </summary>
         /// <param name="source">Soruce image.</param>
-        /// <param name="imageRed">red image</param>
-        /// <param name="imageGreen">green image</param>
-        /// <param name="imageBlue">blue image</param>
-        /// <param name="otherRed">red other</param>
-        /// <param name="otherGreen">green other</param>
-        /// <param name="otherBlue">blue other</param>
-        /// <param name="imageSum">image sum</param>
-        /// <param name="otherSum">other sum</param>
+        /// <param name="imageRed">Red histogram of image.</param>
+        /// <param name="imageGreen">Green histogram of image.</param>
+        /// <param name="imageBlue">Blue histogram of image.</param>
+        /// <param name="otherRed">Red histogram of other image.</param>
+        /// <param name="otherGreen">Green histogram of other image.</param>
+        /// <param name="otherBlue">Blue histogram of other image.</param>
+        /// <param name="imageSum">Pixel count of image.</param>
+        /// <param name="otherSum">Pixel count of other image.</param>
         [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void HistogramMatchingOperationExecute(ImageData source, int[] imageRed, int[] imageGreen, int[] imageBlue, int[] otherRed, int[] otherGreen, int[] otherBlue, int imageSum, int otherSum);
     }

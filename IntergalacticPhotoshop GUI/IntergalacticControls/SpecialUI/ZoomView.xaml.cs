@@ -113,26 +113,6 @@
         /// </summary>
         private void UpdateZoom()
         {
-            if (this.centerX < 0)
-            {
-                this.centerX = 0;
-            }
-
-            if (this.centerY < 0)
-            {
-                this.centerY = 0;
-            }
-
-            if (this.centerX > 1)
-            {
-                this.centerX = 1;
-            }
-
-            if (this.centerY > 1)
-            {
-                this.centerY = 1;
-            }
-
             if (this.targetedImageView == null)
             {
                 return;
@@ -167,8 +147,6 @@
                 this.centerRect.Visibility = System.Windows.Visibility.Visible;
             }
 
-            double rectX = this.centerX * this.Width, rectY = this.centerY * (this.Height - this.zoomSlider.Height);
-
             if (double.IsNaN(this.widthRatio))
             {
                 return;
@@ -176,6 +154,33 @@
 
             this.centerRect.Width = this.widthRatio * this.Width;
             this.centerRect.Height = this.heightRatio * (this.Height - this.zoomSlider.Height);
+
+            double centerXEdge = this.widthRatio / 2;
+            double centerYEdge = this.heightRatio / 2;
+
+            if (this.centerX < centerXEdge)
+            {
+                this.centerX = centerXEdge;
+            }
+
+            if (this.centerY < centerYEdge)
+            {
+                this.centerY = centerYEdge;
+            }
+
+            if (this.centerX > (1 - centerXEdge))
+            {
+                this.centerX = 1 - centerXEdge;
+            }
+
+            if (this.centerY > (1 - centerYEdge))
+            {
+                this.centerY = 1 - centerYEdge;
+            }
+
+            double rectX = this.centerX * this.Width, rectY = this.centerY * (this.Height - this.zoomSlider.Height);
+
+            
             this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
 
             if (double.IsNaN(this.targetedImageView.Width))

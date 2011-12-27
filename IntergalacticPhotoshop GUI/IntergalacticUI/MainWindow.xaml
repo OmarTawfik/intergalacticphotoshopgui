@@ -38,7 +38,7 @@
         </Image>
         <my:VerticalStackController HorizontalAlignment="Left" Name="leftStackController" VerticalAlignment="Stretch" Width="64" Margin="6,46,0,6" />
         <my:VerticalStackController Margin="0,46,6,6" Name="rightStackController" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="64" />
-        <Rectangle VerticalAlignment="Top" Height="40" Stroke="Gray" Name="topTabControllerRect" MouseDown="TopTabControllerRect_MouseDown">
+        <Rectangle VerticalAlignment="Top" Height="40" Stroke="Gray" Name="topTabControllerRect" MouseDown="TopTabControllerRect_MouseDown" MouseLeftButtonDown="TopTabControllerRect_MouseLeftButtonDown">
             <Rectangle.Fill>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <GradientStop Color="#eddd" Offset="0" />
@@ -46,10 +46,10 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <my:TabBarController Height="40" HorizontalAlignment="Stretch" Name="topTabController" VerticalAlignment="Top"/>
-        <Button Style="{StaticResource sinaiButton}" Background="#f30" Height="20" HorizontalAlignment="right" Margin="0,10,10,0" Name="btnClose" VerticalAlignment="Top" Width="20" Click="BtnClose_Click" />
-        <Button Style="{StaticResource sinaiButton}" Background="#eee" Height="20" Margin="0,10,35,0" Name="btnMaximize" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Click="BtnMaximize_Click" />
-        <Button Style="{StaticResource sinaiButton}" Background="#aaa" Height="20" HorizontalAlignment="right" Margin="0,10,60,0" Name="btnMinimize" VerticalAlignment="Top" Width="20" Click="BtnMinimize_Click" />
+        <my:TabBarController Height="40" HorizontalAlignment="Stretch" Name="topTabController" VerticalAlignment="Top" />
+        <Button Content="r" Style="{StaticResource sinaiButton}" Background="#f30" Height="20" HorizontalAlignment="right" Margin="0,10,10,0" Name="btnClose" VerticalAlignment="Top" Width="20" Click="BtnClose_Click" FontFamily="Webdings" />
+        <Button Content="1" Style="{StaticResource sinaiButton}" Background="#eee" Height="20" Margin="0,10,35,0" Name="btnMaximize" VerticalAlignment="Top" HorizontalAlignment="Right" Width="20" Click="BtnMaximize_Click" FontFamily="Webdings" />
+        <Button Content="0" Style="{StaticResource sinaiButton}" Background="#aaa" Height="20" HorizontalAlignment="right" Margin="0,10,60,0" Name="btnMinimize" VerticalAlignment="Top" Width="20" Click="BtnMinimize_Click" FontFamily="Webdings" />
         <!--<my:WelcomeControl HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
     </Grid>
 </Window>
