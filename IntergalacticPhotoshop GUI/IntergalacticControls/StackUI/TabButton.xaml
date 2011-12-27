@@ -6,12 +6,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="30" Width="100">
-    <w:Grid>
-        <w:Rectangle Stroke="#ddd" Opacity="0"  StrokeThickness="1">
+    <w:Grid Margin="2,0,2,0">
+        <w:Rectangle Stroke="#ddd" Opacity="1"  StrokeThickness="1">
             <w:Rectangle.Fill>
                 <w:LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
-                    <w:GradientStop Color="#889" Offset="0" />
-                    <w:GradientStop Color="#aab" Offset="1" />
+                    <w:GradientStop Color="#eef" Offset="0" />
+                    <w:GradientStop Color="#dde" Offset="1" />
                 </w:LinearGradientBrush>
             </w:Rectangle.Fill>
         </w:Rectangle>
@@ -24,6 +24,7 @@
                 </w:LinearGradientBrush>
             </w:Rectangle.Fill>
         </w:Rectangle>
+
         <w:Label Content="Title" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" Name="lblTitle" Foreground="#EEE" Margin="10,0,0,0" />
         <w:Image Height="13" HorizontalAlignment="right" Margin="0,0,7,0" Name="CloseBtn" Stretch="Fill" VerticalAlignment="Center" Width="13" Source="/IntergalacticControls;component/Pictures/close.png" MouseDown="CloseBtn_MouseDown" />
     </w:Grid>

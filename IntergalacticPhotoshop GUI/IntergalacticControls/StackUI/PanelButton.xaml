@@ -8,7 +8,13 @@
              Width="62" Height="56">
     <w:Grid Margin="2,2,2,2">
         <w:Rectangle Name="backRect" RadiusX="5" RadiusY="5" Fill="#0a0f" />
-        <w:Rectangle Stroke="Gray" RadiusX="5" RadiusY="5" >
+        <w:Rectangle Stroke="LightGray" RadiusX="5" RadiusY="5" >
+            <w:Rectangle.Fill>
+                <w:LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <w:GradientStop Color="#eee" Offset="0" />
+                    <w:GradientStop Color="#aaa" Offset="1" />
+                </w:LinearGradientBrush>
+            </w:Rectangle.Fill>
             <!--<Rectangle.Effect>
                 <DropShadowEffect Color="Black" Opacity="0.4" ShadowDepth="0" BlurRadius="10" />
             </Rectangle.Effect>-->

@@ -132,8 +132,11 @@
                     case IntergalacticControls.InputType.Color:
                         this.AddColorInputControls(this.inputInfoList[i], ref shiftY);
                         break;
-                    case IntergalacticControls.InputType.Mask:
+                    case IntergalacticControls.InputType.DoubleMask:
                         this.AddMaskInputControl(this.inputInfoList[i], ref shiftY);
+                        break;
+                    case IntergalacticControls.InputType.BinaryMask:
+                        this.AddBinaryMaskInputControl(this.inputInfoList[i], ref shiftY);
                         break;
                     case IntergalacticControls.InputType.Image:
                         this.AddImageInputControls(this.inputInfoList[i], ref shiftY);
@@ -425,6 +428,36 @@
         }
 
         /// <summary>
+        /// Adds binary mask input control to the UI
+        /// </summary>
+        /// <param name="info">Input information</param>
+        /// <param name="startY">The Y position to start with</param>
+        private void AddBinaryMaskInputControl(OperationInputInfo info, ref int startY)
+        {
+            this.AddLabel(info.Title, startY);
+
+            BinaryMaskInputControl maskControl = new BinaryMaskInputControl(this.defaultMaskSize);
+            maskControl.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            maskControl.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            maskControl.Margin = new Thickness(-(this.Width - maskControl.Width) + (this.Width * 0.6), startY + 5, 0, 0);
+
+            Button changeButton = new Button();
+            changeButton.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            changeButton.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            changeButton.Width = 100;
+            changeButton.Height = 25;
+            changeButton.Margin = new Thickness(-(this.Width - maskControl.Width) + (this.Width * 0.6) + maskControl.Width + changeButton.Width + 20, startY + (maskControl.Height / 2), 0, 0);
+            changeButton.Content = "Change Size";
+            changeButton.Click += new RoutedEventHandler(this.ChangeMaskSizeButton_Click);
+
+            this.mainGrid.Children.Add(maskControl);
+            this.mainGrid.Children.Add(changeButton);
+            this.inputSourceList.Add(maskControl);
+
+            startY += (int)(maskControl.Height + 20);
+        }
+
+        /// <summary>
         /// SizeChanged function to switch images
         /// </summary>
         /// <param name="sender">The sender</param>
@@ -565,8 +598,11 @@
                     Color color = ((SolidColorBrush)((Rectangle)this.inputSourceList[index]).Fill).Color;
                     result = new Pixel(color.R, color.G, color.B);
                     break;
-                case IntergalacticControls.InputType.Mask:
+                case IntergalacticControls.InputType.DoubleMask:
                     result = ((MaskInputControl)this.inputSourceList[index]).GetMask();
+                    break;
+                case IntergalacticControls.InputType.BinaryMask:
+                    result = ((BinaryMaskInputControl)this.inputSourceList[index]).GetMask();
                     break;
                 case IntergalacticControls.InputType.Image:
                     result = new WPFBitmap((BitmapSource)((ImageBrush)this.inputSourceList[index]).ImageSource);
@@ -698,11 +734,14 @@
                 case "image":
                     result = InputType.Image;
                     break;
-                case "mask":
-                    result = InputType.Mask;
+                case "doubleMask":
+                    result = InputType.DoubleMask;
                     break;
                 case "doubleArray":
                     result = InputType.DoubleArray;
+                    break;
+                case "binaryMask":
+                    result = InputType.BinaryMask;
                     break;
                 default:
                     throw new InvalidOperationException("Type was not identified.");

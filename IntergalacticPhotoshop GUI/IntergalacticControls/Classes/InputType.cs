@@ -38,7 +38,7 @@
         /// <summary>
         /// Convolution mask type
         /// </summary>
-        Mask,
+        DoubleMask,
 
         /// <summary>
         /// ImageBase type
@@ -48,6 +48,11 @@
         /// <summary>
         /// Array of doubles
         /// </summary>
-        DoubleArray
+        DoubleArray,
+
+        /// <summary>
+        /// Binary Mask type
+        /// </summary>
+        BinaryMask
     }
 }

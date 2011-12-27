@@ -35,7 +35,7 @@
         /// <param name="to">Input 'to' value (for numeric input only.  Otherwise null).</param>
         public OperationInputInfo(string title, InputType type, object from, object to)
         {
-            if (type == InputType.Bool || type == InputType.Color || type == InputType.Image || type == InputType.Mask)
+            if (type == InputType.Bool || type == InputType.Color || type == InputType.Image || type == InputType.DoubleMask || type == InputType.BinaryMask)
             {
                 if (from != null || to != null)
                 {
@@ -198,7 +198,7 @@
             {
                 mask = (ConvolutionMask)obj;
                 found = true;
-                result = InputType.Mask;
+                result = InputType.DoubleMask;
             }
             catch (Exception)
             {

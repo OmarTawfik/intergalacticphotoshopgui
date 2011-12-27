@@ -25,12 +25,22 @@
         /// <summary>
         /// The targeted image view
         /// </summary>
-        private Image targetedImage;
+        private Image targetedImageView;
 
         /// <summary>
-        /// The scale transform used to scale the image view
+        /// The targeted image view
         /// </summary>
-        private ScaleTransform scaler;
+        private Panel imageViewParent;
+
+        /// <summary>
+        /// The targeted image view
+        /// </summary>
+        private BitmapSource targetedImage;
+
+        /// <summary>
+        /// Center of zoom, mouse coords and ratios
+        /// </summary>
+        private double centerX, centerY, widthRatio, heightRatio;
 
         /// <summary>
         /// Initializes a new instance of the ZoomView class
@@ -39,22 +49,25 @@
         public ZoomView(Image target)
         {
             InitializeComponent();
-            this.targetedImage = target;
-            this.scaler = new ScaleTransform();
-            this.targetedImage.RenderTransformOrigin = new Point(0.5, 0.5);
-            this.targetedImage.RenderTransform = this.scaler;
-
-            Binding scaleBind = new Binding();
-            scaleBind.Source = this.zoomSlider;
-            scaleBind.Path = new PropertyPath(Slider.ValueProperty);
-
-            BindingOperations.SetBinding(this.scaler, ScaleTransform.ScaleXProperty, scaleBind);
-            BindingOperations.SetBinding(this.scaler, ScaleTransform.ScaleYProperty, scaleBind);
+            this.targetedImageView = target;
+            this.targetedImage = (BitmapSource)target.Source;
+            this.imageViewParent = (Panel)this.targetedImageView.Parent;
 
             Manager.Instance.OnNewTabAdded += this.ImageUpdated;
             Manager.Instance.OnTabChanged += this.ImageUpdated;
             Manager.Instance.OnOperationFinshed += this.ImageUpdated;
             this.centerRect.MouseMove += this.CenterRect_MouseMove;
+            this.imageViewParent.SizeChanged += new SizeChangedEventHandler(ImageViewParent_SizeChanged);
+        }
+
+        /// <summary>
+        /// Updates the image view when the parent resizes
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event Args</param>
+        void ImageViewParent_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.UpdateZoom();
         }
 
         /// <summary>
@@ -69,10 +82,10 @@
                 return;
             }
 
-            double centerX = e.GetPosition(this).X / this.Width;
-            double centerY = e.GetPosition(this).Y / (this.Height - this.zoomSlider.Height);
+            centerX = e.GetPosition(this).X / this.Width;
+            centerY = e.GetPosition(this).Y / (this.Height - this.zoomSlider.Height);
 
-            this.UpdateTransformCenter(e.GetPosition(this).X, e.GetPosition(this).Y, centerX, centerY);
+            this.UpdateZoom();
         }
 
         /// <summary>
@@ -82,10 +95,14 @@
         /// <param name="doesntMatter">Doesn't matter parameter</param>
         private void ImageUpdated(Manager mng, object doesntMatter)
         {
+            this.centerX = 0.5;
+            this.centerY = 0.5;
+
             this.zoomSlider.Value = 1;
-            this.UpdateTransformCenter(this.Width / 2, (this.Height - this.zoomSlider.Height) / 2, 0.5, 0.5);
+            this.UpdateZoom();
             this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
             this.Height = (this.Width * (this.imageView.Source.Height / this.imageView.Source.Width)) + 25;
+            this.targetedImage = (BitmapSource)this.targetedImageView.Source;
         }
 
         /// <summary>
@@ -95,51 +112,102 @@
         /// <param name="y">New Y of the zoomRect</param>
         /// <param name="xn">New X of the zooming center</param>
         /// <param name="yn">New Y of the zooming center</param>
-        private void UpdateTransformCenter(double x, double y, double xn, double yn)
+        private void UpdateZoom()
         {
-            if (xn < 0)
+            double rectX = this.centerX * this.ActualWidth, rectY = this.centerY * this.ActualHeight;
+            if (rectX < this.centerRect.Width / 2)
             {
-                xn = 0;
+                rectX = this.centerRect.Width / 2;
             }
 
-            if (yn < 0)
+            if (rectX > this.Width - (this.centerRect.Width / 2))
             {
-                yn = 0;
+                rectX = this.Width - (this.centerRect.Width / 2);
             }
 
-            if (xn > 1)
+            if (rectY < this.centerRect.Height / 2)
             {
-                xn = 1;
+                rectY = this.centerRect.Height / 2;
             }
 
-            if (yn > 1)
+            if (rectY > (this.Height - 25 - (this.centerRect.Width / 2)))
             {
-                yn = 1;
+                rectY = this.Height - 25 - (this.centerRect.Width / 2);
             }
 
-            this.targetedImage.RenderTransformOrigin = new Point(xn, yn);
-
-            if (x < this.centerRect.Width / 2)
+            if (this.targetedImageView == null)
             {
-                x = this.centerRect.Width / 2;
+                return;
             }
 
-            if (x > this.Width - (this.centerRect.Width / 2))
+
+            this.centerRect.Width = widthRatio * this.ActualWidth;
+            this.centerRect.Height = heightRatio * (this.ActualHeight - this.zoomSlider.Height);
+            this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
+
+            if (this.centerX < 0)
             {
-                x = this.Width - (this.centerRect.Width / 2);
+                this.centerX = 0;
             }
 
-            if (y < this.centerRect.Height / 2)
+            if (this.centerY < 0)
             {
-                y = this.centerRect.Height / 2;
+                this.centerY = 0;
             }
 
-            if (y > (this.Height - 25 - (this.centerRect.Width / 2)))
+            if (this.centerX > 1)
             {
-                y = this.Height - 25 - (this.centerRect.Width / 2);
+                this.centerX = 1;
             }
 
-            this.centerRect.Margin = new Thickness(x - (this.centerRect.Width / 2), y - (this.centerRect.Height / 2), 0, 0);
+            if (this.centerY > 1)
+            {
+                this.centerY = 1;
+            }
+
+            this.targetedImageView.Margin = new Thickness(
+                ((0.5 - this.centerX) * this.targetedImageView.ActualWidth) + ((this.imageViewParent.ActualWidth - this.targetedImageView.ActualWidth) / 2),
+                ((0.5 - this.centerY) * this.targetedImageView.ActualHeight) + ((this.imageViewParent.ActualHeight - this.targetedImageView.ActualHeight) / 2),
+                0,
+                0);
+        }
+
+        /// <summary>
+        /// Handles valueChanged event in the zoom slider
+        /// </summary>
+        /// <param name="sender">The sender</param>
+        /// <param name="e">Event Argument</param>
+        private void ZoomSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (this.targetedImageView == null)
+            {
+                return;
+            }
+
+            this.targetedImageView.Stretch = Stretch.Uniform;
+            this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
+            this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
+            
+            widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
+            heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
+
+            if (widthRatio > 1 && heightRatio > 1)
+            {
+                this.centerX = 0.5;
+                this.centerX = 0.5;
+            }
+
+            if (widthRatio > 1)
+            {
+                widthRatio = 1;
+            }
+
+            if (heightRatio > 1)
+            {
+                heightRatio = 1;
+            }
+
+            this.UpdateZoom();
         }
     }
 }
