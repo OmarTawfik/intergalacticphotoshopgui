@@ -36,7 +36,7 @@ extern "C" DllExport void ErosionOperationExecute(ImageData src, ImageData dest,
 			}
 RESULT:
 			a = resultBit? 255 : 0;
-			p = GETPIXEL(&dest, j - nx + centerX, i - ny + centerY);
+			p = GETLOCATION(&dest, j - nx + centerX, i - ny + centerY);
 			p->R = a;
 			p->G = a;
 			p->B = a;

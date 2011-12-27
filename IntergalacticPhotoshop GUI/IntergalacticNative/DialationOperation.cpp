@@ -28,7 +28,7 @@ extern "C" DllExport void DialationOperationExecute(ImageData src, ImageData des
 					if (!bit)
 						continue;
 
-					if ((p->R != 0) == GET2D(mask, maskWidth, b, a))
+					if ((p->R != 0) == bit)
 					{
 						resultBit = true;
 						goto RESULT;
@@ -37,7 +37,7 @@ extern "C" DllExport void DialationOperationExecute(ImageData src, ImageData des
 			}
 RESULT:
 			a = resultBit? 255 : 0;
-			p = GETPIXEL(&dest, j - nx + centerX, i - ny + centerY);
+			p = GETLOCATION(&dest, j - nx + centerX, i - ny + centerY);
 			p->R = a;
 			p->G = a;
 			p->B = a;
