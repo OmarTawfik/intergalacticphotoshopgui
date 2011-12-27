@@ -86,7 +86,8 @@ Global
 		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|Win32.ActiveCfg = Release|Win32
 		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|Win32.Build.0 = Release|Win32
-		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|x64.ActiveCfg = Release|Win32
+		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|x64.ActiveCfg = Release|x64
+		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|x64.Build.0 = Release|x64
 		{8492E293-2EDC-46E7-8B3E-70309F72D8AD}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

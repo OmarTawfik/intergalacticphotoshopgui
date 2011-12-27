@@ -57,7 +57,7 @@
             Manager.Instance.OnTabChanged += this.ImageUpdated;
             Manager.Instance.OnOperationFinshed += this.ImageUpdated;
             this.centerRect.MouseMove += this.CenterRect_MouseMove;
-            this.imageViewParent.SizeChanged += new SizeChangedEventHandler(ImageViewParent_SizeChanged);
+            this.imageViewParent.SizeChanged += new SizeChangedEventHandler(this.ImageViewParent_SizeChanged);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="sender">The sender</param>
         /// <param name="e">Event Args</param>
-        void ImageViewParent_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ImageViewParent_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.UpdateZoom();
         }
@@ -82,8 +82,8 @@
                 return;
             }
 
-            centerX = e.GetPosition(this).X / this.Width;
-            centerY = e.GetPosition(this).Y / (this.Height - this.zoomSlider.Height);
+            this.centerX = e.GetPosition(this).X / this.Width;
+            this.centerY = e.GetPosition(this).Y / (this.Height - this.zoomSlider.Height);
 
             this.UpdateZoom();
         }
@@ -99,19 +99,16 @@
             this.centerY = 0.5;
 
             this.zoomSlider.Value = 1;
-            this.UpdateZoom();
             this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
             this.Height = (this.Width * (this.imageView.Source.Height / this.imageView.Source.Width)) + 25;
             this.targetedImage = (BitmapSource)this.targetedImageView.Source;
+
+            this.UpdateZoom();
         }
 
         /// <summary>
         /// Updates the zooming center and the zoomRect position
         /// </summary>
-        /// <param name="x">New X of the zoomRect</param>
-        /// <param name="y">New Y of the zoomRect</param>
-        /// <param name="xn">New X of the zooming center</param>
-        /// <param name="yn">New Y of the zooming center</param>
         private void UpdateZoom()
         {
             double rectX = this.centerX * this.ActualWidth, rectY = this.centerY * this.ActualHeight;
@@ -140,9 +137,8 @@
                 return;
             }
 
-
-            this.centerRect.Width = widthRatio * this.ActualWidth;
-            this.centerRect.Height = heightRatio * (this.ActualHeight - this.zoomSlider.Height);
+            this.centerRect.Width = this.widthRatio * this.ActualWidth;
+            this.centerRect.Height = this.heightRatio * (this.ActualHeight - this.zoomSlider.Height);
             this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
 
             if (this.centerX < 0)
@@ -187,24 +183,24 @@
             this.targetedImageView.Stretch = Stretch.Uniform;
             this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
             this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
-            
-            widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
-            heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
 
-            if (widthRatio > 1 && heightRatio > 1)
+            this.widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
+            this.heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
+
+            if (this.widthRatio > 1 && this.heightRatio > 1)
             {
                 this.centerX = 0.5;
                 this.centerX = 0.5;
             }
 
-            if (widthRatio > 1)
+            if (this.widthRatio > 1)
             {
-                widthRatio = 1;
+                this.widthRatio = 1;
             }
 
-            if (heightRatio > 1)
+            if (this.heightRatio > 1)
             {
-                heightRatio = 1;
+                this.heightRatio = 1;
             }
 
             this.UpdateZoom();

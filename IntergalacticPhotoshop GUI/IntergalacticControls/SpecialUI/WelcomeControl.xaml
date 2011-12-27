@@ -29,6 +29,5 @@
         <Label Content="Photoshop" Height="95" HorizontalAlignment="Center" Margin="233,138,-7,0" Name="lblPhotoshop" FontSize="56" Foreground="#A0FFFFFF" VerticalAlignment="Top" Width="375" />
         <Label Content="Start by opening an image form the 'File' menu." Height="41" HorizontalAlignment="Left" Margin="89,265,0,0" Name="lblHelp" Foreground="#A0FFFFFF" FontSize="20" VerticalAlignment="Top" Width="437" />
         <Polygon Points="0,0 50,0 0,50" Fill="Green" Height="100" Width="100" HorizontalAlignment="Left" VerticalAlignment="Top" Name="polygonArrow" />
-        <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="528,239,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
     </Grid>
 </UserControl>

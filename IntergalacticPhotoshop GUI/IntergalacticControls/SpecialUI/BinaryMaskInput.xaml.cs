@@ -36,7 +36,7 @@
         private int maskSize;
 
         /// <summary>
-        /// Initializes a new instance of the MaskInputControl class
+        /// Initializes a new instance of the BinaryMaskInputControl class
         /// </summary>
         /// <param name="maskSize">Mask size</param>
         public BinaryMaskInputControl(int maskSize)

@@ -19,12 +19,12 @@
     using IntergalacticCore.Operations.Matlab;
     using IntergalacticCore.Operations.Matlab.PassFilters;
     using IntergalacticCore.Operations.Matlab.Retinex;
+    using IntergalacticCore.Operations.Morphology;
     using IntergalacticCore.Operations.Noise.Add;
     using IntergalacticCore.Operations.Noise.Remove;
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
-    using IntergalacticCore.Operations.Morphology;
     using IntergalacticUI.Classes;
 
     /// <summary>
@@ -124,28 +124,28 @@
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
 
-            //this.AddOperationCategory(
-            //   "Matlab Operations",
-            //   "Matlab.png",
-            //   new FrequencyDomainOperation(),
-            //   new LocalHistogramEqualizationOperation(),
-            //   new MultiScaleRetinexOperation(),
-            //   new MultiScaleRetinexWithColorRestorationOperation(),
-            //   new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
+            ////this.AddOperationCategory(
+            ////   "Matlab Operations",
+            ////   "Matlab.png",
+            ////   new FrequencyDomainOperation(),
+            ////   new LocalHistogramEqualizationOperation(),
+            ////   new MultiScaleRetinexOperation(),
+            ////   new MultiScaleRetinexWithColorRestorationOperation(),
+            ////   new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
 
-            //this.AddOperationCategory(
-            //    "Pass Filters",
-            //    "PassFilter.png",
-            //    new IdealLowPassFilter(),
-            //    new IdealHighPassFilter(),
-            //    new IdealBandPassFilter(),
-            //    new IdealBandRejectFilter(),
-            //    new GaussianLowPassFilter(),
-            //    new GaussianHighPassFilter(),
-            //    new ButterworthLowPassFilter(),
-            //    new ButterworthHighPassFilter(),
-            //    new IdealNotchPassFilter(),
-            //    new IdealNotchRejectFilter());
+            ////this.AddOperationCategory(
+            ////    "Pass Filters",
+            ////    "PassFilter.png",
+            ////    new IdealLowPassFilter(),
+            ////    new IdealHighPassFilter(),
+            ////    new IdealBandPassFilter(),
+            ////    new IdealBandRejectFilter(),
+            ////    new GaussianLowPassFilter(),
+            ////    new GaussianHighPassFilter(),
+            ////    new ButterworthLowPassFilter(),
+            ////    new ButterworthHighPassFilter(),
+            ////    new IdealNotchPassFilter(),
+            ////    new IdealNotchRejectFilter());
 
             this.AddOperationCategory(
                 "Noise Operations",
