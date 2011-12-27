@@ -18,7 +18,7 @@
         /// <summary>
         /// Array of values used to match histograms
         /// </summary>
-        private int[] gray1, gray2;
+        private int[] red1, green1, blue1, red2, green2, blue2;
 
         /// <summary>
         /// Sets all input associated with this operation.
@@ -58,8 +58,12 @@
             operation1.Execute(this.Image);
             operation2.Execute(this.otherImage);
 
-            this.gray1 = operation1.Gray;
-            this.gray2 = operation2.Gray;
+            this.red1 = operation1.Red;
+            this.green1 = operation1.Green;
+            this.blue1 = operation1.Blue;
+            this.red2 = operation2.Red;
+            this.green2 = operation2.Green;
+            this.blue2 = operation2.Blue;
         }
 
         /// <summary>
@@ -69,8 +73,12 @@
         {
             HistogramMatchingOperationExecute(
                 this.GetCppData(this.Image),
-                this.gray1,
-                this.gray2,
+                this.red1,
+                this.green1,
+                this.blue1,
+                this.red2,
+                this.green2,
+                this.blue2,
                 this.Image.Height * this.Image.Width,
                 this.otherImage.Height * this.otherImage.Width);
         }
@@ -84,6 +92,6 @@
         /// <param name="imageSum">Pixel count of image.</param>
         /// <param name="otherSum">Pixel count of other image.</param>
         [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void HistogramMatchingOperationExecute(ImageData source, int[] imageGray, int[] otherGray, int imageSum, int otherSum);
+        private static extern void HistogramMatchingOperationExecute(ImageData source, int[] imageRed, int[] imageGreen, int[] imageBlue, int[] otherRed, int[] otherGreen, int[] otherBlue, int imageSum, int otherSum);
     }
 }
