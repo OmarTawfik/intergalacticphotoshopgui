@@ -97,6 +97,8 @@
         {
             this.centerX = 0.5;
             this.centerY = 0.5;
+            this.widthRatio = 1;
+            this.heightRatio = 1;
 
             this.zoomSlider.Value = 1;
             this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
@@ -111,36 +113,6 @@
         /// </summary>
         private void UpdateZoom()
         {
-            double rectX = this.centerX * this.ActualWidth, rectY = this.centerY * this.ActualHeight;
-            if (rectX < this.centerRect.Width / 2)
-            {
-                rectX = this.centerRect.Width / 2;
-            }
-
-            if (rectX > this.Width - (this.centerRect.Width / 2))
-            {
-                rectX = this.Width - (this.centerRect.Width / 2);
-            }
-
-            if (rectY < this.centerRect.Height / 2)
-            {
-                rectY = this.centerRect.Height / 2;
-            }
-
-            if (rectY > (this.Height - 25 - (this.centerRect.Width / 2)))
-            {
-                rectY = this.Height - 25 - (this.centerRect.Width / 2);
-            }
-
-            if (this.targetedImageView == null)
-            {
-                return;
-            }
-
-            this.centerRect.Width = this.widthRatio * this.ActualWidth;
-            this.centerRect.Height = this.heightRatio * (this.ActualHeight - this.zoomSlider.Height);
-            this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
-
             if (this.centerX < 0)
             {
                 this.centerX = 0;
@@ -161,9 +133,59 @@
                 this.centerY = 1;
             }
 
+            if (this.targetedImageView == null)
+            {
+                return;
+            }
+
+            this.widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
+            this.heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
+
+            if (this.widthRatio > 1 || this.heightRatio > 1)
+            {
+                this.centerX = 0.5;
+                this.centerY = 0.5;
+            }
+
+            if (this.widthRatio > 1)
+            {
+                this.widthRatio = 1;
+                this.centerRect.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                this.centerRect.Visibility = System.Windows.Visibility.Visible;
+            }
+
+            if (this.heightRatio > 1)
+            {
+                this.heightRatio = 1;
+                this.centerRect.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                this.centerRect.Visibility = System.Windows.Visibility.Visible;
+            }
+
+            double rectX = this.centerX * this.Width, rectY = this.centerY * (this.Height - this.zoomSlider.Height);
+
+            if (double.IsNaN(this.widthRatio))
+            {
+                return;
+            }
+
+            this.centerRect.Width = this.widthRatio * this.Width;
+            this.centerRect.Height = this.heightRatio * (this.Height - this.zoomSlider.Height);
+            this.centerRect.Margin = new Thickness(rectX - (this.centerRect.Width / 2), rectY - (this.centerRect.Height / 2), 0, 0);
+
+            if (double.IsNaN(this.targetedImageView.Width))
+            {
+                return;
+            }
+
             this.targetedImageView.Margin = new Thickness(
-                ((0.5 - this.centerX) * this.targetedImageView.ActualWidth) + ((this.imageViewParent.ActualWidth - this.targetedImageView.ActualWidth) / 2),
-                ((0.5 - this.centerY) * this.targetedImageView.ActualHeight) + ((this.imageViewParent.ActualHeight - this.targetedImageView.ActualHeight) / 2),
+                ((0.5 - this.centerX) * this.targetedImageView.Width) + ((this.imageViewParent.ActualWidth - this.targetedImageView.Width) / 2),
+                ((0.5 - this.centerY) * this.targetedImageView.Height) + ((this.imageViewParent.ActualHeight - this.targetedImageView.Height) / 2),
                 0,
                 0);
         }
@@ -184,24 +206,7 @@
             this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
             this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
 
-            this.widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
-            this.heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
 
-            if (this.widthRatio > 1 && this.heightRatio > 1)
-            {
-                this.centerX = 0.5;
-                this.centerX = 0.5;
-            }
-
-            if (this.widthRatio > 1)
-            {
-                this.widthRatio = 1;
-            }
-
-            if (this.heightRatio > 1)
-            {
-                this.heightRatio = 1;
-            }
 
             this.UpdateZoom();
         }

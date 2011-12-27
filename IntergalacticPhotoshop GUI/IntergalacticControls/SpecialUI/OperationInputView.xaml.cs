@@ -496,7 +496,7 @@
                 }
 
                 ImageBrush brush = (ImageBrush)this.imageInputRects[index].Fill;
-                brush.ImageSource = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Image).GetImageSource();
+                brush.ImageSource = ((WPFBitmap)Manager.Instance.GetTab((string)combo.SelectedItem).Thumbnails.Peek()).GetImageSource();
                 brush.Stretch = Stretch.UniformToFill;
             }
         }
