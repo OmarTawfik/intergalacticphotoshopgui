@@ -160,7 +160,6 @@
                 new AddGaussianNoiseOperation(),
                 new AddExponentialNoiseOperation(),
                 new AddRayleighNoiseOperation(),
-                new AddPeriodicNoiseOperation(),
                 new GeometricMeanFilter(),
                 new MinFilter(),
                 new MaxFilter(),

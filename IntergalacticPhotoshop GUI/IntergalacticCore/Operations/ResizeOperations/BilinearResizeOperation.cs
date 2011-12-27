@@ -36,7 +36,7 @@
         /// <returns>Information about input types.</returns>
         public override string GetInput()
         {
-            return "New Width,int,1,1333|New Height,int,1,1000";
+            return "New Width,int,1,5000|New Height,int,1,5000";
         }
 
         /// <summary>

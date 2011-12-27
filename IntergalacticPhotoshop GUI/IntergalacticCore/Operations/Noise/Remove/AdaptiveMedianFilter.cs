@@ -1,13 +1,13 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
     /// Does noise reduction using adaptive median filter.
     /// </summary>
-    public class AdaptiveMedianFilter : BaseNoiseRemovalOperation
+    public class AdaptiveMedianFilter : CopyOperation
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -46,53 +46,29 @@
         /// </summary>
         protected override void Operate()
         {
-            for (int i = 0; i < this.Image.Height; i++)
+            int[,] bitmixed = new int[this.Image.Height, this.Image.Width];
+
+            unsafe
             {
-                for (int j = 0; j < this.Image.Width; j++)
+                fixed (int* ptr = &bitmixed[0, 0])
                 {
-                    for (int currentSize = 3; currentSize <= this.maxMaskSize; currentSize += 2)
-                    {
-                        int side = currentSize / 2;
-                        int[] array = new int[currentSize * currentSize];
-                        int arrayPtr = 0;
-
-                        for (int a = i - side; a <= i + side; a++)
-                        {
-                            for (int b = j - side; b <= j + side; b++)
-                            {
-                                array[arrayPtr++] = this.GetBitmixedAt(b, a);
-                            }
-                        }
-
-                        Array.Sort(array);
-
-                        int min = array[0], max = array[array.Length - 1];
-                        int current = this.GetBitmixedAt(j, i), mid = array[array.Length / 2];
-
-                        if (mid != min && mid != max)
-                        {
-                            if (current != min && current != max)
-                            {
-                                this.ResultImage.SetPixel(j, i, this.FromBitMixed(current));
-                            }
-                            else
-                            {
-                                this.ResultImage.SetPixel(j, i, this.FromBitMixed(mid));
-                            }
-
-                            break;
-                        }
-                        else
-                        {
-                            if (currentSize == this.maxMaskSize)
-                            {
-                                this.ResultImage.SetPixel(j, i, this.FromBitMixed(mid));
-                                break;
-                            }
-                        }
-                    }
+                    RemoveAdpativeMedianFilterExecute(
+                        this.GetCppData(this.Image),
+                        this.GetCppData(this.ResultImage),
+                        ptr,
+                        this.maxMaskSize);
                 }
             }
         }
+
+        /// <summary>
+        /// the native adaptive median filter function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="res">result image.</param>
+        /// <param name="ar">bitmixed array.</param>
+        /// <param name="maskSize">mask size.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void RemoveAdpativeMedianFilterExecute(ImageData src, ImageData res, int* ar, int maskSize);
     }
 }

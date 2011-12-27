@@ -1,6 +1,7 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
     using IntergalacticCore.Operations.Filters;
 
@@ -46,28 +47,19 @@
         /// </summary>
         protected override void Operate()
         {
-            int side = (int)this.maskSize / 2;
-            double power = 1.0 / (this.maskSize * this.maskSize);
-
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    double red = 1, green = 1, blue = 1;
-                    for (int a = i - side; a <= i + side; a++)
-                    {
-                        for (int b = j - side; b <= j + side; b++)
-                        {
-                            Pixel p = this.GetLocation(b, a);
-                            red *= Math.Pow(p.Red, power);
-                            green *= Math.Pow(p.Green, power);
-                            blue *= Math.Pow(p.Blue, power);
-                        }
-                    }
-
-                    this.ResultImage.SetPixel(j, i, Pixel.CutOff(red, green, blue));
-                }
-            }
+            RemoveGeometricMeanFilterExecute(
+                this.GetCppData(this.Image),
+                this.GetCppData(this.ResultImage),
+                this.maskSize);
         }
+
+        /// <summary>
+        /// the native geometric mean function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="res">result image.</param>
+        /// <param name="maskSize">mask size.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void RemoveGeometricMeanFilterExecute(ImageData src, ImageData res, int maskSize);
     }
 }

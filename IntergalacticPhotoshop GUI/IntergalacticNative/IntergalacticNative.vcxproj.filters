@@ -4,7 +4,6 @@
     <ClCompile Include="AddExponentialNoise.cpp" />
     <ClCompile Include="AddGaussianNoise.cpp" />
     <ClCompile Include="AddOperation.cpp" />
-    <ClCompile Include="AddPeriodicNoise.cpp" />
     <ClCompile Include="AddRayleighNoise.cpp" />
     <ClCompile Include="AddUniformNoise.cpp" />
     <ClCompile Include="BackDiagonalEdgeDetectionOperation.cpp" />
@@ -48,6 +47,12 @@
     <ClCompile Include="TranslationOperation.cpp" />
     <ClCompile Include="VerticalFlipOperation.cpp" />
     <ClCompile Include="VerticalShearOperation.cpp" />
+    <ClCompile Include="RemoveMinFilter.cpp" />
+    <ClCompile Include="RemoveMaxFilter.cpp" />
+    <ClCompile Include="RemoveGeometricMeanFilter.cpp" />
+    <ClCompile Include="RemoveMidpointFilter.cpp" />
+    <ClCompile Include="RemoveMedianFilter.cpp" />
+    <ClCompile Include="RemoveAdaptiveMedianFilter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvolutionHelpers.h" />

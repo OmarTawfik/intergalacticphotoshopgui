@@ -145,11 +145,9 @@
     <Compile Include="Operations\Morphology\ErosionOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddExponentialNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddGaussianNoiseOperation.cs" />
-    <Compile Include="Operations\Noise\Add\AddPeriodicNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddRayleighNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddSaltPepperNoiseOperation.cs" />
     <Compile Include="Operations\Noise\Add\AddUniformNoiseOperation.cs" />
-    <Compile Include="Operations\Noise\BaseNoiseRemovalOperation.cs" />
     <Compile Include="Operations\Noise\Remove\AdaptiveMedianFilter.cs" />
     <Compile Include="Operations\Noise\Remove\GeometricMeanFilter.cs" />
     <Compile Include="Operations\Noise\Remove\MaxFilter.cs" />

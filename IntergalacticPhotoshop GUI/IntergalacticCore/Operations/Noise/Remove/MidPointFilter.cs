@@ -1,13 +1,13 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
-    /// Does noise reduction using midpoint filter.
+    /// Does noise reduction using mid point filter.
     /// </summary>
-    public class MidPointFilter : BaseNoiseRemovalOperation
+    public class MidPointFilter : CopyOperation
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -46,28 +46,29 @@
         /// </summary>
         protected override void Operate()
         {
-            int side = (int)this.maskSize / 2;
-            for (int i = 0; i < this.Image.Height; i++)
+            int[,] bitmixed = new int[this.Image.Height, this.Image.Width];
+
+            unsafe
             {
-                for (int j = 0; j < this.Image.Width; j++)
+                fixed (int* ptr = &bitmixed[0, 0])
                 {
-                    int[] array = new int[this.maskSize * this.maskSize];
-                    int arrayPtr = 0;
-                    for (int a = i - side; a <= i + side; a++)
-                    {
-                        for (int b = j - side; b <= j + side; b++)
-                        {
-                            array[arrayPtr++] = this.GetBitmixedAt(b, a);
-                        }
-                    }
-
-                    Array.Sort(array);
-                    Pixel min = this.FromBitMixed(array[0]);
-                    Pixel max = this.FromBitMixed(array[array.Length - 1]);
-
-                    this.ResultImage.SetPixel(j, i, Pixel.Interpolate(min, max));
+                    RemoveMidpointFilterExecute(
+                        this.GetCppData(this.Image),
+                        this.GetCppData(this.ResultImage),
+                        ptr,
+                        this.maskSize);
                 }
             }
         }
+
+        /// <summary>
+        /// the native midpoint filter function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="res">result image.</param>
+        /// <param name="ar">bitmixed array.</param>
+        /// <param name="maskSize">mask size.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void RemoveMidpointFilterExecute(ImageData src, ImageData res, int* ar, int maskSize);
     }
 }

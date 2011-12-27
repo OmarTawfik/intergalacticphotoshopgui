@@ -28,21 +28,18 @@ void fromBitMixed(int bits, Pixel* p)
 	}
 }
 
-int** getBitMixedArray(ImageData* src)
+void getBitMixedArray(ImageData* src, int* ar)
 {
-	int** ar = new int* [src->Height];
 	int i, j;
 
+#pragma omp parallel for shared(ar, src) private(i, j)
 	for ( i = 0 ; i < src->Height ; i ++ )
 	{
-		ar[i] = new int[src->Width];
 		for ( j = 0 ; j < src->Width ; j ++ )
 		{
-			ar[i][j] = toBitMixed(GETPIXEL(src,j,i));
+			GET2D(ar,src->Width,j,i) = toBitMixed(GETPIXEL(src,j,i));
 		}
 	}
-
-	return ar;
 }
 
 void NormalizeIntegers(int* ar, int height, int width, int oldMin, int oldMax)

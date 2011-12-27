@@ -1,13 +1,13 @@
 ﻿namespace IntergalacticCore.Operations.Noise.Remove
 {
     using System;
+    using System.Runtime.InteropServices;
     using IntergalacticCore.Data;
-    using IntergalacticCore.Operations.Filters;
 
     /// <summary>
     /// Does noise reduction using median filter.
     /// </summary>
-    public class MedianFilter : BaseNoiseRemovalOperation
+    public class MedianFilter : CopyOperation
     {
         /// <summary>
         /// Data to be used in the mask.
@@ -46,25 +46,29 @@
         /// </summary>
         protected override void Operate()
         {
-            int side = (int)this.maskSize / 2;
-            for (int i = 0; i < this.Image.Height; i++)
-            {
-                for (int j = 0; j < this.Image.Width; j++)
-                {
-                    int[] array = new int[this.maskSize * this.maskSize];
-                    int arrayPtr = 0;
-                    for (int a = i - side; a <= i + side; a++)
-                    {
-                        for (int b = j - side; b <= j + side; b++)
-                        {
-                            array[arrayPtr++] = this.GetBitmixedAt(b, a);
-                        }
-                    }
+            int[,] bitmixed = new int[this.Image.Height, this.Image.Width];
 
-                    Array.Sort(array);
-                    this.ResultImage.SetPixel(j, i, this.FromBitMixed(array[array.Length / 2]));
+            unsafe
+            {
+                fixed (int* ptr = &bitmixed[0, 0])
+                {
+                    RemoveMedianFilterExecute(
+                        this.GetCppData(this.Image),
+                        this.GetCppData(this.ResultImage),
+                        ptr,
+                        this.maskSize);
                 }
             }
         }
+
+        /// <summary>
+        /// the native median filter function.
+        /// </summary>
+        /// <param name="src">source image.</param>
+        /// <param name="res">result image.</param>
+        /// <param name="ar">bitmixed array.</param>
+        /// <param name="maskSize">mask size.</param>
+        [DllImport("IntergalacticNative.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static unsafe extern void RemoveMedianFilterExecute(ImageData src, ImageData res, int* ar, int maskSize);
     }
 }
