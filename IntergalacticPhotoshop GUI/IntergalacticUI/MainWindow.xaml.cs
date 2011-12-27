@@ -24,6 +24,7 @@
     using IntergalacticCore.Operations.PixelOperations;
     using IntergalacticCore.Operations.ResizeOperations;
     using IntergalacticCore.Operations.Transformations;
+    using IntergalacticCore.Operations.Morphology;
     using IntergalacticUI.Classes;
 
     /// <summary>
@@ -99,7 +100,9 @@
                 new GaussianFilter1D(),
                 new GaussianFilter2D(),
                 new MeanFilter1D(),
-                new MeanFilter2D());
+                new MeanFilter2D(),
+                new DialationOperation(),
+                new ErosionOperation());
 
             this.AddOperationCategory(
                 "Sharpening",
@@ -121,28 +124,28 @@
                 new LaplacianPointDetectionOperation(),
                 new LaplacianEdgeDetectionOperation());
 
-            this.AddOperationCategory(
-               "Matlab Operations",
-               "Matlab.png",
-               new FrequencyDomainOperation(),
-               new LocalHistogramEqualizationOperation(),
-               new MultiScaleRetinexOperation(),
-               new MultiScaleRetinexWithColorRestorationOperation(),
-               new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
+            //this.AddOperationCategory(
+            //   "Matlab Operations",
+            //   "Matlab.png",
+            //   new FrequencyDomainOperation(),
+            //   new LocalHistogramEqualizationOperation(),
+            //   new MultiScaleRetinexOperation(),
+            //   new MultiScaleRetinexWithColorRestorationOperation(),
+            //   new MultiScaleRetinexWithColorRestorationAndGainOffsetOperation());
 
-            this.AddOperationCategory(
-                "Pass Filters",
-                "PassFilter.png",
-                new IdealLowPassFilter(),
-                new IdealHighPassFilter(),
-                new IdealBandPassFilter(),
-                new IdealBandRejectFilter(),
-                new GaussianLowPassFilter(),
-                new GaussianHighPassFilter(),
-                new ButterworthLowPassFilter(),
-                new ButterworthHighPassFilter(),
-                new IdealNotchPassFilter(),
-                new IdealNotchRejectFilter());
+            //this.AddOperationCategory(
+            //    "Pass Filters",
+            //    "PassFilter.png",
+            //    new IdealLowPassFilter(),
+            //    new IdealHighPassFilter(),
+            //    new IdealBandPassFilter(),
+            //    new IdealBandRejectFilter(),
+            //    new GaussianLowPassFilter(),
+            //    new GaussianHighPassFilter(),
+            //    new ButterworthLowPassFilter(),
+            //    new ButterworthHighPassFilter(),
+            //    new IdealNotchPassFilter(),
+            //    new IdealNotchRejectFilter());
 
             this.AddOperationCategory(
                 "Noise Operations",
@@ -345,6 +348,8 @@
         private void UpdateImage(Manager mng, Tab tab)
         {
             this.imageView.Source = ((WPFBitmap)tab.Image).GetImageSource();
+            this.mainGrid.ClipToBounds = false;
+            this.ClipToBounds = false;
         }
 
         /// <summary>
