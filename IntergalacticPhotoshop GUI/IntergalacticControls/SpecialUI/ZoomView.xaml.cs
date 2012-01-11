@@ -100,7 +100,7 @@
             this.widthRatio = 1;
             this.heightRatio = 1;
 
-            this.zoomSlider.Value = 1;
+            this.zoomSlider.Value = 100;
             this.imageView.Source = ((WPFBitmap)Manager.Instance.CurrentTab.Thumbnails.Peek()).GetImageSource();
             this.Height = (this.Width * (this.imageView.Source.Height / this.imageView.Source.Width)) + 25;
             this.targetedImage = (BitmapSource)this.targetedImageView.Source;
@@ -118,8 +118,10 @@
                 return;
             }
 
-            this.targetedImageView.Width = this.widthRatio * this.targetedImage.PixelWidth;
-            this.targetedImageView.Height = this.heightRatio * this.targetedImage.PixelHeight;
+            this.widthRatio = this.imageViewParent.ActualWidth / this.targetedImageView.ActualWidth;
+            this.heightRatio = this.imageViewParent.ActualHeight / this.targetedImageView.ActualHeight;
+            this.targetedImageView.Width = (this.zoomSlider.Value / 100.0) * this.targetedImage.PixelWidth;
+            this.targetedImageView.Height = (this.zoomSlider.Value / 100.0) * this.targetedImage.PixelHeight;
 
             if (this.widthRatio > 1 || this.heightRatio > 1)
             {
@@ -201,13 +203,7 @@
                 return;
             }
 
-            this.widthRatio = 1 / e.NewValue;
-            this.heightRatio = 1 / e.NewValue;
-            this.targetedImageView.Width = e.NewValue * this.targetedImage.PixelWidth;
-            this.targetedImageView.Height = e.NewValue * this.targetedImage.PixelHeight;
-
             this.targetedImageView.Stretch = Stretch.Uniform;
-
             this.UpdateZoom();
         }
     }
